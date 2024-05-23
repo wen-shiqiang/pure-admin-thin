@@ -95,6 +95,7 @@ export const addTableDialogsubmit = async (data = {}, addTextDialog) => {
       type: ElementType.TABLE,
       value: data.dataSource || "",
       colgroup: colgroup,
+      rowFlex: RowFlex.CENTER,
       trList: [
         {
           height: 40,
@@ -113,17 +114,12 @@ export const addTableDialogsubmit = async (data = {}, addTextDialog) => {
 
 export const addTextDialogsubmit = (data = {}, dialogData = {}) => {
   console.log("🚀  file: canvasEditor.js:104  data:", data);
-
   console.log("🚀  file: canvasEditor.js:104  dialogData:", dialogData);
   if (dialogData.value.type === "tableText") {
     const list =
       dialogData.value.list.filter(
         item => item.cdfField === data.dataSource
       )[0] || {};
-    console.log(
-      "🚀  file: canvasEditor.js:114  addTextDialogsubmit  list:",
-      list
-    );
     data.dsName = list.dsName || "";
     data.cdfName = list.cdfName || "";
     data.dataSource = [list.dsField, list.cdfField] || [];
@@ -149,10 +145,10 @@ export const addTextDialogsubmit = (data = {}, dialogData = {}) => {
         dataSource: data.dataSource || "",
         dsType: data.dsType || "",
         dataType: formatItem?.id || "",
-        value: value
+        value: placeholder
           ? [
               {
-                value,
+                value: placeholder,
                 type: "text",
                 color: "#999998"
               }

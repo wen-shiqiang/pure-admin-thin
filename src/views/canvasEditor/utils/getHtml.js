@@ -410,7 +410,7 @@ export function groupElementListByRowFlex(elementList) {
     const element = elementList[e];
     const rowFlex = element.rowFlex || null;
     // 行布局相同时追加数据，否则新增分组
-    if (currentRowFlex === rowFlex) {
+    if (currentRowFlex === rowFlex && element.type !== "table") {
       const lastElementListGroup =
         elementListGroupList[elementListGroupList.length - 1];
       lastElementListGroup.data.push(element);
@@ -431,6 +431,7 @@ export function groupElementListByRowFlex(elementList) {
   }
   return elementListGroupList;
 }
+
 export function convertElementToDom(element, options) {
   let tagName = "span";
   if (element.type === ElementType.SUPERSCRIPT) {
@@ -658,6 +659,10 @@ export function createDomFromElementList(elementList, options) {
           }
         } else {
           controlElement = document.createElement("span");
+          controlElement.setAttribute(
+            "rowIndex",
+            element.control?.value[0]?.rowIndex ?? null
+          );
           const value0 = element.control?.value[0] || {};
           controlElement.style.fontFamily = value0?.font || options.defaultFont;
           if (value0.bold) {
@@ -684,7 +689,7 @@ export function createDomFromElementList(elementList, options) {
           );
           childDom.innerHTML = `\${${element.control?.dataSource.join(".")}}`;
           if (~~element.control?.dsType === 5) {
-            childDom.setAttribute("dataType", element.control?.dataType); // 添加自定义属性
+            controlElement.setAttribute("dataType", element.control?.dataType); // 添加自定义属性
           }
           if (element.control?.rowFlex || element.control.value[0]?.rowFlex) {
             controlElement.style.textAlign =
@@ -724,12 +729,9 @@ export function createDomFromElementList(elementList, options) {
   }
   // 按行布局分类创建dom
   const clipboardDom = document.createElement("div");
-  // console.log("🚀  file: getHtml.js:709  createDomFromElementList  elementList:", elementList);
   const groupElementList = groupElementListByRowFlex(elementList);
-  // console.log("🚀  groupElementList:", groupElementList);
   for (let g = 0; g < groupElementList.length; g++) {
     const elementGroupRowFlex = groupElementList[g];
-    // console.log("🚀  file: getHtml.js:710  createDomFromElementList  elementGroupRowFlex:", elementGroupRowFlex);
     // 行布局样式设置
     const rowFlexDom = document.createElement("div");
     const isDefaultRowFlex =
@@ -781,6 +783,9 @@ export function getHTMLRewrite(instance) {
   const htmlDom = document.createElement("div");
   for (let e = 0; e < children.length; e++) {
     const rowIndex = children[e].getAttribute("rowIndex");
+
+    console.dir(children[e]);
+
     const textAlign = children[e].style.textAlign;
     if (rowIndex !== null) {
       if (!rowIndexToDiv[rowIndex]) {
