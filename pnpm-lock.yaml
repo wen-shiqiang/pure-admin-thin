@@ -59,9 +59,6 @@ importers:
       pinyin-pro:
         specifier: ^3.20.4
         version: 3.20.4
-      prismjs:
-        specifier: ^1.29.0
-        version: 1.29.0
       qs:
         specifier: ^6.12.1
         version: 6.12.1
@@ -83,9 +80,6 @@ importers:
       vue-types:
         specifier: ^5.1.2
         version: 5.1.2(vue@3.4.27(typescript@5.4.5))
-      wsq-canvas-editor:
-        specifier: ^0.9.78
-        version: 0.9.78
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.3.0
@@ -126,9 +120,6 @@ importers:
       '@types/nprogress':
         specifier: ^0.2.3
         version: 0.2.3
-      '@types/prismjs':
-        specifier: ^1.26.4
-        version: 1.26.4
       '@types/qs':
         specifier: ^6.9.15
         version: 6.9.15
@@ -1063,9 +1054,6 @@ packages:
 
   '@types/nprogress@0.2.3':
     resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
-
-  '@types/prismjs@1.26.4':
-    resolution: {integrity: sha512-rlAnzkW2sZOjbqZ743IHUhFcvzaGbqijwOu8QZnZCjfQzBqFE3s4lOTJEsxikImav9uzz/42I+O7YUs1mWgMlg==}
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
@@ -3106,10 +3094,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prismjs@1.29.0:
-    resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
-    engines: {node: '>=6'}
-
   process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
@@ -3738,10 +3722,6 @@ packages:
   write-file-atomic@5.0.1:
     resolution: {integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-
-  wsq-canvas-editor@0.9.78:
-    resolution: {integrity: sha512-HLieYPFtsUC8cg+dQAzx3LaKiWqCt54TPz4TITnCIhU2iZduFQKo+epCRsCf+5CzexTl7JFeCgPn9bTkXBFYcA==}
-    engines: {node: '>=16.9.1'}
 
   xml-name-validator@4.0.0:
     resolution: {integrity: sha512-ICP2e+jsHvAj2E2lIHxa5tjXRlKDJo4IdvPvCXbXQGdzSfmSpNVyIKMvoZHjDY9DP0zV17iI85o90vRFXNccRw==}
@@ -4529,8 +4509,6 @@ snapshots:
       undici-types: 5.26.5
 
   '@types/nprogress@0.2.3': {}
-
-  '@types/prismjs@1.26.4': {}
 
   '@types/qs@6.9.15': {}
 
@@ -6705,8 +6683,6 @@ snapshots:
 
   prettier@3.2.5: {}
 
-  prismjs@1.29.0: {}
-
   process@0.11.10: {}
 
   proxy-from-env@1.1.0: {}
@@ -7428,10 +7404,6 @@ snapshots:
     dependencies:
       imurmurhash: 0.1.4
       signal-exit: 4.1.0
-
-  wsq-canvas-editor@0.9.78:
-    dependencies:
-      prismjs: 1.29.0
 
   xml-name-validator@4.0.0: {}
 

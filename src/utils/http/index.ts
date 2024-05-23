@@ -13,11 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
-const mmsToken = sessionStorage.getItem("mmsToken") || null;
-let token = mmsToken || "";
-if (mmsToken === null || mmsToken === "undefined") {
-  token = sessionStorage.getItem("token") || null;
-}
+
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -81,37 +77,36 @@ class PureHttp {
         return whiteList.some(url => config.url.endsWith(url))
           ? config
           : new Promise(resolve => {
-              config.headers["Authorization"] = token;
-              config.headers["authToken"] = token;
-              // const data = getToken();
-              // if (data) {
-              //   const now = new Date().getTime();
-              //   const expired = parseInt(data.expires) - now <= 0;
-              //   if (expired) {
-              //     if (!PureHttp.isRefreshing) {
-              //       PureHttp.isRefreshing = true;
-              //       // token过期刷新
-              //       useUserStoreHook()
-              //         .handRefreshToken({ refreshToken: data.refreshToken })
-              //         .then(res => {
-              //           config.headers["Authorization"] = token;
-              //           config.headers["authToken"] = token;
-              //           PureHttp.requests.forEach(cb => cb(token));
-              //           PureHttp.requests = [];
-              //         })
-              //         .finally(() => {
-              //           PureHttp.isRefreshing = false;
-              //         });
-              //     }
-              //     resolve(PureHttp.retryOriginalRequest(config));
-              //   } else {
-              //     config.headers["Authorization"] = token;
-              //     config.headers["authToken"] = token;
-              //     resolve(config);
-              //   }
-              // } else {
-              resolve(config);
-              // }
+              const data = getToken();
+              if (data) {
+                const now = new Date().getTime();
+                const expired = parseInt(data.expires) - now <= 0;
+                if (expired) {
+                  if (!PureHttp.isRefreshing) {
+                    PureHttp.isRefreshing = true;
+                    // token过期刷新
+                    useUserStoreHook()
+                      .handRefreshToken({ refreshToken: data.refreshToken })
+                      .then(res => {
+                        const token = res.data.accessToken;
+                        config.headers["Authorization"] = formatToken(token);
+                        PureHttp.requests.forEach(cb => cb(token));
+                        PureHttp.requests = [];
+                      })
+                      .finally(() => {
+                        PureHttp.isRefreshing = false;
+                      });
+                  }
+                  resolve(PureHttp.retryOriginalRequest(config));
+                } else {
+                  config.headers["Authorization"] = formatToken(
+                    data.accessToken
+                  );
+                  resolve(config);
+                }
+              } else {
+                resolve(config);
+              }
             });
       },
       error => {
@@ -159,7 +154,7 @@ class PureHttp {
   ): Promise<T> {
     const config = {
       method,
-      url: `http://192.168.10.18:9091/${url}`,
+      url,
       ...param,
       ...axiosConfig
     } as PureHttpRequestConfig;

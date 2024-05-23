@@ -44,7 +44,7 @@
     "src/**/*.vue",
     "types/*.d.ts",
     "vite.config.ts"
-, "src/views/canvasEditor/utils/canvasEditor.js"  ],
+  ],
   "exclude": [
     "dist",
     "**/*.js",
