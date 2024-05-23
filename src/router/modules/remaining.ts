@@ -12,6 +12,16 @@ export default [
     }
   },
   {
+    path: "/canvasEditor",
+    name: "CanvasEditor",
+    component: () => import("@/views/canvasEditor/index.vue"),
+    meta: {
+      title: "封面配置",
+      showLink: false,
+      rank: 101
+    }
+  },
+  {
     path: "/redirect",
     component: Layout,
     meta: {
