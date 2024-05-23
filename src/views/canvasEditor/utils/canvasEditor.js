@@ -565,6 +565,15 @@ export const init = async (data = []) => {
     const position = await instance.draw.getPosition();
     const { draw, positionContext } = position;
     const { elementList } = draw;
+    const menuDom = document.querySelector(`.menu-item__image`);
+    const tableDom = document.querySelector(`.data-table`);
+    if (positionContext.isTable) {
+      menuDom.classList.add("disable");
+      tableDom.classList.add("disable");
+    } else {
+      menuDom.classList.remove("disable");
+      tableDom.classList.remove("disable");
+    }
     if (positionContext.index) {
       if (positionContext.isTable && elementList[positionContext.index]) {
         // 表格选中

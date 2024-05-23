@@ -242,7 +242,7 @@ onBeforeUnmount(() => {});
           <div class="options">
             <ul>
               <li data-control="dataText">文本</li>
-              <li data-control="table">表格</li>
+              <li class="data-table" data-control="table">表格</li>
             </ul>
           </div>
         </div>
