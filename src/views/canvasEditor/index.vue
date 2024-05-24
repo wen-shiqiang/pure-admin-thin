@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from "vue";
-import Editor, {
-  EditorMode,
-  ElementType,
-  KeyMap,
-  RowFlex
-} from "wsq-canvas-editor";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import {
   getDateFormat,
   getCoverByTempId,
   getCoverDatasource,
   addTextDialog
 } from "./utils/index";
-import { getHTMLRewrite } from "./utils/getHtml";
 import addText from "./components/addText.vue";
 import { setTempId } from "./utils/canvasEditor.js";
-console.log("🚀  file: index.vue:18  addTextDialog:", addTextDialog.value);
 import { useRoute } from "vue-router";
 const route = useRoute();
 const query = ref(route.query);
-console.log("🚀  file: index.ts:31  query:", query);
 const { id, token }: any = query.value || {};
-sessionStorage.setItem("mmsToken", token);
+sessionStorage.setItem("mmsToken", token || "");
 setTempId(id);
 getDateFormat();
 getCoverByTempId(id);
@@ -58,86 +49,44 @@ onBeforeUnmount(() => {});
             <ul>
               <li
                 data-family="Microsoft YaHei"
-                style="font-family: &quot;Microsoft YaHei&quot;"
+                style="font-family: Microsoft YaHei"
               >
                 微软雅黑
               </li>
-              <li data-family="宋体" style="font-family: &quot;宋体&quot;">
-                宋体
-              </li>
-              <li data-family="黑体" style="font-family: &quot;黑体&quot;">
-                黑体
-              </li>
-              <li data-family="仿宋" style="font-family: &quot;仿宋&quot;">
-                仿宋
-              </li>
-              <li data-family="楷体" style="font-family: &quot;楷体&quot;">
-                楷体
-              </li>
-              <li data-family="等线" style="font-family: &quot;等线&quot;">
-                等线
-              </li>
-              <li
-                data-family="华文琥珀"
-                style="font-family: &quot;华文琥珀&quot;"
-              >
+              <li data-family="宋体" style="font-family: 宋体">宋体</li>
+              <li data-family="黑体" style="font-family: 黑体">黑体</li>
+              <li data-family="仿宋" style="font-family: 仿宋">仿宋</li>
+              <li data-family="楷体" style="font-family: 楷体">楷体</li>
+              <li data-family="等线" style="font-family: 等线">等线</li>
+              <li data-family="华文琥珀" style="font-family: 华文琥珀">
                 华文琥珀
               </li>
-              <li
-                data-family="华文楷体"
-                style="font-family: &quot;华文楷体&quot;"
-              >
+              <li data-family="华文楷体" style="font-family: 华文楷体">
                 华文楷体
               </li>
-              <li
-                data-family="华文隶书"
-                style="font-family: &quot;华文隶书&quot;"
-              >
+              <li data-family="华文隶书" style="font-family: 华文隶书">
                 华文隶书
               </li>
-              <li
-                data-family="华文新魏"
-                style="font-family: &quot;华文新魏&quot;"
-              >
+              <li data-family="华文新魏" style="font-family: 华文新魏">
                 华文新魏
               </li>
-              <li
-                data-family="华文行楷"
-                style="font-family: &quot;华文行楷&quot;"
-              >
+              <li data-family="华文行楷" style="font-family: 华文行楷">
                 华文行楷
               </li>
-              <li
-                data-family="华文中宋"
-                style="font-family: &quot;华文中宋&quot;"
-              >
+              <li data-family="华文中宋" style="font-family: 华文中宋">
                 华文中宋
               </li>
-              <li
-                data-family="华文彩云"
-                style="font-family: &quot;华文彩云&quot;"
-              >
+              <li data-family="华文彩云" style="font-family: 华文彩云">
                 华文彩云
               </li>
-              <li data-family="Arial" style="font-family: &quot;Arial&quot;">
-                Arial
-              </li>
-              <li
-                data-family="Segoe UI"
-                style="font-family: &quot;Segoe UI&quot;"
-              >
+              <li data-family="Arial" style="font-family: Arial">Arial</li>
+              <li data-family="Segoe UI" style="font-family: Segoe UI">
                 Segoe UI
               </li>
-              <li
-                data-family="Ink Free"
-                style="font-family: &quot;Ink Free&quot;"
-              >
+              <li data-family="Ink Free" style="font-family: Ink Free">
                 Ink Free
               </li>
-              <li
-                data-family="Fantasy"
-                style="font-family: &quot;Fantasy&quot;"
-              >
+              <li data-family="Fantasy" style="font-family: Fantasy">
                 Fantasy
               </li>
             </ul>
