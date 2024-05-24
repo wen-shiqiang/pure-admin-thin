@@ -21,7 +21,8 @@ export function useDataThemeChange() {
     /* 亮白色 */
     { color: "#ffffff", themeColor: "light" },
     /* 道奇蓝 */
-    { color: "#1b2a47", themeColor: "default" },
+    { color: "#1b2a47", themeColor: "1b2a47" },
+    { color: "#5c8ef2", themeColor: "default" },
     /* 深紫罗兰色 */
     { color: "#722ed1", themeColor: "saucePurple" },
     /* 深粉色 */

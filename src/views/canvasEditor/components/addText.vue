@@ -161,9 +161,13 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
       <template v-slot:footer>
         <div class="dialog-footer">
           <el-button class="cancel-btn" @click="dialogClose()">取 消</el-button>
-          <el-button class="sure-btn" @click="confirmEditPlate(ruleFormRef)"
-            >确 定</el-button
+          <el-button
+            class="sure-btn"
+            type="primary"
+            @click="confirmEditPlate(ruleFormRef)"
           >
+            确 定
+          </el-button>
         </div>
       </template>
     </el-dialog>
