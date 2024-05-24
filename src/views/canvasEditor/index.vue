@@ -7,7 +7,7 @@ import {
   addTextDialog
 } from "./utils/index";
 import addText from "./components/addText.vue";
-import { setTempId } from "./utils/canvasEditor.js";
+import { setTempId, saveAdd } from "./utils/canvasEditor.js";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const query = ref(route.query);
@@ -15,13 +15,16 @@ const { id, token }: any = query.value || {};
 sessionStorage.setItem("mmsToken", token || "");
 setTempId(id);
 getDateFormat();
-getCoverByTempId(id);
 getCoverDatasource();
 onMounted(() => {
-  // init();
+  getCoverByTempId(id);
 });
-
-onBeforeUnmount(() => {});
+window.addEventListener("message", event => {
+  console.log("Received message:", event.data);
+  if (event.data === "save") {
+    saveAdd(1);
+  }
+});
 </script>
 
 <template>
@@ -198,11 +201,14 @@ onBeforeUnmount(() => {});
       </div>
       <div class="menu-divider" />
       <div class="menu-item">
-        <div class="menu-item__print" data-menu="print">
+        <!-- <div class="menu-item__print" data-menu="print">
           <i />
-        </div>
-        <div class="menu-item__save" data-menu="save">
-          <i />
+        </div> -->
+        <div class="menu-item__save !w-[52px] m-l-10" data-menu="save">
+          <el-button size="small" class="sure-btn" type="primary">
+            保 存
+          </el-button>
+          <!-- <i /> -->
         </div>
       </div>
     </div>

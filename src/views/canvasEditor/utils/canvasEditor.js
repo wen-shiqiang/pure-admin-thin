@@ -52,6 +52,11 @@ export const getelementListItem = () => {
 export const getisDataSourceTable = () => {
   return isDataSourceTable.value;
 };
+export const saveAdd = async (num = 0) => {
+  const html = getHTMLRewrite(instance)?.main || "";
+  const value = instance.command.getValue()?.data?.main || "";
+  saveAddOrUpdateCover({ html, value, num });
+};
 export const saveAddOrUpdateCover = async (data = {}) => {
   const paramsData = {
     tempId: tempId.value,
@@ -64,6 +69,9 @@ export const saveAddOrUpdateCover = async (data = {}) => {
   });
   if (res.status === 200) {
     ElMessage.success("保存成功");
+    if (data.num === 1) {
+      window?.parent?.postMessage("save-confirmation", "*");
+    }
     return;
   }
   ElMessage.error(res.message || "保存失败");
@@ -487,19 +495,16 @@ export const init = async (data = []) => {
 
   // 5. | 搜索&替换 | 打印 |
 
-  const printDom = document.querySelector(".menu-item__print");
-  printDom.title = `打印(${isApple ? "⌘" : "Ctrl"}+P)`;
-  printDom.onclick = () => {
-    console.log("print");
-    instance.command.executePrint();
-  };
+  // const printDom = document.querySelector(".menu-item__print");
+  // printDom.title = `打印(${isApple ? "⌘" : "Ctrl"}+P)`;
+  // printDom.onclick = () => {
+  //   console.log("print");
+  //   instance.command.executePrint();
+  // };
   const saveDom = document.querySelector(".menu-item__save");
   saveDom.title = `保存`;
   saveDom.onclick = async () => {
-    const html = getHTMLRewrite(instance)?.main || "";
-    const value = instance.command.getValue()?.data?.main || "";
-    console.log("value", value);
-    saveAddOrUpdateCover({ html, value });
+    saveAdd();
   };
   document.querySelector(".page-scale-percentage").onclick = () => {
     console.log("page-scale-recovery");
