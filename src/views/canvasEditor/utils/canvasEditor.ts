@@ -2,15 +2,17 @@ import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import { http } from "@/utils/http";
 import Editor, {
-  EditorMode,
   ElementType,
   KeyMap,
-  RowFlex
-} from "wsq-canvas-editor";
+  RowFlex,
+  type IElement,
+  type TitleLevel
+  // } from "wsq-canvas-editor";
+} from "../editor/index";
 import { getHTMLRewrite } from "./getHtml";
 import { dataText, dataTable } from "./index";
-let instance = ref(null);
-const editorOptions = {
+let instance: any = ref(null);
+const editorOptions: any = {
   margins: [100, 120, 100, 120],
   watermark: {
     data: "CANVAS-EDITOR",
@@ -39,7 +41,7 @@ export const isDataSourceTable = ref(false);
 export const isTable = ref(false);
 export const tempId = ref(null);
 export const elementListItem = ref({});
-const coverByTemp = ref({});
+const coverByTemp: any = ref({});
 export const setcoverByTemp = (data = {}) => {
   coverByTemp.value = data;
 };
@@ -57,14 +59,14 @@ export const saveAdd = async (num = 0) => {
   const value = instance.command.getValue()?.data?.main || "";
   saveAddOrUpdateCover({ html, value, num });
 };
-export const saveAddOrUpdateCover = async (data = {}) => {
-  const paramsData = {
+export const saveAddOrUpdateCover = async (data: any = {}) => {
+  const paramsData: any = {
     tempId: tempId.value,
     htmlContent: data.html,
     placeSource: JSON.stringify(data.value)
   };
   coverByTemp.value?.id && (paramsData.id = coverByTemp.value.id);
-  const res = await http.request("post", "/templet/v1/addOrUpdateCover", {
+  const res: any = await http.request("post", "/templet/v1/addOrUpdateCover", {
     data: paramsData
   });
   if (res.status === 200) {
@@ -83,7 +85,10 @@ export const getContextMenuList = async instance => {
     contextMenuList
   );
 };
-export const addTableDialogsubmit = async (data = {}, addTextDialog) => {
+export const addTableDialogsubmit = async (
+  data: any = {},
+  addTextDialog: any
+) => {
   const tableWidth = data?.tableWidth || 554;
   const columnsWidth = Math.round(tableWidth / data.tableColumnsNumber);
   const colgroup = [];
@@ -120,7 +125,7 @@ export const addTableDialogsubmit = async (data = {}, addTextDialog) => {
   addTextDialog.value.show = false;
 };
 
-export const addTextDialogsubmit = (data = {}, dialogData = {}) => {
+export const addTextDialogsubmit = (data: any = {}, dialogData: any = {}) => {
   console.log("🚀  file: canvasEditor.js:104  data:", data);
   console.log("🚀  file: canvasEditor.js:104  dialogData:", dialogData);
   if (dialogData.value.type === "tableText") {
@@ -132,7 +137,6 @@ export const addTextDialogsubmit = (data = {}, dialogData = {}) => {
     data.cdfName = list.cdfName || "";
     data.dataSource = [list.dsField, list.cdfField] || [];
   }
-  const value = `${data.dsName}.${data.cdfName}` || "";
   let placeholder = `${data.dsName}.${data.cdfName}` || "";
   const type = data.type || "text";
   let formatItem = null;
@@ -178,11 +182,11 @@ export const init = async (data = []) => {
   const isApple =
     typeof navigator !== "undefined" && /Mac OS X/.test(navigator.userAgent);
   // 1. 初始化编辑器
-  const container = document.querySelector(".editor");
+  const container = document.querySelector<HTMLDivElement>(".editor")!;
   instance = new Editor(
     container,
     {
-      main: data || []
+      main: <IElement[]>data || []
     },
     editorOptions
   );
@@ -195,7 +199,7 @@ export const init = async (data = []) => {
     "click",
     evt => {
       const visibleDom = document.querySelector(".visible");
-      if (!visibleDom || visibleDom.contains(evt.target)) {
+      if (!visibleDom || visibleDom.contains(<Node>evt.target)) {
         return;
       }
       visibleDom.classList.remove("visible");
@@ -206,21 +210,23 @@ export const init = async (data = []) => {
   );
 
   // 2. | 撤销 | 重做 | 格式刷 | 清除格式 |
-  const undoDom = document.querySelector(".menu-item__undo");
+  const undoDom = document.querySelector<HTMLDivElement>(".menu-item__undo")!;
   undoDom.title = `撤销(${isApple ? "⌘" : "Ctrl"}+Z)`;
   undoDom.onclick = () => {
     console.log("undo");
     instance.command.executeUndo();
   };
 
-  const redoDom = document.querySelector(".menu-item__redo");
+  const redoDom = document.querySelector<HTMLDivElement>(".menu-item__redo")!;
   redoDom.title = `重做(${isApple ? "⌘" : "Ctrl"}+Y)`;
   redoDom.onclick = () => {
     console.log("redo");
     instance.command.executeRedo();
   };
 
-  const painterDom = document.querySelector(".menu-item__painter");
+  const painterDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__painter"
+  )!;
 
   let isFirstClick = true;
   let painterTimeout;
@@ -248,90 +254,132 @@ export const init = async (data = []) => {
     });
   };
 
-  document.querySelector(".menu-item__format").onclick = () => {
-    console.log("format");
-    instance.command.executeFormat();
-  };
+  document.querySelector<HTMLDivElement>(".menu-item__format")!.onclick =
+    () => {
+      console.log("format");
+      instance.command.executeFormat();
+    };
 
   // 3. | 字体 | 字体变大 | 字体变小 | 加粗 | 斜体 | 下划线 | 删除线 | 上标 | 下标 | 字体颜色 | 背景色 |
-  const fontDom = document.querySelector(".menu-item__font");
-  const fontSelectDom = fontDom.querySelector(".select");
-  const fontOptionDom = fontDom.querySelector(".options");
+  const fontDom = document.querySelector<HTMLDivElement>(".menu-item__font")!;
+  const fontSelectDom = fontDom.querySelector<HTMLDivElement>(".select")!;
+  const fontOptionDom = fontDom.querySelector<HTMLDivElement>(".options")!;
   fontDom.onclick = () => {
     console.log("font");
     fontOptionDom.classList.toggle("visible");
   };
-  fontOptionDom.onclick = evt => {
-    const li = evt.target;
-    instance.command.executeFont(li.dataset.family);
+  fontOptionDom.onclick = function (evt) {
+    const li = evt.target as HTMLLIElement;
+    instance.command.executeFont(li.dataset.family!);
   };
 
-  const sizeSetDom = document.querySelector(".menu-item__size");
-  const sizeSelectDom = sizeSetDom.querySelector(".select");
-  const sizeOptionDom = sizeSetDom.querySelector(".options");
+  const sizeSetDom =
+    document.querySelector<HTMLDivElement>(".menu-item__size")!;
+  const sizeSelectDom = sizeSetDom.querySelector<HTMLDivElement>(".select")!;
+  const sizeOptionDom = sizeSetDom.querySelector<HTMLDivElement>(".options")!;
   sizeSetDom.title = `设置字号`;
   sizeSetDom.onclick = () => {
     console.log("size");
     sizeOptionDom.classList.toggle("visible");
   };
-  sizeOptionDom.onclick = evt => {
-    const li = evt.target;
-    instance.command.executeSize(li.dataset.size);
+  sizeOptionDom.onclick = function (evt) {
+    const li = evt.target as HTMLLIElement;
+    instance.command.executeSize(Number(li.dataset.size!));
   };
 
-  const sizeAddDom = document.querySelector(".menu-item__size-add");
+  const sizeAddDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__size-add"
+  )!;
   sizeAddDom.title = `增大字号(${isApple ? "⌘" : "Ctrl"}+[)`;
   sizeAddDom.onclick = () => {
     console.log("size-add");
     instance.command.executeSizeAdd();
   };
 
-  const sizeMinusDom = document.querySelector(".menu-item__size-minus");
+  const sizeMinusDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__size-minus"
+  )!;
   sizeMinusDom.title = `减小字号(${isApple ? "⌘" : "Ctrl"}+])`;
   sizeMinusDom.onclick = () => {
     console.log("size-minus");
     instance.command.executeSizeMinus();
   };
 
-  const boldDom = document.querySelector(".menu-item__bold");
+  const boldDom = document.querySelector<HTMLDivElement>(".menu-item__bold")!;
   boldDom.title = `加粗(${isApple ? "⌘" : "Ctrl"}+B)`;
   boldDom.onclick = () => {
     console.log("bold");
     instance.command.executeBold();
   };
 
-  const italicDom = document.querySelector(".menu-item__italic");
+  const italicDom =
+    document.querySelector<HTMLDivElement>(".menu-item__italic")!;
   italicDom.title = `斜体(${isApple ? "⌘" : "Ctrl"}+I)`;
   italicDom.onclick = () => {
     console.log("italic");
     instance.command.executeItalic();
   };
 
-  const colorControlDom = document.querySelector("#color");
+  const underlineDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__underline"
+  )!;
+  underlineDom.title = `下划线(${isApple ? "⌘" : "Ctrl"}+U)`;
+  const underlineOptionDom =
+    underlineDom.querySelector<HTMLDivElement>(".options")!;
+  underlineDom.querySelector<HTMLSpanElement>(".select")!.onclick =
+    function () {
+      underlineOptionDom.classList.toggle("visible");
+    };
+  underlineDom.querySelector("i").onclick = function () {
+    console.log("underline");
+    instance.command.executeUnderline();
+    underlineOptionDom.classList.remove("visible");
+  };
+  underlineDom.querySelector<HTMLUListElement>("ul").onmousedown = function (
+    evt
+  ) {
+    const li = evt.target as HTMLLIElement;
+    const decorationStyle = li.dataset.decorationStyle;
+    instance.command.executeUnderline({
+      style: decorationStyle
+    });
+    underlineOptionDom.classList.remove("visible");
+  };
+  const strikeoutDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__strikeout"
+  )!;
+  strikeoutDom.onclick = function () {
+    console.log("strikeout");
+    instance.command.executeStrikeout();
+  };
+  const colorControlDom = document.querySelector<HTMLInputElement>("#color")!;
   colorControlDom.oninput = () => {
     instance.command.executeColor(colorControlDom.value);
   };
-  const colorDom = document.querySelector(".menu-item__color");
-  const colorSpanDom = colorDom.querySelector("span");
+  const colorDom = document.querySelector<HTMLDivElement>(".menu-item__color")!;
+  const colorSpanDom = colorDom.querySelector("span")!;
   colorDom.onclick = () => {
     console.log("color");
     colorControlDom.click();
   };
 
-  const highlightControlDom = document.querySelector("#highlight");
+  const highlightControlDom =
+    document.querySelector<HTMLInputElement>("#highlight")!;
   highlightControlDom.oninput = () => {
     instance.command.executeHighlight(highlightControlDom.value);
   };
-  const highlightDom = document.querySelector(".menu-item__highlight");
+  const highlightDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__highlight"
+  )!;
   const highlightSpanDom = highlightDom.querySelector("span");
   highlightDom.onclick = () => {
     console.log("highlight");
     highlightControlDom?.click();
   };
 
-  const titleDom = document.querySelector(".menu-item__title");
-  const titleSelectDom = titleDom.querySelector(".select");
-  const titleOptionDom = titleDom.querySelector(".options");
+  const titleDom = document.querySelector<HTMLDivElement>(".menu-item__title")!;
+  const titleSelectDom = titleDom.querySelector<HTMLDivElement>(".select")!;
+  const titleOptionDom = titleDom.querySelector<HTMLDivElement>(".options")!;
   titleOptionDom.querySelectorAll("li").forEach((li, index) => {
     li.title = `Ctrl+${isApple ? "Option" : "Alt"}+${index}`;
   });
@@ -341,26 +389,27 @@ export const init = async (data = []) => {
     titleOptionDom.classList.toggle("visible");
   };
   titleOptionDom.onclick = evt => {
-    const li = evt.target;
-    const level = li.dataset.level;
+    const li = evt.target as HTMLLIElement;
+    const level = <TitleLevel>li.dataset.level;
     instance.command.executeTitle(level || null);
   };
 
-  const leftDom = document.querySelector(".menu-item__left");
+  const leftDom = document.querySelector<HTMLDivElement>(".menu-item__left")!;
   leftDom.title = `左对齐(${isApple ? "⌘" : "Ctrl"}+L)`;
   leftDom.onclick = () => {
     console.log("left");
     instance.command.executeRowFlex(RowFlex.LEFT);
   };
 
-  const centerDom = document.querySelector(".menu-item__center");
+  const centerDom =
+    document.querySelector<HTMLDivElement>(".menu-item__center")!;
   centerDom.title = `居中对齐(${isApple ? "⌘" : "Ctrl"}+E)`;
   centerDom.onclick = () => {
     console.log("center");
     instance.command.executeRowFlex(RowFlex.CENTER);
   };
 
-  const rightDom = document.querySelector(".menu-item__right");
+  const rightDom = document.querySelector<HTMLDivElement>(".menu-item__right")!;
   rightDom.title = `右对齐(${isApple ? "⌘" : "Ctrl"}+R)`;
   rightDom.onclick = () => {
     console.log("right");
@@ -368,13 +417,13 @@ export const init = async (data = []) => {
   };
 
   // 4. | 表格 | 图片 | 超链接 | 分割线 | 水印 | 代码块 | 分隔符 | 控件 | 复选框 | LaTeX | 日期选择器
-  const tableDom = document.querySelector(".menu-item__table");
-  const tablePanelContainer = document.querySelector(
+  const tableDom = document.querySelector<HTMLDivElement>(".menu-item__table")!;
+  const tablePanelContainer = document.querySelector<HTMLDivElement>(
     ".menu-item__table__collapse"
-  );
-  const tableClose = document.querySelector(".table-close");
-  const tableTitle = document.querySelector(".table-select");
-  const tablePanel = document.querySelector(".table-panel");
+  )!;
+  const tableClose = document.querySelector<HTMLDivElement>(".table-close")!;
+  const tableTitle = document.querySelector<HTMLDivElement>(".table-select")!;
+  const tablePanel = document.querySelector<HTMLDivElement>(".table-panel")!;
   // 绘制行列
   const tableCellList = [];
   for (let i = 0; i < 10; i++) {
@@ -399,7 +448,7 @@ export const init = async (data = []) => {
     });
   };
   // 设置标题内容
-  const setTableTitle = payload => {
+  const setTableTitle = (payload: string) => {
     tableTitle.innerText = payload;
   };
   // 恢复初始状态
@@ -445,21 +494,21 @@ export const init = async (data = []) => {
     recoveryTable();
   };
 
-  const imageDom = document.querySelector(".menu-item__image");
-  const imageFileDom = document.querySelector("#image");
+  const imageDom = document.querySelector<HTMLDivElement>(".menu-item__image")!;
+  const imageFileDom = document.querySelector<HTMLInputElement>("#image")!;
   imageDom.onclick = () => {
     imageFileDom.click();
   };
-  imageFileDom.onchange = () => {
-    const file = imageFileDom.files[0];
+  imageFileDom.onchange = function () {
+    const file = imageFileDom.files![0]!;
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
+    fileReader.onload = function () {
       // 计算宽高
       const image = new Image();
-      const value = fileReader.result;
+      const value = fileReader.result as string;
       image.src = value;
-      image.onload = () => {
+      image.onload = function () {
         instance.command.executeImage({
           value,
           width: image.width,
@@ -470,23 +519,26 @@ export const init = async (data = []) => {
     };
   };
 
-  const controlDom = document.querySelector(".menu-item__control");
-  const controlOptionDom = controlDom.querySelector(".options");
+  const controlDom = document.querySelector<HTMLDivElement>(
+    ".menu-item__control"
+  )!;
+  const controlOptionDom =
+    controlDom.querySelector<HTMLDivElement>(".options")!;
   controlDom.onclick = () => {
     console.log("control");
     controlOptionDom.classList.toggle("visible");
   };
   controlOptionDom.onmousedown = evt => {
     controlOptionDom.classList.toggle("visible");
-    const li = evt.target;
+    const li = evt.target as HTMLLIElement;
     const type = li.dataset.control;
     switch (type) {
       case "table":
-        dataTable("table");
+        dataTable();
         break;
       case "dataText":
         console.log("dataText");
-        dataText("dataText");
+        dataText();
         break;
       default:
         break;
@@ -501,22 +553,23 @@ export const init = async (data = []) => {
   //   console.log("print");
   //   instance.command.executePrint();
   // };
-  const saveDom = document.querySelector(".menu-item__save");
+  const saveDom = document.querySelector<HTMLDivElement>(".menu-item__save");
   saveDom.title = `保存`;
   saveDom.onclick = async () => {
     saveAdd();
   };
-  document.querySelector(".page-scale-percentage").onclick = () => {
-    console.log("page-scale-recovery");
-    instance.command.executePageScaleRecovery();
-  };
+  document.querySelector<HTMLDivElement>(".page-scale-percentage")!.onclick =
+    () => {
+      console.log("page-scale-recovery");
+      instance.command.executePageScaleRecovery();
+    };
 
-  document.querySelector(".page-scale-minus").onclick = () => {
+  document.querySelector<HTMLDivElement>(".page-scale-minus")!.onclick = () => {
     console.log("page-scale-minus");
     instance.command.executePageScaleMinus();
   };
 
-  document.querySelector(".page-scale-add").onclick = () => {
+  document.querySelector<HTMLDivElement>(".page-scale-add")!.onclick = () => {
     console.log("page-scale-add");
     instance.command.executePageScaleAdd();
   };
@@ -529,7 +582,7 @@ export const init = async (data = []) => {
     }
   };
   // 全屏
-  const fullscreenDom = document.querySelector(".fullscreen");
+  const fullscreenDom = document.querySelector<HTMLDivElement>(".fullscreen")!;
   fullscreenDom.onclick = toggleFullscreen;
   window.addEventListener("keydown", evt => {
     if (evt.key === "F11") {
@@ -541,43 +594,37 @@ export const init = async (data = []) => {
     fullscreenDom.classList.toggle("exist");
   });
 
-  // 7. 编辑器使用模式
-  const modeIndex = 0;
-  const modeList = [
-    {
-      mode: EditorMode.EDIT,
-      name: "编辑模式"
-    },
-    {
-      mode: EditorMode.CLEAN,
-      name: "清洁模式"
-    },
-    {
-      mode: EditorMode.READONLY,
-      name: "只读模式"
-    },
-    {
-      mode: EditorMode.FORM,
-      name: "表单模式"
-    },
-    {
-      mode: EditorMode.PRINT,
-      name: "打印模式"
-    }
-  ];
   // 8. 内部事件监听
   instance.listener.rangeStyleChange = async payload => {
+    console.log("🚀  file: canvasEditor.js:595  init  payload:", payload);
     const position = await instance.draw.getPosition();
     const { draw, positionContext } = position;
     const { elementList } = draw;
+    console.log(
+      "🚀  file: canvasEditor.js:599  init  elementList:",
+      elementList[positionContext.index]
+    );
     const menuDom = document.querySelector(`.menu-item__image`);
     const tableDom = document.querySelector(`.data-table`);
+    const textDom = document.querySelector(`.data-text`);
+    console.log("positionContext", positionContext);
+
     if (positionContext.isTable) {
       menuDom.classList.add("disable");
       tableDom.classList.add("disable");
+      textDom.classList.remove("disable");
     } else {
       menuDom.classList.remove("disable");
       tableDom.classList.remove("disable");
+      textDom.classList.remove("disable");
+      if (
+        positionContext.isControl &&
+        elementList[positionContext.index]?.value !== "}"
+      ) {
+        menuDom.classList.add("disable");
+        tableDom.classList.add("disable");
+        textDom.classList.add("disable");
+      }
     }
     if (positionContext.index) {
       if (positionContext.isTable && elementList[positionContext.index]) {
@@ -598,7 +645,7 @@ export const init = async (data = []) => {
     fontOptionDom
       .querySelectorAll("li")
       .forEach(li => li.classList.remove("active"));
-    const curFontDom = fontOptionDom.querySelector(
+    const curFontDom = fontOptionDom.querySelector<HTMLLIElement>(
       `[data-family='${payload.font}']`
     );
     if (curFontDom) {
@@ -609,7 +656,7 @@ export const init = async (data = []) => {
     sizeOptionDom
       .querySelectorAll("li")
       .forEach(li => li.classList.remove("active"));
-    const curSizeDom = sizeOptionDom.querySelector(
+    const curSizeDom = sizeOptionDom.querySelector<HTMLLIElement>(
       `[data-size='${payload.size}']`
     );
     if (curSizeDom) {
@@ -675,9 +722,9 @@ export const init = async (data = []) => {
       .querySelectorAll("li")
       .forEach(li => li.classList.remove("active"));
     if (payload.level) {
-      const curTitleDom = titleOptionDom.querySelector(
+      const curTitleDom = titleOptionDom.querySelector<HTMLLIElement>(
         `[data-level='${payload.level}']`
-      );
+      )!;
       titleSelectDom.innerText = curTitleDom.innerText;
       curTitleDom.classList.add("active");
     } else {
@@ -688,8 +735,9 @@ export const init = async (data = []) => {
 
   instance.listener.pageScaleChange = payload => {
     console.log("🚀  file: canvasEditor.js:1708  init  payload:", payload);
-    document.querySelector(".page-scale-percentage").innerText =
-      `${Math.floor(payload * 10 * 10)}%`;
+    document.querySelector<HTMLSpanElement>(
+      ".page-scale-percentage"
+    )!.innerText = `${Math.floor(payload * 10 * 10)}%`;
   };
 
   instance.listener.controlChange = payload => {

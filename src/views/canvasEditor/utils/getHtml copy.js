@@ -57,7 +57,6 @@ export const ControlComponent = {
   RADIO: "radio"
 };
 export const EDITOR_ELEMENT_ZIP_ATTR = [
-  "id",
   "type",
   "font",
   "size",
@@ -93,10 +92,11 @@ export const EDITOR_ELEMENT_ZIP_ATTR = [
   "imgFloatPosition",
   "textDecoration",
   "extension",
+  "externalId",
+  "id",
   "dataSource",
   "positionList",
-  "rowIndex",
-  "externalId"
+  "rowIndex"
 ];
 export const NON_BREAKING_SPACE = "&nbsp;";
 export const ZERO = "\u200B";
@@ -410,7 +410,7 @@ export function groupElementListByRowFlex(elementList) {
     const element = elementList[e];
     const rowFlex = element.rowFlex || null;
     // 行布局相同时追加数据，否则新增分组
-    if (currentRowFlex === rowFlex && element.type !== "table") {
+    if (currentRowFlex === rowFlex) {
       const lastElementListGroup =
         elementListGroupList[elementListGroupList.length - 1];
       lastElementListGroup.data.push(element);
@@ -584,10 +584,10 @@ export function createDomFromElementList(elementList, options) {
         const h = document.createElement(
           `h${titleOrderNumberMapping[element.level]}`
         );
-        // h.setAttribute('rowIndex', element.valueList[0]?.rowIndex ?? null);
-        // if (element.valueList[0]?.rowFlex) {
-        //     h.style.textAlign = element.valueList[0]?.rowFlex;
-        // }
+        h.setAttribute("rowIndex", element?.rowIndex ?? null);
+        if (element.valueList[0]?.rowFlex) {
+          h.style.textAlign = element.valueList[0]?.rowFlex;
+        }
         const childDom = buildDom(element.valueList);
         h.innerHTML = childDom.innerHTML;
         clipboardDom.append(h);
@@ -721,6 +721,7 @@ export function createDomFromElementList(elementList, options) {
         if (payload[e - 1]?.type === ElementType.TITLE) {
           // text = text.replace(/^\n/, '');
         }
+        dom.setAttribute("rowIndex", element?.rowIndex ?? null);
         dom.innerText = text.replace(new RegExp(`${ZERO}`, "g"), "\n");
         clipboardDom.append(dom);
       }

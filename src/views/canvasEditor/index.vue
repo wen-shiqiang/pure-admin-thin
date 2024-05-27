@@ -7,7 +7,7 @@ import {
   addTextDialog
 } from "./utils/index";
 import addText from "./components/addText.vue";
-import { setTempId, saveAdd } from "./utils/canvasEditor.js";
+import { setTempId, saveAdd } from "./utils/canvasEditor";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const query = ref(route.query);
@@ -48,74 +48,78 @@ window.addEventListener("message", event => {
       <div class="menu-item">
         <div class="menu-item__font">
           <span class="select" title="字体">微软雅黑</span>
-          <div class="options w-[120px]">
-            <ul>
-              <li
-                data-family="Microsoft YaHei"
-                style="font-family: Microsoft YaHei"
-              >
-                微软雅黑
-              </li>
-              <li data-family="宋体" style="font-family: 宋体">宋体</li>
-              <li data-family="黑体" style="font-family: 黑体">黑体</li>
-              <li data-family="仿宋" style="font-family: 仿宋">仿宋</li>
-              <li data-family="楷体" style="font-family: 楷体">楷体</li>
-              <li data-family="等线" style="font-family: 等线">等线</li>
-              <li data-family="华文琥珀" style="font-family: 华文琥珀">
-                华文琥珀
-              </li>
-              <li data-family="华文楷体" style="font-family: 华文楷体">
-                华文楷体
-              </li>
-              <li data-family="华文隶书" style="font-family: 华文隶书">
-                华文隶书
-              </li>
-              <li data-family="华文新魏" style="font-family: 华文新魏">
-                华文新魏
-              </li>
-              <li data-family="华文行楷" style="font-family: 华文行楷">
-                华文行楷
-              </li>
-              <li data-family="华文中宋" style="font-family: 华文中宋">
-                华文中宋
-              </li>
-              <li data-family="华文彩云" style="font-family: 华文彩云">
-                华文彩云
-              </li>
-              <li data-family="Arial" style="font-family: Arial">Arial</li>
-              <li data-family="Segoe UI" style="font-family: Segoe UI">
-                Segoe UI
-              </li>
-              <li data-family="Ink Free" style="font-family: Ink Free">
-                Ink Free
-              </li>
-              <li data-family="Fantasy" style="font-family: Fantasy">
-                Fantasy
-              </li>
-            </ul>
+          <div class="options w-[120px] !p-0">
+            <el-scrollbar height="500px">
+              <ul class="p-[10px]">
+                <li
+                  data-family="Microsoft YaHei"
+                  style="font-family: Microsoft YaHei"
+                >
+                  微软雅黑
+                </li>
+                <li data-family="宋体" style="font-family: 宋体">宋体</li>
+                <li data-family="黑体" style="font-family: 黑体">黑体</li>
+                <li data-family="仿宋" style="font-family: 仿宋">仿宋</li>
+                <li data-family="楷体" style="font-family: 楷体">楷体</li>
+                <li data-family="等线" style="font-family: 等线">等线</li>
+                <li data-family="华文琥珀" style="font-family: 华文琥珀">
+                  华文琥珀
+                </li>
+                <li data-family="华文楷体" style="font-family: 华文楷体">
+                  华文楷体
+                </li>
+                <li data-family="华文隶书" style="font-family: 华文隶书">
+                  华文隶书
+                </li>
+                <li data-family="华文新魏" style="font-family: 华文新魏">
+                  华文新魏
+                </li>
+                <li data-family="华文行楷" style="font-family: 华文行楷">
+                  华文行楷
+                </li>
+                <li data-family="华文中宋" style="font-family: 华文中宋">
+                  华文中宋
+                </li>
+                <li data-family="华文彩云" style="font-family: 华文彩云">
+                  华文彩云
+                </li>
+                <li data-family="Arial" style="font-family: Arial">Arial</li>
+                <li data-family="Segoe UI" style="font-family: Segoe UI">
+                  Segoe UI
+                </li>
+                <li data-family="Ink Free" style="font-family: Ink Free">
+                  Ink Free
+                </li>
+                <li data-family="Fantasy" style="font-family: Fantasy">
+                  Fantasy
+                </li>
+              </ul>
+            </el-scrollbar>
           </div>
         </div>
         <div class="menu-item__size">
           <span class="select" title="字体">小四</span>
-          <div class="options">
-            <ul>
-              <li data-size="56">初号</li>
-              <li data-size="48">小初</li>
-              <li data-size="34">一号</li>
-              <li data-size="32">小一</li>
-              <li data-size="29">二号</li>
-              <li data-size="24">小二</li>
-              <li data-size="21">三号</li>
-              <li data-size="20">小三</li>
-              <li data-size="18">四号</li>
-              <li data-size="16">小四</li>
-              <li data-size="14">五号</li>
-              <li data-size="12">小五</li>
-              <li data-size="10">六号</li>
-              <li data-size="8">小六</li>
-              <li data-size="7">七号</li>
-              <li data-size="6">八号</li>
-            </ul>
+          <div class="options !p-0">
+            <el-scrollbar height="500px">
+              <ul class="p-[10px]">
+                <li data-size="56">初号</li>
+                <li data-size="48">小初</li>
+                <li data-size="34">一号</li>
+                <li data-size="32">小一</li>
+                <li data-size="29">二号</li>
+                <li data-size="24">小二</li>
+                <li data-size="21">三号</li>
+                <li data-size="20">小三</li>
+                <li data-size="18">四号</li>
+                <li data-size="16">小四</li>
+                <li data-size="14">五号</li>
+                <li data-size="12">小五</li>
+                <li data-size="10">六号</li>
+                <li data-size="8">小六</li>
+                <li data-size="7">七号</li>
+                <li data-size="6">八号</li>
+              </ul>
+            </el-scrollbar>
           </div>
         </div>
         <div class="menu-item__size-add">
@@ -128,6 +132,32 @@ window.addEventListener("message", event => {
           <i />
         </div>
         <div class="menu-item__italic">
+          <i />
+        </div>
+        <div class="menu-item__underline">
+          <i />
+          <span class="select" />
+          <div class="options">
+            <ul>
+              <li data-decoration-style="solid">
+                <i />
+              </li>
+              <li data-decoration-style="double">
+                <i />
+              </li>
+              <li data-decoration-style="dashed">
+                <i />
+              </li>
+              <li data-decoration-style="dotted">
+                <i />
+              </li>
+              <li data-decoration-style="wavy">
+                <i />
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="menu-item__strikeout" title="删除线(Ctrl+Shift+X)">
           <i />
         </div>
         <div class="menu-item__color" title="字体颜色">
@@ -193,7 +223,7 @@ window.addEventListener("message", event => {
           <i title="控件" />
           <div class="options">
             <ul>
-              <li data-control="dataText">文本</li>
+              <li class="data-text" data-control="dataText">文本</li>
               <li class="data-table" data-control="table">表格</li>
             </ul>
           </div>
