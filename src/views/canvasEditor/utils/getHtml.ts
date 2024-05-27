@@ -33,7 +33,6 @@ import {
   isSameElementExceptValue
 } from "../editor/utils/element";
 import { deepClone, pickObject } from "../editor/utils/";
-import { any } from "vue-types";
 export const EDITOR_ELEMENT_ZIP_ATTR = [
   "type",
   "font",

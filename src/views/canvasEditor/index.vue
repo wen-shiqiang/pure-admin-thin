@@ -219,9 +219,12 @@ window.addEventListener("message", event => {
             accept=".png, .jpg, .jpeg, .svg, .gif"
           />
         </div>
-        <div class="menu-item__control">
-          <i title="控件" />
-          <div class="options">
+        <div class="menu-item__control !w-[88px]">
+          <el-button size="small" class="sure-btn" type="primary" plain>
+            设置数据源
+          </el-button>
+          <!-- <i title="控件" /> -->
+          <div class="options !left-[0]">
             <ul>
               <li class="data-text" data-control="dataText">文本</li>
               <li class="data-table" data-control="table">表格</li>
@@ -231,14 +234,10 @@ window.addEventListener("message", event => {
       </div>
       <div class="menu-divider" />
       <div class="menu-item">
-        <!-- <div class="menu-item__print" data-menu="print">
-          <i />
-        </div> -->
         <div class="menu-item__save !w-[52px] m-l-10" data-menu="save">
           <el-button size="small" class="sure-btn" type="primary">
             保 存
           </el-button>
-          <!-- <i /> -->
         </div>
       </div>
     </div>
