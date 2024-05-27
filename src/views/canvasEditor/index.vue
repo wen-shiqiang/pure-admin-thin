@@ -4,7 +4,8 @@ import {
   getDateFormat,
   getCoverByTempId,
   getCoverDatasource,
-  addTextDialog
+  addTextDialog,
+  showEdit
 } from "./utils/index";
 import addText from "./components/addText.vue";
 import { setTempId, saveAdd } from "./utils/canvasEditor";
@@ -62,6 +63,12 @@ window.addEventListener("message", event => {
                 <li data-family="仿宋" style="font-family: 仿宋">仿宋</li>
                 <li data-family="楷体" style="font-family: 楷体">楷体</li>
                 <li data-family="等线" style="font-family: 等线">等线</li>
+                <li
+                  data-family="方正小标宋GBK"
+                  style="font-family: 方正小标宋GBK"
+                >
+                  方正小标宋GBK
+                </li>
                 <li data-family="华文琥珀" style="font-family: 华文琥珀">
                   华文琥珀
                 </li>
@@ -231,17 +238,22 @@ window.addEventListener("message", event => {
             </ul>
           </div>
         </div>
+        <div class="menu-item__reset !w-[72px] !ml-[5px]" data-menu="reset">
+          <el-button size="small" class="sure-btn" type="primary" plain>
+            恢复默认
+          </el-button>
+        </div>
       </div>
       <div class="menu-divider" />
       <div class="menu-item">
-        <div class="menu-item__save !w-[52px] m-l-10" data-menu="save">
+        <div class="menu-item__save !w-[52px]" data-menu="save">
           <el-button size="small" class="sure-btn" type="primary">
             保 存
           </el-button>
         </div>
       </div>
     </div>
-    <div class="editor" />
+    <div v-if="showEdit" class="editor" />
     <div class="footer" editor-component="footer">
       <div />
       <div>

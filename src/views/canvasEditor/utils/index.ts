@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import { http } from "@/utils/http";
 import {
   addTextDialogsubmit,
@@ -8,7 +8,6 @@ import {
   getisDataSourceTable,
   getelementListItem
 } from "./canvasEditor";
-import { useRoute } from "vue-router";
 export const addTextDialog: any = ref({
   type: "",
   show: false,
@@ -21,6 +20,7 @@ export const addTextDialog: any = ref({
   submit: () => {}
 });
 const coverDatasource = ref([]);
+export const showEdit = ref(true);
 const textDatasource = ref([]);
 const tableDatasource = ref([]);
 // 获取路由参数id
@@ -90,7 +90,7 @@ export const getCoverDatasource = async () => {
     });
   }
 };
-export const getCoverByTempId = async (tempId = "") => {
+export const getCoverByTempId = async (tempId = "", num = 0) => {
   const params = { tempId };
   const res: any = await http.request("get", "/templet/v1/getCoverByTempId", {
     params
@@ -104,8 +104,18 @@ export const getCoverByTempId = async (tempId = "") => {
       unobj.rowFlex = placeSource[0].rowFlex;
     }
     placeSource.unshift(unobj);
-    init(placeSource);
     setcoverByTemp(res.result);
+    if (num) {
+      showEdit.value = false;
+      setTimeout(() => {
+        showEdit.value = true;
+        nextTick(() => {
+          init(placeSource);
+        });
+      }, 0);
+      return;
+    }
+    init(placeSource);
   }
 };
 export const getDateFormat = async () => {

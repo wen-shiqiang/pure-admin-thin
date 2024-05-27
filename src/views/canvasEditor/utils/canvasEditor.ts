@@ -10,7 +10,7 @@ import Editor, {
   // } from "wsq-canvas-editor";
 } from "../editor/index";
 import { getHTMLRewrite } from "./getHtml";
-import { dataText, dataTable } from "./index";
+import { dataText, dataTable, getCoverByTempId } from "./index";
 let instance: any = ref(null);
 const editorOptions: any = {
   margins: [100, 120, 100, 120],
@@ -39,7 +39,7 @@ const editorOptions: any = {
 };
 export const isDataSourceTable = ref(false);
 export const isTable = ref(false);
-export const tempId = ref(null);
+export const tempId: any = ref(null);
 export const elementListItem = ref({});
 const coverByTemp: any = ref({});
 export const setcoverByTemp = (data = {}) => {
@@ -58,6 +58,23 @@ export const saveAdd = async (num = 0) => {
   const html = getHTMLRewrite(instance)?.main || "";
   const value = instance.command.getValue()?.data?.main || "";
   saveAddOrUpdateCover({ html, value, num });
+};
+export const reset = async () => {
+  console.log("reset");
+  initDateFormat();
+};
+export const initDateFormat = async () => {
+  console.log(tempId.value);
+  const params = { tempId: tempId.value };
+  const res: any = await http.request("get", "/templet/v1/initDateFormat", {
+    params
+  });
+  if (res.status === 200) {
+    ElMessage.success("操作成功");
+    getCoverByTempId(tempId.value, 1);
+    return;
+  }
+  ElMessage.error(res.message || "保存失败");
 };
 export const saveAddOrUpdateCover = async (data: any = {}) => {
   const paramsData: any = {
@@ -557,6 +574,11 @@ export const init = async (data = []) => {
   saveDom.title = `保存`;
   saveDom.onclick = async () => {
     saveAdd();
+  };
+  const resetDom = document.querySelector<HTMLDivElement>(".menu-item__reset");
+  resetDom.title = `恢复默认`;
+  resetDom.onclick = async () => {
+    reset();
   };
   document.querySelector<HTMLDivElement>(".page-scale-percentage")!.onclick =
     () => {
