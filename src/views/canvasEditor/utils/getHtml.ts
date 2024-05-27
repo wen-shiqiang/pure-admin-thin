@@ -27,7 +27,7 @@ import {
   getIsBlockElement,
   convertRowFlexToTextAlign,
   convertRowFlexToJustifyContent,
-  convertElementToDom,
+  // convertElementToDom,
   splitListElement,
   groupElementListByRowFlex,
   isSameElementExceptValue
@@ -310,12 +310,53 @@ export function zipElementList(payload: IElement[]): IElement[] {
   }
   return zipElementListData;
 }
-
+export function convertElementToDom(
+  element: IElement,
+  options: DeepRequired<IEditorOption>
+): HTMLElement {
+  console.log("🚀  file: getHtml.ts:318  element:", element);
+  let tagName: keyof HTMLElementTagNameMap = "span";
+  if (element.type === ElementType.SUPERSCRIPT) {
+    tagName = "sup";
+  } else if (element.type === ElementType.SUBSCRIPT) {
+    tagName = "sub";
+  }
+  const dom = document.createElement(tagName);
+  dom.style.fontFamily = element.font || options.defaultFont;
+  if (element.rowFlex) {
+    dom.style.textAlign = convertRowFlexToTextAlign(element.rowFlex);
+  }
+  if (element.color) {
+    dom.style.color = element.color;
+  }
+  if (element.bold) {
+    dom.style.fontWeight = "600";
+  }
+  if (element.italic) {
+    dom.style.fontStyle = "italic";
+  }
+  dom.style.fontSize = `${element.size || options.defaultSize}px`;
+  if (element.highlight) {
+    dom.style.backgroundColor = element.highlight;
+  }
+  if (element.underline) {
+    dom.style.textDecoration = "underline";
+  }
+  if (element.strikeout) {
+    dom.style.textDecoration += " line-through";
+  }
+  if (element?.positionList?.lineHeight) {
+    dom.style.lineHeight = `${element.positionList.lineHeight}px`;
+  }
+  dom.innerText = element.value.replace(new RegExp(`${ZERO}`, "g"), "\n");
+  return dom;
+}
 export function createDomFromElementList(
   elementList: IElement[],
   options: DeepRequired<IEditorOption>
 ) {
   function buildDom(payload: IElement[]): HTMLDivElement {
+    console.log("🚀  file: getHtml.ts:359  buildDom  payload:", payload);
     const clipboardDom = document.createElement("div");
     for (let e = 0; e < payload.length; e++) {
       const element: any = payload[e];
@@ -325,6 +366,8 @@ export function createDomFromElementList(
         tableDom.setAttribute("cellSpacing", "0");
         tableDom.setAttribute("cellpadding", "0");
         tableDom.setAttribute("border", "0");
+        tableDom.setAttribute("id", element.id);
+        tableDom.classList.add("editor-canvas-table");
         const borderStyle = "1px solid #000000";
         // 表格边框
         if (!element.borderType || element.borderType === TableBorder.ALL) {
@@ -372,6 +415,10 @@ export function createDomFromElementList(
               tdDom.style.borderLeft = borderStyle;
             }
             const childDom = createDomFromElementList(td.value!, options);
+            console.log(
+              "🚀  file: getHtml.ts:419  buildDom  childDom:",
+              childDom
+            );
             tdDom.innerHTML = childDom.innerHTML;
             if (td.backgroundColor) {
               tdDom.style.backgroundColor = td.backgroundColor;
@@ -477,7 +524,7 @@ export function createDomFromElementList(
           }
           controlElement.style.fontSize = `${value0.size || options.defaultSize}px`;
           if (value0.highlight) {
-            controlElement.style.backgroundColor = element.highlight;
+            controlElement.style.backgroundColor = value0.highlight;
           }
           if (value0.underline) {
             controlElement.style.textDecoration = "underline";
@@ -583,9 +630,6 @@ export function getHTMLRewrite(instance: any) {
   const htmlDom = document.createElement("div");
   for (let e = 0; e < children.length; e++) {
     const rowIndex = children[e].getAttribute("rowIndex");
-
-    console.dir(children[e]);
-
     const textAlign = children[e]?.style.textAlign || "";
     if (rowIndex !== null) {
       if (!rowIndexToDiv[rowIndex]) {
@@ -644,6 +688,7 @@ export function getHTMLRewrite(instance: any) {
       // } else {
       htmlDom.appendChild(children[e].cloneNode(true));
       // }
+      console.log(htmlDom.innerHTML);
     }
   }
   return {

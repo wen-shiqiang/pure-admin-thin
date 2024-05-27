@@ -613,6 +613,11 @@ export const init = async (data = []) => {
       menuDom.classList.add("disable");
       tableDom.classList.add("disable");
       textDom.classList.remove("disable");
+      if (!positionContext.trIndex) {
+        textDom.classList.add("disable");
+      } else {
+        textDom.classList.remove("disable");
+      }
     } else {
       menuDom.classList.remove("disable");
       tableDom.classList.remove("disable");

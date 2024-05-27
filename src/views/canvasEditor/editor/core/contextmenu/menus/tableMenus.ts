@@ -2,8 +2,8 @@ import { INTERNAL_CONTEXT_MENU_KEY } from '../../../dataset/constant/ContextMenu
 import { VerticalAlign } from '../../../dataset/enum/VerticalAlign'
 import {
   TableBorder,
-  TdBorder,
-  TdSlash
+  // TdBorder,
+  // TdSlash
 } from '../../../dataset/enum/table/Table'
 import { IRegisterContextMenu } from '../../../interface/contextmenu/ContextMenu'
 import { Command } from '../../command/Command'
@@ -13,13 +13,13 @@ const {
     BORDER_ALL,
     BORDER_EMPTY,
     BORDER_EXTERNAL,
-    BORDER_TD,
-    BORDER_TD_TOP,
-    BORDER_TD_LEFT,
-    BORDER_TD_BOTTOM,
-    BORDER_TD_RIGHT,
-    BORDER_TD_BACK,
-    BORDER_TD_FORWARD,
+    // BORDER_TD,
+    // BORDER_TD_TOP,
+    // BORDER_TD_LEFT,
+    // BORDER_TD_BOTTOM,
+    // BORDER_TD_RIGHT,
+    // BORDER_TD_BACK,
+    // BORDER_TD_FORWARD,
     VERTICAL_ALIGN,
     VERTICAL_ALIGN_TOP,
     VERTICAL_ALIGN_MIDDLE,
@@ -77,68 +77,68 @@ export const tableMenus: IRegisterContextMenu[] = [
           command.executeTableBorderType(TableBorder.EXTERNAL)
         }
       },
-      {
-        key: BORDER_TD,
-        i18nPath: 'contextmenu.table.borderTd',
-        icon: 'border-td',
-        when: () => true,
-        childMenus: [
-          {
-            key: BORDER_TD_TOP,
-            i18nPath: 'contextmenu.table.borderTdTop',
-            icon: 'border-td-top',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdBorderType(TdBorder.TOP)
-            }
-          },
-          {
-            key: BORDER_TD_RIGHT,
-            i18nPath: 'contextmenu.table.borderTdRight',
-            icon: 'border-td-right',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdBorderType(TdBorder.RIGHT)
-            }
-          },
-          {
-            key: BORDER_TD_BOTTOM,
-            i18nPath: 'contextmenu.table.borderTdBottom',
-            icon: 'border-td-bottom',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdBorderType(TdBorder.BOTTOM)
-            }
-          },
-          {
-            key: BORDER_TD_LEFT,
-            i18nPath: 'contextmenu.table.borderTdLeft',
-            icon: 'border-td-left',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdBorderType(TdBorder.LEFT)
-            }
-          },
-          {
-            key: BORDER_TD_FORWARD,
-            i18nPath: 'contextmenu.table.borderTdForward',
-            icon: 'border-td-forward',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdSlashType(TdSlash.FORWARD)
-            }
-          },
-          {
-            key: BORDER_TD_BACK,
-            i18nPath: 'contextmenu.table.borderTdBack',
-            icon: 'border-td-back',
-            when: () => true,
-            callback: (command: Command) => {
-              command.executeTableTdSlashType(TdSlash.BACK)
-            }
-          }
-        ]
-      }
+      // {
+      //   key: BORDER_TD,
+      //   i18nPath: 'contextmenu.table.borderTd',
+      //   icon: 'border-td',
+      //   when: () => true,
+      //   childMenus: [
+      //     {
+      //       key: BORDER_TD_TOP,
+      //       i18nPath: 'contextmenu.table.borderTdTop',
+      //       icon: 'border-td-top',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdBorderType(TdBorder.TOP)
+      //       }
+      //     },
+      //     {
+      //       key: BORDER_TD_RIGHT,
+      //       i18nPath: 'contextmenu.table.borderTdRight',
+      //       icon: 'border-td-right',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdBorderType(TdBorder.RIGHT)
+      //       }
+      //     },
+      //     {
+      //       key: BORDER_TD_BOTTOM,
+      //       i18nPath: 'contextmenu.table.borderTdBottom',
+      //       icon: 'border-td-bottom',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdBorderType(TdBorder.BOTTOM)
+      //       }
+      //     },
+      //     {
+      //       key: BORDER_TD_LEFT,
+      //       i18nPath: 'contextmenu.table.borderTdLeft',
+      //       icon: 'border-td-left',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdBorderType(TdBorder.LEFT)
+      //       }
+      //     },
+      //     {
+      //       key: BORDER_TD_FORWARD,
+      //       i18nPath: 'contextmenu.table.borderTdForward',
+      //       icon: 'border-td-forward',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdSlashType(TdSlash.FORWARD)
+      //       }
+      //     },
+      //     {
+      //       key: BORDER_TD_BACK,
+      //       i18nPath: 'contextmenu.table.borderTdBack',
+      //       icon: 'border-td-back',
+      //       when: () => true,
+      //       callback: (command: Command) => {
+      //         command.executeTableTdSlashType(TdSlash.BACK)
+      //       }
+      //     }
+      //   ]
+      // }
     ]
   },
   {

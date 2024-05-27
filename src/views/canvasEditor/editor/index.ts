@@ -1,4 +1,3 @@
-// 0.9.79
 import './assets/css/index.css'
 import { IEditorData, IEditorOption, IEditorResult } from './interface/Editor'
 import { IElement } from './interface/Element'

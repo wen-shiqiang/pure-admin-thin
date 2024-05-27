@@ -18,7 +18,7 @@ import { RangeManager } from '../range/RangeManager'
 import { controlMenus } from './menus/controlMenus'
 import { globalMenus } from './menus/globalMenus'
 import { hyperlinkMenus } from './menus/hyperlinkMenus'
-import { imageMenus } from './menus/imageMenus'
+// import { imageMenus } from './menus/imageMenus'
 import { tableMenus } from './menus/tableMenus'
 
 interface IRenderPayload {
@@ -54,7 +54,7 @@ export class ContextMenu {
     this.contextMenuList = [
       ...globalMenus,
       ...tableMenus,
-      ...imageMenus,
+      // ...imageMenus,
       ...controlMenus,
       ...hyperlinkMenus
     ]

@@ -123,6 +123,12 @@ export interface IImageElement {
 export interface IBlockElement {
   block?: IBlock
 }
+export interface Other {
+  id?: string | number,
+  dataSource?: string | number,
+  positionList?: string | number,
+  rowIndex?: string | number,
+}
 
 export type IElement = IElementBasic &
   IElementStyle &
@@ -139,7 +145,8 @@ export type IElement = IElementBasic &
   IImageElement &
   IBlockElement &
   ITitleElement &
-  IListElement
+  IListElement &
+  Other
 
 export interface IElementMetrics {
   width: number
