@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { http } from "@/utils/http";
 import Editor, {
   ElementType,
@@ -79,7 +79,16 @@ export const saveAdd = async (num = 0) => {
   saveAddOrUpdateCover({ html, value, num });
 };
 export const reset = async () => {
-  initDateFormat();
+  ElMessageBox.confirm("确认要恢复成默认封面吗?", {
+    confirmButtonText: "确认",
+    cancelButtonText: "取消",
+    showClose: false,
+    type: "warning"
+  })
+    .then(() => {
+      initDateFormat();
+    })
+    .catch(() => {});
 };
 export const initDateFormat = async () => {
   const params = { tempId: tempId.value };
@@ -116,8 +125,6 @@ export const addTableDialogsubmit = async (
   data: any = {},
   addTextDialog: any
 ) => {
-  console.log(data);
-  console.log(addTextDialog.value.list);
   const tableWidth = data?.tableWidth || 554;
   const columnsWidth = Math.round(tableWidth / data.tableDataSource.length);
   const tableDataSource1 = data.tableDataSource.map(item => item[1]);
@@ -128,7 +135,6 @@ export const addTableDialogsubmit = async (
   const list1 = list.datasourceFieldList.filter(item =>
     tableDataSource1.includes(item.cdfField)
   );
-  console.log(list1);
   const colgroup = [];
   const tdList = [];
   const tdList1 = [];
@@ -569,10 +575,6 @@ export const init = async (data = []) => {
   instance.listener.rangeStyleChange = async payload => {
     const position = await instance.draw.getPosition();
     const { draw, positionContext } = position;
-    console.log(
-      "🚀  file: canvasEditor.ts:573  init  positionContext:",
-      positionContext
-    );
     const { elementList } = draw;
 
     const menuDom = document.querySelector(`.menu-item__image`);
