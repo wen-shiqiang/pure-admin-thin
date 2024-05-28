@@ -20,7 +20,12 @@ import {
 } from "./utils/index";
 import arroDown from "@iconify-icons/ep/arrow-down";
 import addText from "./components/addText.vue";
-import { setTempId, saveAdd } from "./utils/canvasEditor";
+import {
+  setTempId,
+  saveAdd,
+  textDisabled,
+  tableDisabled
+} from "./utils/canvasEditor";
 import { useRoute } from "vue-router";
 const route = useRoute();
 const query = ref(route.query);
@@ -166,19 +171,6 @@ const handleCommand = (command: string) => {
               :value="item.value"
             />
           </el-select>
-          <!-- <i />
-          <span class="select" title="切换标题">正文</span>
-          <div class="options">
-            <ul>
-              <li style="font-size: 16px">正文</li>
-              <li data-level="first" style="font-size: 26px">标题1</li>
-              <li data-level="second" style="font-size: 24px">标题2</li>
-              <li data-level="third" style="font-size: 22px">标题3</li>
-              <li data-level="fourth" style="font-size: 20px">标题4</li>
-              <li data-level="fifth" style="font-size: 18px">标题5</li>
-              <li data-level="sixth" style="font-size: 16px">标题6</li>
-            </ul>
-          </div> -->
         </div>
         <div class="menu-item__left">
           <i />
@@ -217,7 +209,6 @@ const handleCommand = (command: string) => {
             :popper-class="'dropdown__popper-data'"
             @command="handleCommand"
           >
-            <!-- <el-button size="small" type="primary"> 设置数据源 </el-button> -->
             <el-button size="small" class="sure-btn" text type="primary">
               设置数据源<IconifyIconOffline class="ml-[2px]" :icon="arroDown" />
             </el-button>
@@ -227,12 +218,14 @@ const handleCommand = (command: string) => {
                   class="data-text"
                   command="text"
                   data-control="dataText"
+                  :disabled="textDisabled"
                   >文本</el-dropdown-item
                 >
                 <el-dropdown-item
                   class="data-table"
                   command="table"
                   data-control="table"
+                  :disabled="tableDisabled"
                 >
                   表格
                 </el-dropdown-item>

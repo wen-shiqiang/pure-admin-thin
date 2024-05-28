@@ -44,6 +44,8 @@ const editorOptions: any = {
 };
 export const isDataSourceTable = ref(false);
 export const isTable = ref(false);
+export const textDisabled = ref(false);
+export const tableDisabled = ref(false);
 export const tempId: any = ref(null);
 export const elementListItem = ref({});
 const coverByTemp: any = ref({});
@@ -109,9 +111,6 @@ export const saveAddOrUpdateCover = async (data: any = {}) => {
     return;
   }
   ElMessage.error(res.message || "保存失败");
-};
-export const getContextMenuList = async instance => {
-  const contextMenuList = await instance.register.getContextMenuList();
 };
 export const addTableDialogsubmit = async (
   data: any = {},
@@ -187,7 +186,6 @@ export const addTableDialogsubmit = async (
       ]
     }
   ]);
-  getContextMenuList(instance);
   addTextDialog.value.show = false;
 };
 
@@ -571,30 +569,45 @@ export const init = async (data = []) => {
   instance.listener.rangeStyleChange = async payload => {
     const position = await instance.draw.getPosition();
     const { draw, positionContext } = position;
+    console.log("🚀  file: canvasEditor.ts:573  init  draw:", draw);
+    console.log(
+      "🚀  file: canvasEditor.ts:573  init  positionContext:",
+      positionContext
+    );
     const { elementList } = draw;
+
+    console.log(
+      "🚀  file: canvasEditor.ts:578  init  elementList:",
+      elementList
+    );
+
     const menuDom = document.querySelector(`.menu-item__image`);
-    const tableDom = document.querySelector(`.data-table`);
-    const textDom = document.querySelector(`.data-text`);
+    const menutableDom = document.querySelector(`.menu-item__table`);
     if (positionContext.isTable) {
       menuDom.classList.add("disable");
-      tableDom.classList.add("disable");
-      textDom.classList.remove("disable");
+      tableDisabled.value = true;
+      menutableDom.classList.add("disable");
+      textDisabled.value = false;
       if (!positionContext.trIndex) {
-        textDom.classList.add("disable");
-      } else {
-        textDom.classList.remove("disable");
+        textDisabled.value = true;
       }
+      console.log(
+        "elementList[positionContext.index]",
+        elementList[positionContext.index]
+      );
     } else {
+      menutableDom.classList.remove("disable");
       menuDom.classList.remove("disable");
-      tableDom.classList.remove("disable");
-      textDom.classList.remove("disable");
+      tableDisabled.value = false;
+      textDisabled.value = false;
       if (
         positionContext.isControl &&
         elementList[positionContext.index]?.value !== "}"
       ) {
         menuDom.classList.add("disable");
-        tableDom.classList.add("disable");
-        textDom.classList.add("disable");
+        tableDisabled.value = true;
+        textDisabled.value = true;
+        menutableDom.classList.add("disable");
       }
     }
     if (positionContext.index) {
