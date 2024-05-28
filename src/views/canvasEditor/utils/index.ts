@@ -123,15 +123,10 @@ export const dataText = () => {
   if (getisDataSourceTable()) {
     addTextDialog.value.type = "tableText";
     addTextDialog.value.list = dataSourceTableDialog();
-    console.log("addTextDialog.value.list", addTextDialog.value.list);
   } else {
     addTextDialog.value.list = textDatasource.value;
   }
   addTextDialog.value.show = true;
-  console.log(
-    "🚀  file: index.vue:467  dataText   this.textDatasource:",
-    addTextDialog.value
-  );
 };
 export const dataSourceTableDialog = () => {
   const list =
@@ -147,10 +142,9 @@ export const dataTable = () => {
   addTextDialog.value.submit = addTableDialogsubmit;
   addTextDialog.value.title = "表格控件";
   addTextDialog.value.type = "table";
-  console.log(
-    "🚀  file: index.vue:467  dataTable   this.tableDatasource:",
-    tableDatasource.value
-  );
+  tableDatasource.value.forEach(item => {
+    item.disabled = false;
+  });
   addTextDialog.value.list = tableDatasource.value;
   addTextDialog.value.show = true;
 };
@@ -175,6 +169,7 @@ export const getCoverDatasource = async () => {
       return ~~item.dsGroup !== 3;
     });
     tableDatasource.value = res.result.filter(item => {
+      item.disabled = false;
       return ~~item.dsGroup === 3;
     });
   }

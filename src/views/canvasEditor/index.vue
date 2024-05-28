@@ -33,19 +33,16 @@ onMounted(() => {
   getCoverByTempId(id);
 });
 window.addEventListener("message", event => {
-  console.log("Received message:", event.data);
   if (event.data === "save") {
     saveAdd(1);
   }
 });
 const handleCommand = (command: string) => {
-  console.log(command);
   switch (command) {
     case "table":
       dataTable();
       break;
     case "text":
-      console.log("text");
       dataText();
       break;
     default:

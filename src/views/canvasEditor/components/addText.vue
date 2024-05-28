@@ -5,6 +5,7 @@ console.log(addTextDialog.value);
 let dialog = ref(addTextDialog.value);
 const ruleForm = reactive({
   dataSource: "",
+  tableDataSource: [],
   dsType: null,
   tableColumnsNumber: 1,
   formatType: "",
@@ -18,6 +19,7 @@ watch(
     console.log("🚀  file: addText.vue:21  query:", val);
     if (val) {
       ruleForm.dataSource = "";
+      ruleForm.tableDataSource = [];
       ruleForm.dsType = null;
       ruleForm.tableColumnsNumber = 1;
       ruleForm.formatType = "";
@@ -35,6 +37,9 @@ const rules = reactive({
   dataSource: [
     { required: true, message: "请选择数据源", trigger: ["blur", "change"] }
   ],
+  tableDataSource: [
+    { required: true, message: "请选择数据源", trigger: ["blur", "change"] }
+  ],
   formatType: [
     { required: true, message: "请选择格式", trigger: ["blur", "change"] }
   ],
@@ -48,6 +53,24 @@ const handleChange = value => {
   ruleForm.dsName = nodes[0].data.dsName || "";
   ruleForm.cdfName = nodes[0].data.cdfName || "";
   ruleForm.dsType = nodes[0].data.dsType || null;
+};
+const handleTableChange = value => {
+  if (!value.length) {
+    dialog.value.list.forEach(item => {
+      item.disabled = false;
+    });
+    return;
+  }
+  if (value[0]) {
+    dialog.value.list.forEach(item => {
+      console.log(item.value, value[0]);
+      if (item.value === value[0][0]) {
+        item.disabled = false;
+      } else {
+        item.disabled = true;
+      }
+    });
+  }
 };
 const confirmEditPlate = async formEl => {
   if (!formEl) return;
@@ -108,7 +131,28 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
             />
           </el-form-item>
           <el-form-item
-            v-if="dialog.type === 'table' || dialog.type === 'tableText'"
+            v-if="dialog.type === 'table'"
+            label="数据源："
+            prop="tableDataSource"
+          >
+            <el-cascader
+              ref="cascaderDataSource"
+              v-model="ruleForm.tableDataSource"
+              class="w-full"
+              :options="dialog.list"
+              :props="{
+                multiple: true,
+                value: 'value',
+                label: 'label',
+                children: 'datasourceFieldList'
+              }"
+              filterable
+              popper-class="cascader-pop"
+              @change="handleTableChange"
+            />
+          </el-form-item>
+          <el-form-item
+            v-if="dialog.type === 'tableText'"
             label="数据源："
             prop="dataSource"
           >
@@ -125,7 +169,7 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
               />
             </el-select>
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             v-if="dialog.type === 'table'"
             label="表格列数："
             prop="tableColumnsNumber"
@@ -136,7 +180,7 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
               :min="1"
               :max="10"
             />
-          </el-form-item>
+          </el-form-item> -->
 
           <el-form-item
             v-if="ruleForm.dsType == 5"
