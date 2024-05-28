@@ -569,17 +569,11 @@ export const init = async (data = []) => {
   instance.listener.rangeStyleChange = async payload => {
     const position = await instance.draw.getPosition();
     const { draw, positionContext } = position;
-    console.log("🚀  file: canvasEditor.ts:573  init  draw:", draw);
     console.log(
       "🚀  file: canvasEditor.ts:573  init  positionContext:",
       positionContext
     );
     const { elementList } = draw;
-
-    console.log(
-      "🚀  file: canvasEditor.ts:578  init  elementList:",
-      elementList
-    );
 
     const menuDom = document.querySelector(`.menu-item__image`);
     const menutableDom = document.querySelector(`.menu-item__table`);
@@ -588,13 +582,12 @@ export const init = async (data = []) => {
       tableDisabled.value = true;
       menutableDom.classList.add("disable");
       textDisabled.value = false;
-      if (!positionContext.trIndex) {
+      if (
+        !positionContext.trIndex &&
+        elementList[positionContext.index].value
+      ) {
         textDisabled.value = true;
       }
-      console.log(
-        "elementList[positionContext.index]",
-        elementList[positionContext.index]
-      );
     } else {
       menutableDom.classList.remove("disable");
       menuDom.classList.remove("disable");
@@ -615,9 +608,7 @@ export const init = async (data = []) => {
         // 表格选中
         isTable.value = elementList.isTable;
         elementListItem.value = elementList[positionContext.index];
-        if (elementList[positionContext.index].value) {
-          isDataSourceTable.value = true;
-        }
+        isDataSourceTable.value = !!elementList[positionContext.index].value;
       } else {
         isDataSourceTable.value = false;
         isTable.value = false;

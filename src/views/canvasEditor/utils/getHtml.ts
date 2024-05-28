@@ -391,7 +391,7 @@ export function createDomFromElementList(
         for (let t = 0; t < trList.length; t++) {
           const trDom = document.createElement("tr");
           const tr = trList[t];
-          trDom.style.height = `${tr.height}px`;
+          trDom.style.height = `${tr.minHeight || tr.height}px`;
           for (let d = 0; d < tr.tdList.length; d++) {
             const tdDom = document.createElement("td");
             if (!element.borderType || element.borderType === TableBorder.ALL) {
