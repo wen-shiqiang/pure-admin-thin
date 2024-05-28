@@ -378,14 +378,14 @@ export function createDomFromElementList(
         }
         tableDom.style.width = `${element.width}px`;
         // colgroup
-        const colgroupDom = document.createElement("colgroup");
-        for (let c = 0; c < element.colgroup!.length; c++) {
-          const colgroup = element.colgroup![c];
-          const colDom = document.createElement("col");
-          colDom.setAttribute("width", `${colgroup.width}`);
-          colgroupDom.append(colDom);
-        }
-        tableDom.append(colgroupDom);
+        // const colgroupDom = document.createElement("colgroup");
+        // for (let c = 0; c < element.colgroup!.length; c++) {
+        //   const colgroup = element.colgroup![c];
+        //   const colDom = document.createElement("col");
+        //   colDom.setAttribute("width", `${colgroup.width}`);
+        //   colgroupDom.append(colDom);
+        // }
+        // tableDom.append(colgroupDom);
         // tr
         const trList = element.trList!;
         for (let t = 0; t < trList.length; t++) {
