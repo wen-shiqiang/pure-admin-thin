@@ -10,7 +10,12 @@ import Editor, {
   // } from "wsq-canvas-editor";
 } from "../editor/index";
 import { getHTMLRewrite } from "./getHtml";
-import { dataText, dataTable, getCoverByTempId } from "./index";
+import {
+  getCoverByTempId,
+  setFontValue,
+  setFontSizeValue,
+  setTitleValue
+} from "./index";
 let instance: any = ref(null);
 const editorOptions: any = {
   margins: [100, 120, 100, 120],
@@ -53,6 +58,18 @@ export const getelementListItem = () => {
 };
 export const getisDataSourceTable = () => {
   return isDataSourceTable.value;
+};
+// 设置字体
+export const setExecuteFont = (val = "") => {
+  instance.command.executeFont(val || "Microsoft YaHei");
+};
+// 设置字体
+export const setExecuteSize = (val = null) => {
+  instance.command.executeSize(val || 16);
+};
+// 设置标题
+export const setExecuteTitle = (val = null) => {
+  instance.command.executeTitle(val || null);
 };
 export const saveAdd = async (num = 0) => {
   const html = getHTMLRewrite(instance)?.main || "";
@@ -278,31 +295,6 @@ export const init = async (data = []) => {
     };
 
   // 3. | 字体 | 字体变大 | 字体变小 | 加粗 | 斜体 | 下划线 | 删除线 | 上标 | 下标 | 字体颜色 | 背景色 |
-  const fontDom = document.querySelector<HTMLDivElement>(".menu-item__font")!;
-  const fontSelectDom = fontDom.querySelector<HTMLDivElement>(".select")!;
-  const fontOptionDom = fontDom.querySelector<HTMLDivElement>(".options")!;
-  fontDom.onclick = () => {
-    console.log("font");
-    fontOptionDom.classList.toggle("visible");
-  };
-  fontOptionDom.onclick = function (evt) {
-    const li = evt.target as HTMLLIElement;
-    instance.command.executeFont(li.dataset.family!);
-  };
-
-  const sizeSetDom =
-    document.querySelector<HTMLDivElement>(".menu-item__size")!;
-  const sizeSelectDom = sizeSetDom.querySelector<HTMLDivElement>(".select")!;
-  const sizeOptionDom = sizeSetDom.querySelector<HTMLDivElement>(".options")!;
-  sizeSetDom.title = `设置字号`;
-  sizeSetDom.onclick = () => {
-    console.log("size");
-    sizeOptionDom.classList.toggle("visible");
-  };
-  sizeOptionDom.onclick = function (evt) {
-    const li = evt.target as HTMLLIElement;
-    instance.command.executeSize(Number(li.dataset.size!));
-  };
 
   const sizeAddDom = document.querySelector<HTMLDivElement>(
     ".menu-item__size-add"
@@ -394,22 +386,6 @@ export const init = async (data = []) => {
     highlightControlDom?.click();
   };
 
-  const titleDom = document.querySelector<HTMLDivElement>(".menu-item__title")!;
-  const titleSelectDom = titleDom.querySelector<HTMLDivElement>(".select")!;
-  const titleOptionDom = titleDom.querySelector<HTMLDivElement>(".options")!;
-  titleOptionDom.querySelectorAll("li").forEach((li, index) => {
-    li.title = `Ctrl+${isApple ? "Option" : "Alt"}+${index}`;
-  });
-
-  titleDom.onclick = () => {
-    console.log("title");
-    titleOptionDom.classList.toggle("visible");
-  };
-  titleOptionDom.onclick = evt => {
-    const li = evt.target as HTMLLIElement;
-    const level = <TitleLevel>li.dataset.level;
-    instance.command.executeTitle(level || null);
-  };
 
   const leftDom = document.querySelector<HTMLDivElement>(".menu-item__left")!;
   leftDom.title = `左对齐(${isApple ? "⌘" : "Ctrl"}+L)`;
@@ -536,40 +512,7 @@ export const init = async (data = []) => {
     };
   };
 
-  const controlDom = document.querySelector<HTMLDivElement>(
-    ".menu-item__control"
-  )!;
-  const controlOptionDom =
-    controlDom.querySelector<HTMLDivElement>(".options")!;
-  controlDom.onclick = () => {
-    console.log("control");
-    controlOptionDom.classList.toggle("visible");
-  };
-  controlOptionDom.onmousedown = evt => {
-    controlOptionDom.classList.toggle("visible");
-    const li = evt.target as HTMLLIElement;
-    const type = li.dataset.control;
-    switch (type) {
-      case "table":
-        dataTable();
-        break;
-      case "dataText":
-        console.log("dataText");
-        dataText();
-        break;
-      default:
-        break;
-    }
-  };
-
   // 5. | 搜索&替换 | 打印 |
-
-  // const printDom = document.querySelector(".menu-item__print");
-  // printDom.title = `打印(${isApple ? "⌘" : "Ctrl"}+P)`;
-  // printDom.onclick = () => {
-  //   console.log("print");
-  //   instance.command.executePrint();
-  // };
   const saveDom = document.querySelector<HTMLDivElement>(".menu-item__save");
   saveDom.title = `保存`;
   saveDom.onclick = async () => {
@@ -665,33 +608,10 @@ export const init = async (data = []) => {
         isDataSourceTable.value = false;
         isTable.value = false;
         elementListItem.value = {};
-        console.log("22222222222222222");
       }
     }
-    // 富文本
-    fontOptionDom
-      .querySelectorAll("li")
-      .forEach(li => li.classList.remove("active"));
-    const curFontDom = fontOptionDom.querySelector<HTMLLIElement>(
-      `[data-family='${payload.font}']`
-    );
-    if (curFontDom) {
-      fontSelectDom.innerText = curFontDom.innerText;
-      fontSelectDom.style.fontFamily = payload.font;
-      curFontDom.classList.add("active");
-    }
-    sizeOptionDom
-      .querySelectorAll("li")
-      .forEach(li => li.classList.remove("active"));
-    const curSizeDom = sizeOptionDom.querySelector<HTMLLIElement>(
-      `[data-size='${payload.size}']`
-    );
-    if (curSizeDom) {
-      sizeSelectDom.innerText = curSizeDom.innerText;
-      curSizeDom.classList.add("active");
-    } else {
-      sizeSelectDom.innerText = `${payload.size}`;
-    }
+    setFontValue(payload.font);
+    setFontSizeValue(payload.size);
     payload.bold
       ? boldDom.classList.add("active")
       : boldDom.classList.remove("active");
@@ -745,19 +665,7 @@ export const init = async (data = []) => {
       : painterDom.classList.remove("active");
 
     // 标题
-    titleOptionDom
-      .querySelectorAll("li")
-      .forEach(li => li.classList.remove("active"));
-    if (payload.level) {
-      const curTitleDom = titleOptionDom.querySelector<HTMLLIElement>(
-        `[data-level='${payload.level}']`
-      )!;
-      titleSelectDom.innerText = curTitleDom.innerText;
-      curTitleDom.classList.add("active");
-    } else {
-      titleSelectDom.innerText = "正文";
-      titleOptionDom.querySelector("li:first-child").classList.add("active");
-    }
+    setTitleValue(payload.level || "");
   };
 
   instance.listener.pageScaleChange = payload => {

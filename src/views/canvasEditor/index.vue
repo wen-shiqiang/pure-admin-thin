@@ -5,8 +5,20 @@ import {
   getCoverByTempId,
   getCoverDatasource,
   addTextDialog,
-  showEdit
+  showEdit,
+  dataTable,
+  dataText,
+  fontOptions,
+  fontValue,
+  changeFontValue,
+  fontSizeValue,
+  fontSizeOptions,
+  changeFontSizeValue,
+  titleValue,
+  titleValueOptions,
+  changeTitleValue
 } from "./utils/index";
+import arroDown from "@iconify-icons/ep/arrow-down";
 import addText from "./components/addText.vue";
 import { setTempId, saveAdd } from "./utils/canvasEditor";
 import { useRoute } from "vue-router";
@@ -26,6 +38,20 @@ window.addEventListener("message", event => {
     saveAdd(1);
   }
 });
+const handleCommand = (command: string) => {
+  console.log(command);
+  switch (command) {
+    case "table":
+      dataTable();
+      break;
+    case "text":
+      console.log("text");
+      dataText();
+      break;
+    default:
+      break;
+  }
+};
 </script>
 
 <template>
@@ -48,86 +74,34 @@ window.addEventListener("message", event => {
       <div class="menu-divider" />
       <div class="menu-item">
         <div class="menu-item__font">
-          <span class="select" title="字体">微软雅黑</span>
-          <div class="options w-[120px] !p-0">
-            <el-scrollbar height="500px">
-              <ul class="p-[10px]">
-                <li
-                  data-family="Microsoft YaHei"
-                  style="font-family: Microsoft YaHei"
-                >
-                  微软雅黑
-                </li>
-                <li data-family="宋体" style="font-family: 宋体">宋体</li>
-                <li data-family="黑体" style="font-family: 黑体">黑体</li>
-                <li data-family="仿宋" style="font-family: 仿宋">仿宋</li>
-                <li data-family="楷体" style="font-family: 楷体">楷体</li>
-                <li data-family="等线" style="font-family: 等线">等线</li>
-                <li
-                  data-family="方正小标宋GBK"
-                  style="font-family: 方正小标宋GBK"
-                >
-                  方正小标宋GBK
-                </li>
-                <li data-family="华文琥珀" style="font-family: 华文琥珀">
-                  华文琥珀
-                </li>
-                <li data-family="华文楷体" style="font-family: 华文楷体">
-                  华文楷体
-                </li>
-                <li data-family="华文隶书" style="font-family: 华文隶书">
-                  华文隶书
-                </li>
-                <li data-family="华文新魏" style="font-family: 华文新魏">
-                  华文新魏
-                </li>
-                <li data-family="华文行楷" style="font-family: 华文行楷">
-                  华文行楷
-                </li>
-                <li data-family="华文中宋" style="font-family: 华文中宋">
-                  华文中宋
-                </li>
-                <li data-family="华文彩云" style="font-family: 华文彩云">
-                  华文彩云
-                </li>
-                <li data-family="Arial" style="font-family: Arial">Arial</li>
-                <li data-family="Segoe UI" style="font-family: Segoe UI">
-                  Segoe UI
-                </li>
-                <li data-family="Ink Free" style="font-family: Ink Free">
-                  Ink Free
-                </li>
-                <li data-family="Fantasy" style="font-family: Fantasy">
-                  Fantasy
-                </li>
-              </ul>
-            </el-scrollbar>
-          </div>
+          <el-select
+            v-model="fontValue"
+            size="small"
+            placeholder="Select"
+            @change="changeFontValue"
+          >
+            <el-option
+              v-for="item in fontOptions"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
         </div>
         <div class="menu-item__size">
-          <span class="select" title="字体">小四</span>
-          <div class="options !p-0">
-            <el-scrollbar height="500px">
-              <ul class="p-[10px]">
-                <li data-size="56">初号</li>
-                <li data-size="48">小初</li>
-                <li data-size="34">一号</li>
-                <li data-size="32">小一</li>
-                <li data-size="29">二号</li>
-                <li data-size="24">小二</li>
-                <li data-size="21">三号</li>
-                <li data-size="20">小三</li>
-                <li data-size="18">四号</li>
-                <li data-size="16">小四</li>
-                <li data-size="14">五号</li>
-                <li data-size="12">小五</li>
-                <li data-size="10">六号</li>
-                <li data-size="8">小六</li>
-                <li data-size="7">七号</li>
-                <li data-size="6">八号</li>
-              </ul>
-            </el-scrollbar>
-          </div>
+          <el-select
+            v-model="fontSizeValue"
+            size="small"
+            placeholder="Select"
+            @change="changeFontSizeValue"
+          >
+            <el-option
+              v-for="item in fontSizeOptions"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
         </div>
         <div class="menu-item__size-add">
           <i />
@@ -181,7 +155,21 @@ window.addEventListener("message", event => {
       <div class="menu-divider" />
       <div class="menu-item">
         <div class="menu-item__title">
-          <i />
+          <el-select
+            v-model="titleValue"
+            :empty-values="[null, undefined]"
+            size="small"
+            placeholder="Select"
+            @change="changeTitleValue"
+          >
+            <el-option
+              v-for="item in titleValueOptions"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
+          <!-- <i />
           <span class="select" title="切换标题">正文</span>
           <div class="options">
             <ul>
@@ -193,7 +181,7 @@ window.addEventListener("message", event => {
               <li data-level="fifth" style="font-size: 18px">标题5</li>
               <li data-level="sixth" style="font-size: 16px">标题6</li>
             </ul>
-          </div>
+          </div> -->
         </div>
         <div class="menu-item__left">
           <i />
@@ -227,16 +215,42 @@ window.addEventListener("message", event => {
           />
         </div>
         <div class="menu-item__control !w-[88px]">
-          <el-button size="small" class="sure-btn" type="primary" plain>
+          <el-dropdown
+            class="dropdown-data"
+            :popper-class="'dropdown__popper-data'"
+            @command="handleCommand"
+          >
+            <!-- <el-button size="small" type="primary"> 设置数据源 </el-button> -->
+            <el-button size="small" class="sure-btn" text type="primary">
+              设置数据源<IconifyIconOffline class="ml-[2px]" :icon="arroDown" />
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                  class="data-text"
+                  command="text"
+                  data-control="dataText"
+                  >文本</el-dropdown-item
+                >
+                <el-dropdown-item
+                  class="data-table"
+                  command="table"
+                  data-control="table"
+                >
+                  表格
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+          <!-- <el-button size="small" class="sure-btn" type="primary" plain>
             设置数据源
           </el-button>
-          <!-- <i title="控件" /> -->
           <div class="options !left-[0]">
             <ul>
               <li class="data-text" data-control="dataText">文本</li>
               <li class="data-table" data-control="table">表格</li>
             </ul>
-          </div>
+          </div> -->
         </div>
         <div class="menu-item__reset !w-[72px] !ml-[5px]" data-menu="reset">
           <el-button size="small" class="sure-btn" type="primary" plain>
@@ -283,5 +297,19 @@ window.addEventListener("message", event => {
 .coverConfiguration {
   height: 100%;
   overflow: auto;
+  .dropdown-data {
+    .el-button.is-text:not(.is-disabled):focus-visible {
+      outline: 0;
+      outline-offset: 0;
+    }
+    .el-button.is-text:not(.is-disabled):hover {
+      background: rgba(0, 0, 0, 0) !important;
+    }
+  }
+}
+.dropdown__popper-data {
+  .el-dropdown-menu__item {
+    padding: 5px 25px;
+  }
 }
 </style>

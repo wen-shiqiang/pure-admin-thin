@@ -6,7 +6,10 @@ import {
   init,
   setcoverByTemp,
   getisDataSourceTable,
-  getelementListItem
+  getelementListItem,
+  setExecuteFont,
+  setExecuteSize,
+  setExecuteTitle
 } from "./canvasEditor";
 export const addTextDialog: any = ref({
   type: "",
@@ -23,6 +26,92 @@ const coverDatasource = ref([]);
 export const showEdit = ref(true);
 const textDatasource = ref([]);
 const tableDatasource = ref([]);
+
+// 字体设置开始
+export const fontValue = ref("Microsoft YaHei");
+export const fontOptions = [
+  { name: "微软雅黑", value: "Microsoft YaHei" },
+  { name: "宋体", value: "宋体" },
+  { name: "仿宋", value: "仿宋" },
+  { name: "楷体", value: "楷体" },
+  { name: "等线", value: "等线" },
+  { name: "方正小标宋GBK", value: "方正小标宋GBK" },
+  { name: "华文琥珀", value: "华文琥珀" },
+  { name: "华文楷体", value: "华文楷体" },
+  { name: "华文隶书", value: "华文隶书" },
+  { name: "华文新魏", value: "华文新魏" },
+  { name: "华文行楷", value: "华文行楷" },
+  { name: "华文中宋", value: "华文中宋" },
+  { name: "华文彩云", value: "华文彩云" },
+  { name: "Segoe UI", value: "Segoe UI" },
+  { name: "Ink Free", value: "Ink Free" },
+  { name: "Fantasy", value: "Fantasy" }
+];
+/**
+ * @description: 点击文字设置下拉框选中的值
+ * @param {*} val 字体
+ * @return {*}
+ */
+export const setFontValue = (val: string = ""): any => {
+  fontValue.value = val || "Microsoft YaHei";
+};
+/**
+ * @description: 设置字体
+ * @param {*} val 字体
+ * @return {*}
+ */
+export const changeFontValue = (val: string = "Microsoft YaHei"): any => {
+  setExecuteFont(val);
+};
+// 字体设置相关结束
+
+// 字体设置大小开始
+export const fontSizeValue = ref(16);
+
+export const fontSizeOptions = [
+  { name: "初号", value: 56 },
+  { name: "小初", value: 48 },
+  { name: "一号", value: 34 },
+  { name: "小一", value: 32 },
+  { name: "二号", value: 29 },
+  { name: "小二", value: 24 },
+  { name: "三号", value: 21 },
+  { name: "四号", value: 18 },
+  { name: "小四", value: 16 },
+  { name: "五号", value: 14 },
+  { name: "小五", value: 12 },
+  { name: "六号", value: 10 },
+  { name: "小六", value: 8 },
+  { name: "七号", value: 7 },
+  { name: "八号", value: 6 }
+];
+
+export const setFontSizeValue = (val: number = null): any => {
+  fontSizeValue.value = val || 16;
+};
+export const changeFontSizeValue = (val: number = null): any => {
+  setExecuteSize(val);
+};
+// 字体设置大小结束
+
+// 设置标题开始
+export const titleValue = ref("");
+export const titleValueOptions = [
+  { name: "正文", value: "" },
+  { name: "标题1", value: "first" },
+  { name: "标题2", value: "second" },
+  { name: "标题3", value: "third" },
+  { name: "标题4", value: "fourth" },
+  { name: "标题5", value: "fifth" },
+  { name: "标题6", value: "sixth" }
+];
+export const setTitleValue = (val: string = null): any => {
+  titleValue.value = val;
+};
+export const changeTitleValue = (val: string = null): any => {
+  setExecuteTitle(val);
+};
+// 设置标题结束
 // 获取路由参数id
 export const dataText = () => {
   addTextDialog.value.close = (bool = false) => {
