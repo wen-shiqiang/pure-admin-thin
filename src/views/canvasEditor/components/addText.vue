@@ -101,6 +101,8 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
       custom-class="csg-dialog addPlateDialog addDirectorDialog addTextDialog"
       :before-close="dialogClose"
       destroy-on-close
+      class="addTextDialog"
+      :top="`20vh`"
     >
       <div>
         <el-form
@@ -222,6 +224,38 @@ console.log("🚀  file: addText.vue:21  dialog:", dialog);
 .cascader-pop {
   .el-cascader-menu__wrap {
     min-height: 230px;
+  }
+}
+.addTextDialog {
+  padding: 0;
+  box-shadow:
+    0px 8px 10px -5px rgba(0, 0, 0, 0.08),
+    0px 16px 24px 2px rgba(0, 0, 0, 0.04),
+    0px 6px 30px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 12px 12px 12px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  .el-dialog__header {
+    text-align: center;
+    padding: 14px 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px 12px 0 0;
+    .el-dialog__title {
+      font-weight: 500;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.85);
+      .el-dialog__close {
+        color: #a6a6a6;
+      }
+    }
+  }
+  .el-dialog__footer {
+    padding: 8px 20px 20px 20px;
+  }
+  .el-dialog__body {
+    padding: 24px 70px 20px 10px;
+  }
+  .el-form-item__label {
+    color: #333;
   }
 }
 </style>

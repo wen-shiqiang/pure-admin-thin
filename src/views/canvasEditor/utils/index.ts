@@ -16,7 +16,7 @@ export const addTextDialog: any = ref({
   show: false,
   show1: false,
   title: "文本控件",
-  width: "450px",
+  width: "500px",
   list: [],
   formatList: [],
   close: () => {},

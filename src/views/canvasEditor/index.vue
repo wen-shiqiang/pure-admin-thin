@@ -299,7 +299,7 @@ const handleCommand = (command: string) => {
 }
 .dropdown__popper-data {
   .el-dropdown-menu__item {
-    padding: 5px 25px;
+    padding: 10px 30px;
   }
 }
 </style>
