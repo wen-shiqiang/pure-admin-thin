@@ -16,7 +16,10 @@ import {
   changeFontSizeValue,
   titleValue,
   titleValueOptions,
-  changeTitleValue
+  changeTitleValue,
+  lineHeightValue,
+  lineHeightValueOptions,
+  changeLineHeightValue
 } from "./utils/index";
 import arroDown from "@iconify-icons/ep/arrow-down";
 import addText from "./components/addText.vue";
@@ -180,6 +183,22 @@ const handleCommand = (command: string) => {
         </div>
         <div class="menu-item__right">
           <i />
+        </div>
+        <div class="menu-item__row-margin !w-[60px]">
+          <el-select
+            v-model="lineHeightValue"
+            :empty-values="[null, undefined]"
+            size="small"
+            placeholder="Select"
+            @change="changeLineHeightValue"
+          >
+            <el-option
+              v-for="item in lineHeightValueOptions"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value"
+            />
+          </el-select>
         </div>
       </div>
       <div class="menu-divider" />

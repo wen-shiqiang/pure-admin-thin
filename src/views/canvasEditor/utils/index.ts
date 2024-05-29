@@ -9,7 +9,8 @@ import {
   getelementListItem,
   setExecuteFont,
   setExecuteSize,
-  setExecuteTitle
+  setExecuteTitle,
+  setExecuteRowMargin
 } from "./canvasEditor";
 export const addTextDialog: any = ref({
   type: "",
@@ -112,6 +113,36 @@ export const changeTitleValue = (val: string = null): any => {
   setExecuteTitle(val);
 };
 // 设置标题结束
+
+//设置行间距开始
+
+export const lineHeightValue = ref(1);
+export const lineHeightValueOptions = [
+  { name: "1", value: 1 },
+  { name: "1.25", value: 1.25 },
+  { name: "1.5", value: 1.5 },
+  { name: "1.75", value: 1.75 },
+  { name: "2", value: 2 },
+  { name: "2.5", value: 2.5 },
+  { name: "3", value: 3 },
+  { name: "3.5", value: 3.5 },
+  { name: "4", value: 4 },
+  { name: "4.5", value: 4.5 },
+  { name: "5", value: 5 },
+  { name: "6", value: 6 },
+  { name: "7", value: 7 },
+  { name: "8", value: 8 },
+  { name: "9", value: 9 },
+  { name: "10", value: 10 }
+];
+export const setLineHeightValue = (val: number = 1): any => {
+  lineHeightValue.value = val;
+};
+export const changeLineHeightValue = (val: number = 1): any => {
+  setExecuteRowMargin(val);
+};
+//设置行间距结束
+
 // 获取路由参数id
 export const dataText = () => {
   addTextDialog.value.close = (bool = false) => {

@@ -14,7 +14,8 @@ import {
   getCoverByTempId,
   setFontValue,
   setFontSizeValue,
-  setTitleValue
+  setTitleValue,
+  setLineHeightValue
 } from "./index";
 let instance: any = ref(null);
 const editorOptions: any = {
@@ -72,6 +73,9 @@ export const setExecuteSize = (val = null) => {
 // 设置标题
 export const setExecuteTitle = (val = null) => {
   instance.command.executeTitle(val || null);
+};
+export const setExecuteRowMargin = (val = 1) => {
+  instance.command.executeRowMargin(val || 1);
 };
 export const saveAdd = async (num = 0) => {
   const html = getHTMLRewrite(instance)?.main || "";
@@ -425,7 +429,6 @@ export const init = async (data = []) => {
   rightDom.onclick = () => {
     instance.command.executeRowFlex(RowFlex.RIGHT);
   };
-
   // 4. | 表格 | 图片 | 超链接 | 分割线 | 水印 | 代码块 | 分隔符 | 控件 | 复选框 | LaTeX | 日期选择器
   const tableDom = document.querySelector<HTMLDivElement>(".menu-item__table")!;
   const tablePanelContainer = document.querySelector<HTMLDivElement>(
@@ -670,7 +673,8 @@ export const init = async (data = []) => {
     payload.painter
       ? painterDom.classList.add("active")
       : painterDom.classList.remove("active");
-
+    // 行间距
+    setLineHeightValue(payload.rowMargin || 1);
     // 标题
     setTitleValue(payload.level || "");
   };
@@ -697,18 +701,18 @@ export const init = async (data = []) => {
   };
 
   // 9. 右键菜单注册
-  instance.register.contextMenuList([
-    {
-      name: "格式整理",
-      icon: "word-tool",
-      when: async payload => {
-        return !payload.isReadonly;
-      },
-      callback: command => {
-        command.executeWordTool();
-      }
-    }
-  ]);
+  // instance.register.contextMenuList([
+  //   {
+  //     name: "格式整理",
+  //     icon: "word-tool",
+  //     when: async payload => {
+  //       return !payload.isReadonly;
+  //     },
+  //     callback: command => {
+  //       command.executeWordTool();
+  //     }
+  //   }
+  // ]);
 
   // 10. 快捷键注册
   instance.register.shortcutList([
@@ -745,4 +749,11 @@ export const init = async (data = []) => {
       }
     }
   ]);
+  // instance.override.paste = (evt?: ClipboardEvent) => {
+  //   console.log("evt", evt);
+  // };
+  // instance.override.copy = () => {
+  //   const range = instance.command.getRange();
+  //   console.log("range", range);
+  // };
 };

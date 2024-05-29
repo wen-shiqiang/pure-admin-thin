@@ -350,9 +350,9 @@ ul {
   position: relative;
 }
 
-.menu-item__row-margin i {
+/* .menu-item__row-margin i {
   background-image: url("./assets/images/row-margin.svg");
-}
+} */
 
 .menu-item__list {
   position: relative;

@@ -314,7 +314,6 @@ export function convertElementToDom(
   element: IElement,
   options: DeepRequired<IEditorOption>
 ): HTMLElement {
-  console.log("🚀  file: getHtml.ts:318  element:", element);
   let tagName: keyof HTMLElementTagNameMap = "span";
   if (element.type === ElementType.SUPERSCRIPT) {
     tagName = "sup";
@@ -356,7 +355,6 @@ export function createDomFromElementList(
   options: DeepRequired<IEditorOption>
 ) {
   function buildDom(payload: IElement[]): HTMLDivElement {
-    console.log("🚀  file: getHtml.ts:359  buildDom  payload:", payload);
     const clipboardDom = document.createElement("div");
     for (let e = 0; e < payload.length; e++) {
       const element: any = payload[e];
@@ -415,10 +413,6 @@ export function createDomFromElementList(
               tdDom.style.borderLeft = borderStyle;
             }
             const childDom = createDomFromElementList(td.value!, options);
-            console.log(
-              "🚀  file: getHtml.ts:419  buildDom  childDom:",
-              childDom
-            );
             tdDom.innerHTML = childDom.innerHTML;
             if (td.backgroundColor) {
               tdDom.style.backgroundColor = td.backgroundColor;
@@ -497,10 +491,10 @@ export function createDomFromElementList(
         let controlElement = null;
         if (~~element.control?.dsType === 4) {
           controlElement = document.createElement("img");
-          controlElement.setAttribute(
-            "rowIndex",
-            element.control?.value[0]?.rowIndex ?? null
-          );
+          // controlElement.setAttribute(
+          //   "rowIndex",
+          //   element.control?.value[0]?.rowIndex ?? null
+          // );
           controlElement.src = `data:image/jpeg;base64,\${${element.control?.dataSource.join(".")}}`;
           controlElement.alt = "Logo";
           controlElement.style = "width:548px;height:114px;visibility:visible";
@@ -510,11 +504,14 @@ export function createDomFromElementList(
           }
         } else {
           controlElement = document.createElement("span");
-          controlElement.setAttribute(
-            "rowIndex",
-            element.control?.value[0]?.rowIndex ?? null
-          );
+          // controlElement.setAttribute(
+          //   "rowIndex",
+          //   element.control?.value[0]?.rowIndex ?? null
+          // );
           const value0 = element.control?.value[0] || {};
+
+          console.log("🚀  file: getHtml.ts:513  buildDom  element:", element);
+
           controlElement.style.fontFamily = value0?.font || options.defaultFont;
           if (value0.bold) {
             controlElement.style.fontWeight = "600";
@@ -535,9 +532,7 @@ export function createDomFromElementList(
           if (element.control?.value[0]?.color !== "#999998") {
             controlElement.style.color = element.control?.value[0]?.color;
           }
-          const childDom = buildDom(
-            zipElementList(element.control?.value || [])
-          );
+          const childDom = buildDom(element.control?.value || []);
           childDom.innerHTML = `\${${element.control?.dataSource.join(".")}}`;
           if (~~element.control?.dsType === 5) {
             controlElement.setAttribute("dataType", element.control?.dataType); // 添加自定义属性
@@ -545,6 +540,9 @@ export function createDomFromElementList(
           if (element.control?.rowFlex || element.control.value[0]?.rowFlex) {
             controlElement.style.textAlign =
               element.control?.rowFlex || element.control.value[0]?.rowFlex;
+          }
+          if (element.rowMargin) {
+            controlElement.style.lineHeight = element.rowMargin;
           }
           controlElement.innerHTML = childDom.innerHTML;
         }
@@ -688,11 +686,11 @@ export function getHTMLRewrite(instance: any) {
       // } else {
       htmlDom.appendChild(children[e].cloneNode(true));
       // }
-      console.log(htmlDom.innerHTML);
+      // console.log(htmlDom.innerHTML);
     }
   }
   return {
-    main: htmlDom.innerHTML
-    // main: createDomFromElementList(mainElementList, options).innerHTML,
+    // main: htmlDom.innerHTML
+    main: createDomFromElementList(mainElementList, options).innerHTML
   };
 }
