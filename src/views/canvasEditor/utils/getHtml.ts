@@ -433,7 +433,7 @@ export function createDomFromElementList(
         const h = document.createElement(
           `h${titleOrderNumberMapping[element.level!]}`
         );
-        h.setAttribute("rowIndex", element?.rowIndex ?? null);
+        // h.setAttribute("rowIndex", element?.rowIndex ?? null);
         if (element.valueList[0]?.rowFlex) {
           h.style.textAlign = element.valueList[0]?.rowFlex;
         }
@@ -463,7 +463,7 @@ export function createDomFromElementList(
           img.src = element.value;
           img.width = element.width!;
           img.height = element.height!;
-          img.setAttribute("rowIndex", element?.rowIndex ?? null);
+          // img.setAttribute("rowIndex", element?.rowIndex ?? null);
         }
         clipboardDom.append(img);
       } else if (element.type === ElementType.SEPARATOR) {
@@ -619,78 +619,106 @@ export function getHTMLRewrite(instance: any) {
     item.positionList = draw.position.positionList[i];
     item.rowIndex = draw.position.positionList[i].rowIndex;
   });
-  const createDomFromElementList1 = createDomFromElementList(
-    mainElementList,
-    options
-  );
-  const children: any = createDomFromElementList1.children;
-  const rowIndexToDiv = {};
-  const htmlDom = document.createElement("div");
-  for (let e = 0; e < children.length; e++) {
-    const rowIndex = children[e].getAttribute("rowIndex");
-    const textAlign = children[e]?.style.textAlign || "";
-    if (rowIndex !== null) {
-      if (!rowIndexToDiv[rowIndex]) {
-        rowIndexToDiv[rowIndex] = document.createElement("div");
-        if (textAlign) {
-          rowIndexToDiv[rowIndex].style.textAlign = textAlign;
-        }
-        rowIndexToDiv[rowIndex].setAttribute("rowIndex", rowIndex);
-        htmlDom.appendChild(rowIndexToDiv[rowIndex]);
+  const mainElementList1 = deepClone(mainElementList);
+  let insertPositions = [];
+  mainElementList1.forEach((element, i) => {
+    if (element.type === "table") {
+      if (
+        mainElementList[i + 1]?.value == "​" ||
+        mainElementList[i + 1]?.value == "\n"
+      ) {
+        console.log("mainElementList[i + 1]", i);
+        insertPositions.push(i + 1);
       }
-      const childClone = children[e].cloneNode(true);
-      rowIndexToDiv[rowIndex].appendChild(childClone);
-    } else {
-      // if (children[e].tagName === 'TABLE') {
-      //     let trs = children[e].getElementsByTagName('tr');
-      //     for (let t = 0; t < trs.length; t++) {
-      //         let tds = trs[t].getElementsByTagName('td');
-      //         for (let d = 0; d < tds.length; d++) {
-      //             let spans = tds[d].getElementsByTagName('span');
-      //             for (let s = 0; s < spans.length; s++) {
-      //                 tds[d].style.textAlign = 'left';
-      //                 let textAlign = spans[s].style.textAlign;
-      //                 if (textAlign) {
-      //                     // 将 span 的 textAlign 值应用到 td 上
-      //                     tds[d].style.textAlign = textAlign;
-      //                 }
-      //             }
-      //         }
-      //     }
-      //     let div = document.createElement('div');
-      //     let textAlign = children[e].style.textAlign;
-      //     console.dir(children[e]);
-      //     if (textAlign) {
-      //         div.style.display = 'flex';
-      //         switch (textAlign) {
-      //             case 'left':
-      //                 div.style.justifyContent = 'flex-start';
-      //                 break;
-      //             case 'center':
-      //                 div.style.justifyContent = 'center';
-      //                 break;
-      //             case 'right':
-      //                 div.style.justifyContent = 'flex-end';
-      //                 break;
-      //             default:
-      //                 break;
-      //         }
-      //     }
-      //     div.appendChild(children[e].cloneNode(true));
-      //     htmlDom.appendChild(div);
-      // } else if (children[e].tagName === 'IMG') {
-      //     let div = document.createElement('div');
-      //     div.style.textAlign = children[e].style.textAlign;
-      //     div.appendChild(children[e].cloneNode(true));
-      //     htmlDom.appendChild(div);
-      // } else {
-      htmlDom.appendChild(children[e].cloneNode(true));
-      // }
-      // console.log(htmlDom.innerHTML);
+    }
+  });
+
+  // 从后向前插入元素，避免影响前面的插入位置
+  if (insertPositions.length) {
+    for (let i = insertPositions.length - 1; i >= 0; i--) {
+      mainElementList1.splice(insertPositions[i], 0, {
+        value: ""
+      });
     }
   }
+  console.log("mainElementList1", mainElementList1);
+  // mainElementList.forEach((item, i) => {
+  //   item.positionList = draw.position.positionList[i];
+  //   item.rowIndex = draw.position.positionList[i].rowIndex;
+  // });
+  // const createDomFromElementList1 = createDomFromElementList(
+  //   mainElementList,
+  //   options
+  // );
+
+  // const children: any = createDomFromElementList.children;
+  // const rowIndexToDiv = {};
+  // const htmlDom = document.createElement("div");
+  // for (let e = 0; e < children.length; e++) {
+  //   const rowIndex = children[e].getAttribute("rowIndex");
+  //   const textAlign = children[e]?.style.textAlign || "";
+  //   if (rowIndex !== null) {
+  //     if (!rowIndexToDiv[rowIndex]) {
+  //       rowIndexToDiv[rowIndex] = document.createElement("div");
+  //       if (textAlign) {
+  //         rowIndexToDiv[rowIndex].style.textAlign = textAlign;
+  //       }
+  //       rowIndexToDiv[rowIndex].setAttribute("rowIndex", rowIndex);
+  //       htmlDom.appendChild(rowIndexToDiv[rowIndex]);
+  //     }
+  //     const childClone = children[e].cloneNode(true);
+  //     rowIndexToDiv[rowIndex].appendChild(childClone);
+  //   } else {
+  // if (children[e].tagName === 'TABLE') {
+  //     let trs = children[e].getElementsByTagName('tr');
+  //     for (let t = 0; t < trs.length; t++) {
+  //         let tds = trs[t].getElementsByTagName('td');
+  //         for (let d = 0; d < tds.length; d++) {
+  //             let spans = tds[d].getElementsByTagName('span');
+  //             for (let s = 0; s < spans.length; s++) {
+  //                 tds[d].style.textAlign = 'left';
+  //                 let textAlign = spans[s].style.textAlign;
+  //                 if (textAlign) {
+  //                     // 将 span 的 textAlign 值应用到 td 上
+  //                     tds[d].style.textAlign = textAlign;
+  //                 }
+  //             }
+  //         }
+  //     }
+  //     let div = document.createElement('div');
+  //     let textAlign = children[e].style.textAlign;
+  //     console.dir(children[e]);
+  //     if (textAlign) {
+  //         div.style.display = 'flex';
+  //         switch (textAlign) {
+  //             case 'left':
+  //                 div.style.justifyContent = 'flex-start';
+  //                 break;
+  //             case 'center':
+  //                 div.style.justifyContent = 'center';
+  //                 break;
+  //             case 'right':
+  //                 div.style.justifyContent = 'flex-end';
+  //                 break;
+  //             default:
+  //                 break;
+  //         }
+  //     }
+  //     div.appendChild(children[e].cloneNode(true));
+  //     htmlDom.appendChild(div);
+  // } else if (children[e].tagName === 'IMG') {
+  //     let div = document.createElement('div');
+  //     div.style.textAlign = children[e].style.textAlign;
+  //     div.appendChild(children[e].cloneNode(true));
+  //     htmlDom.appendChild(div);
+  // } else {
+  // htmlDom.appendChild(children[e].cloneNode(true));
+  // }
+  // console.log(htmlDom.innerHTML);
+  // }
+  // }
   return {
     // main: htmlDom.innerHTML
-    main: createDomFromElementList(mainElementList, options).innerHTML
+    main: createDomFromElementList(mainElementList1, options).innerHTML
   };
 }
