@@ -340,13 +340,14 @@ export function convertElementToDom(
   }
   if (element.underline) {
     dom.style.textDecoration = "underline";
+    dom.style.textDecorationStyle = element?.textDecoration?.style || "";
   }
   if (element.strikeout) {
     dom.style.textDecoration += " line-through";
   }
-  if (element?.positionList?.lineHeight) {
-    dom.style.lineHeight = `${element.positionList.lineHeight}px`;
-  }
+  // if (element?.positionList?.lineHeight) {
+  //   dom.style.lineHeight = `${element.positionList.lineHeight}px`;
+  // }
   dom.innerText = element.value.replace(new RegExp(`${ZERO}`, "g"), "\n");
   return dom;
 }
@@ -376,14 +377,14 @@ export function createDomFromElementList(
         }
         tableDom.style.width = `${element.width}px`;
         // colgroup
-        // const colgroupDom = document.createElement("colgroup");
-        // for (let c = 0; c < element.colgroup!.length; c++) {
-        //   const colgroup = element.colgroup![c];
-        //   const colDom = document.createElement("col");
-        //   colDom.setAttribute("width", `${colgroup.width}`);
-        //   colgroupDom.append(colDom);
-        // }
-        // tableDom.append(colgroupDom);
+        const colgroupDom = document.createElement("colgroup");
+        for (let c = 0; c < element.colgroup!.length; c++) {
+          const colgroup = element.colgroup![c];
+          const colDom = document.createElement("col");
+          colDom.setAttribute("width", `${colgroup.width}`);
+          colgroupDom.append(colDom);
+        }
+        tableDom.append(colgroupDom);
         // tr
         const trList = element.trList!;
         for (let t = 0; t < trList.length; t++) {
@@ -525,6 +526,8 @@ export function createDomFromElementList(
           }
           if (value0.underline) {
             controlElement.style.textDecoration = "underline";
+            controlElement.style.textDecorationStyle =
+              value0?.textDecoration?.style || "";
           }
           if (value0.strikeout) {
             controlElement.style.textDecoration += " line-through";

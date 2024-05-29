@@ -10,7 +10,8 @@ import {
   setExecuteFont,
   setExecuteSize,
   setExecuteTitle,
-  setExecuteRowMargin
+  setExecuteRowMargin,
+  getisTable
 } from "./canvasEditor";
 export const addTextDialog: any = ref({
   type: "",
@@ -155,7 +156,13 @@ export const dataText = () => {
     addTextDialog.value.type = "tableText";
     addTextDialog.value.list = dataSourceTableDialog();
   } else {
-    addTextDialog.value.list = textDatasource.value;
+    if (getisTable()) {
+      addTextDialog.value.list = textDatasource.value.filter(e => {
+        return e.dsType !== 4;
+      });
+    } else {
+      addTextDialog.value.list = textDatasource.value;
+    }
   }
   addTextDialog.value.show = true;
 };

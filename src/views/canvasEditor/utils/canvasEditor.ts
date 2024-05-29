@@ -41,7 +41,8 @@ const editorOptions: any = {
     disabled: true
   },
   maskMargin: [60, 0, 30, 0], // 菜单栏高度60，底部工具栏30为遮盖层
-  pageMode: "continuity"
+  // pageMode: "continuity",
+  strikeoutColor: "#000000"
 };
 export const isDataSourceTable = ref(false);
 export const isTable = ref(false);
@@ -61,6 +62,9 @@ export const getelementListItem = () => {
 };
 export const getisDataSourceTable = () => {
   return isDataSourceTable.value;
+};
+export const getisTable = () => {
+  return isTable.value;
 };
 // 设置字体
 export const setExecuteFont = (val = "") => {
@@ -609,14 +613,13 @@ export const init = async (data = []) => {
       }
     }
     if (positionContext.index) {
+      // 表格选中
+      isTable.value = positionContext.isTable;
       if (positionContext.isTable && elementList[positionContext.index]) {
-        // 表格选中
-        isTable.value = elementList.isTable;
         elementListItem.value = elementList[positionContext.index];
         isDataSourceTable.value = !!elementList[positionContext.index].value;
       } else {
         isDataSourceTable.value = false;
-        isTable.value = false;
         elementListItem.value = {};
       }
     }
@@ -749,6 +752,13 @@ export const init = async (data = []) => {
       }
     }
   ]);
+  instance.eventBus.on("pageSizeChange", async (payload: number) => {
+    if (payload > 1) {
+      await instance.command.executeUndo();
+      ElMessage.closeAll();
+      ElMessage.error("封面配置不能超过一页");
+    }
+  });
   // instance.override.paste = (evt?: ClipboardEvent) => {
   //   console.log("evt", evt);
   // };
