@@ -16,7 +16,7 @@ import { I18n } from '../i18n/I18n'
 import { Position } from '../position/Position'
 import { RangeManager } from '../range/RangeManager'
 import { controlMenus } from './menus/controlMenus'
-import { globalMenus } from './menus/globalMenus'
+// import { globalMenus } from './menus/globalMenus'
 import { hyperlinkMenus } from './menus/hyperlinkMenus'
 // import { imageMenus } from './menus/imageMenus'
 import { tableMenus } from './menus/tableMenus'
@@ -52,7 +52,7 @@ export class ContextMenu {
     this.context = null
     // 内部菜单
     this.contextMenuList = [
-      ...globalMenus,
+      // ...globalMenus,
       ...tableMenus,
       // ...imageMenus,
       ...controlMenus,
