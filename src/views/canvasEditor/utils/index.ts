@@ -34,6 +34,7 @@ export const fontValue = ref("Microsoft YaHei");
 export const fontOptions = [
   { name: "微软雅黑", value: "Microsoft YaHei" },
   { name: "宋体", value: "宋体" },
+  { name: "黑体", value: "黑体" },
   { name: "仿宋", value: "仿宋" },
   { name: "楷体", value: "楷体" },
   { name: "等线", value: "等线" },

@@ -320,7 +320,7 @@ export function convertElementToDom(
   } else if (element.type === ElementType.SUBSCRIPT) {
     tagName = "sub";
   }
-  const dom = document.createElement(tagName);
+  const dom: any = document.createElement(tagName);
   dom.style.fontFamily = element.font || options.defaultFont;
   if (element.rowFlex) {
     dom.style.textAlign = convertRowFlexToTextAlign(element.rowFlex);
@@ -344,6 +344,9 @@ export function convertElementToDom(
   }
   if (element.strikeout) {
     dom.style.textDecoration += " line-through";
+  }
+  if (element.rowMargin) {
+    dom.style.lineHeight = element.rowMargin;
   }
   // if (element?.positionList?.lineHeight) {
   //   dom.style.lineHeight = `${element.positionList.lineHeight}px`;
