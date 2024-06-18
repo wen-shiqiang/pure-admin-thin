@@ -4,9 +4,19 @@ export default [
   {
     path: "/login",
     name: "Login",
-    component: () => import("@/views/login/index.vue"),
+    component: () => import("@/views/loginOld/index.vue"),
     meta: {
       title: "登录",
+      showLink: false,
+      rank: 101
+    }
+  },
+  {
+    path: "/:schlId",
+    name: "mmsLogin",
+    component: () => import("@/views/login/index.vue"),
+    meta: {
+      title: "人才培养方案研制平台-登录",
       showLink: false,
       rank: 101
     }

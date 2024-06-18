@@ -33,20 +33,6 @@
     "vite",
     "esm"
   ],
-  "homepage": "https://github.com/pure-admin/pure-admin-thin",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pure-admin/pure-admin-thin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/pure-admin/vue-pure-admin/issues"
-  },
-  "license": "MIT",
-  "author": {
-    "name": "xiaoxian521",
-    "email": "pureadmin@163.com",
-    "url": "https://github.com/xiaoxian521"
-  },
   "dependencies": {
     "@pureadmin/descriptions": "^1.2.1",
     "@pureadmin/table": "^3.1.2",
@@ -59,12 +45,14 @@
     "echarts": "^5.5.0",
     "element-plus": "^2.7.5",
     "js-cookie": "^3.0.5",
+    "js-md5": "^0.8.3",
     "localforage": "^1.10.0",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
     "pinia": "^2.1.7",
-    "pinyin-pro": "^3.22.0",
+    "pinyin-pro": "^3.21.0",
+    "postcss-prefix-selector": "^1.16.1",
     "qs": "^6.12.1",
     "responsive-storage": "^2.2.0",
     "sortablejs": "^1.15.2",

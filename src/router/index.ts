@@ -204,12 +204,17 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       toCorrectRoute();
     }
   } else {
+    console.log("to.path", to);
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
-        removeToken();
-        next({ path: "/login" });
+        if (to.params?.schlId) {
+          next();
+        } else {
+          removeToken();
+          next({ path: "/login" });
+        }
       }
     } else {
       next();
