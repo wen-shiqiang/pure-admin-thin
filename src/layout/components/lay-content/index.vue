@@ -13,7 +13,7 @@ const props = defineProps({
 
 const { showModel } = useTags();
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
-
+const { showHeader } = $storage?.configure;
 const isKeepAlive = computed(() => {
   return $config?.KeepAlive;
 });
@@ -107,7 +107,10 @@ const transitionMain = defineComponent({
 
 <template>
   <section
-    :class="[fixedHeader ? 'app-main' : 'app-main-nofixed-header']"
+    :class="[
+      fixedHeader ? 'app-main' : 'app-main-nofixed-header',
+      showHeader ? '!h-full' : ''
+    ]"
     :style="getSectionStyle"
   >
     <router-view>
@@ -196,8 +199,8 @@ const transitionMain = defineComponent({
 .app-main {
   position: relative;
   width: 100%;
-  height: 100%;
-  /* height: 100vh; */
+  /* height: 100%; */
+  height: 100vh;
   overflow-x: hidden;
 }
 

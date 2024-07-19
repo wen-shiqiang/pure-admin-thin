@@ -135,7 +135,10 @@ const LayHeader = defineComponent({
     return h(
       "div",
       {
-        class: { "fixed-header": set.fixedHeader },
+        class: {
+          "fixed-header": set.fixedHeader,
+          "!top-[54px]": set.showHeader
+        },
         style: [
           set.hideTabs && layout.value.includes("horizontal")
             ? isDark.value
@@ -174,7 +177,12 @@ const LayHeader = defineComponent({
     />
     <template v-if="layout.includes('vertical')">
       <Header v-if="set.showHeader" />
-      <div class="flex h-[calc(100vh-54px)] w-full">
+      <div
+        :class="[
+          'flex w-full',
+          set.showHeader ? 'h-[calc(100vh-54px)]' : 'h-full'
+        ]"
+      >
         <NavVertical v-show="!pureSetting.hiddenSideBar" />
         <div
           :class="[

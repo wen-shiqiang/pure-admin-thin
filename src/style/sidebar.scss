@@ -63,7 +63,7 @@
 
   .fixed-header {
     position: fixed;
-    top: 54px;
+    top: 0px;
     right: 0;
     z-index: 998;
     width: calc(100% - #{$sideBarWidth});
@@ -86,14 +86,14 @@
 
   .sidebar-container {
     position: fixed;
-    // top: 0;
-    top: 54px;
+    top: 0;
+    // top: 54px;
     bottom: 0;
     left: 0;
     z-index: 1001;
     width: $sideBarWidth !important;
-    // height: 100%;
-    height: calc(100% - 54px);;
+    height: 100%;
+    // height: calc(100% - 54px);
     overflow: visible;
     font-size: 0;
     background: $menuBg;
