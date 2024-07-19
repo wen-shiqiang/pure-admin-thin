@@ -6,10 +6,10 @@ import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-import { isUrl, openLink, storageLocal, isAllEmpty } from "@pureadmin/utils";
+import { isUrl, openLink, storageLocal } from "@pureadmin/utils";
 import {
   ascending,
-  getTopMenu,
+  // getTopMenu,
   // initRouter,
   isOneOfArray,
   getHistoryMode,
@@ -204,7 +204,6 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       toCorrectRoute();
     }
   } else {
-    console.log("to.path", to);
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {
         next();

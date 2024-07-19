@@ -13,7 +13,7 @@ import { stringify } from "qs";
 import NProgress from "../progress";
 import { getToken, formatToken } from "@/utils/auth";
 import { useUserStoreHook } from "@/store/modules/user";
-
+import { ElMessage } from "element-plus";
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
   // 请求超时时间
@@ -150,7 +150,8 @@ class PureHttp {
     method: RequestMethods,
     url: string,
     param?: AxiosRequestConfig,
-    axiosConfig?: PureHttpRequestConfig
+    axiosConfig?: PureHttpRequestConfig,
+    responseConfig?: any
   ): Promise<T> {
     const config = {
       method,
@@ -163,7 +164,16 @@ class PureHttp {
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance
         .request(config)
-        .then((response: undefined) => {
+        .then((response: any) => {
+          const { showMessage, status } = responseConfig || {
+            showMessage: true,
+            status: true
+          };
+          if (response.status !== 200 && status) {
+            showMessage && ElMessage.error(response?.message || "请求失败");
+            reject(response);
+            return;
+          }
           resolve(response);
         })
         .catch(error => {

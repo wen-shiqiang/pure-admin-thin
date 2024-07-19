@@ -66,8 +66,8 @@ const getSectionStyle = computed(() => {
       ? ""
       : `padding-top: 0;${
           hideTabs.value
-            ? "min-height: calc(100vh - 48px);"
-            : "min-height: calc(100vh - 86px);"
+            ? "min-height: calc(100vh - 102px);"
+            : "min-height: calc(100vh - 136px);"
         }`
   ];
 });
@@ -196,7 +196,8 @@ const transitionMain = defineComponent({
 .app-main {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  /* height: 100vh; */
   overflow-x: hidden;
 }
 

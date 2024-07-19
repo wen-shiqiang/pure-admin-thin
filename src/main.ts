@@ -23,7 +23,8 @@ import "./assets/iconfont/iconfont.js";
 import "./assets/iconfont/iconfont.css";
 
 const app = createApp(App);
-
+import { useRequestDevToolsPlugin } from "vue-hooks-plus";
+app.use(useRequestDevToolsPlugin);
 // 自定义指令
 import * as directives from "@/directives";
 Object.keys(directives).forEach(key => {

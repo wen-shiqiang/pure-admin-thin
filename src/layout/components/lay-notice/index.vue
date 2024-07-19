@@ -21,6 +21,7 @@ const getLabel = computed(
     <span
       :class="[
         'dropdown-badge',
+        'text-white',
         'navbar-bg-hover',
         'select-none',
         Number(noticesNum) !== 0 && 'mr-[10px]'

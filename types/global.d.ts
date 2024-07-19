@@ -27,6 +27,7 @@ declare global {
    */
   interface Window {
     // Global vue app instance
+    mms: any;
     __APP__: App<Element>;
     webkitCancelAnimationFrame: (handle: number) => void;
     mozCancelAnimationFrame: (handle: number) => void;
@@ -108,6 +109,7 @@ declare global {
     TooltipEffect?: Effect;
     ResponsiveStorageNameSpace?: string;
     MenuSearchHistory?: number;
+    ShowHeader?: boolean;
   }
 
   /**
@@ -164,6 +166,7 @@ declare global {
       showModel?: string;
       multiTagsCache?: boolean;
       stretch?: boolean | number;
+      showHeader?: boolean;
     };
     tags?: Array<any>;
   }

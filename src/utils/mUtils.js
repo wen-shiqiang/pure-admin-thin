@@ -25,7 +25,9 @@ export const getStore = name => {
   if (value !== null) {
     try {
       value = JSON.parse(value);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
   return value;
 };
@@ -64,7 +66,9 @@ export const getseStore = name => {
   if (value !== null) {
     try {
       value = JSON.parse(value);
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
   return value;
 };
@@ -356,7 +360,7 @@ export const tableDataEach = widgetFormPreview => {
 };
 // 把数据源放到数据结构上 export const dataSource = (widgetFormPreview) =>
 export const dataSource = widgetFormPreview => {
-  widgetFormPreview.list.forEach((item, i) => {
+  widgetFormPreview.list.forEach(item => {
     if (item.type == "table") {
       item.addRowList = [];
       for (let j = 0; j < item.tableColumns.length; j++) {
