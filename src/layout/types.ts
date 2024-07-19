@@ -58,6 +58,7 @@ export interface setType {
     mobile: boolean;
   };
   hideTabs: boolean;
+  showHeader: boolean;
 }
 
 export type menuType = {
