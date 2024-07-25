@@ -38,7 +38,6 @@ const { layout } = useLayout();
 const isMobile = deviceDetection();
 const pureSetting = useSettingStoreHook();
 const { $storage } = useGlobal<GlobalPropertiesApi>();
-console.log("🚀  file: index.vue:42  $storage", $storage);
 
 const set: setType = reactive({
   sidebar: computed(() => {
@@ -137,7 +136,7 @@ const LayHeader = defineComponent({
       {
         class: {
           "fixed-header": set.fixedHeader,
-          "!top-[54px]": set.showHeader
+          "!top-[54px]": set.showHeader && layout.value.includes("mmsVertical")
         },
         style: [
           set.hideTabs && layout.value.includes("horizontal")
@@ -150,7 +149,9 @@ const LayHeader = defineComponent({
       {
         default: () => [
           !pureSetting.hiddenSideBar &&
-          (layout.value.includes("vertical") || layout.value.includes("mix"))
+          (layout.value.includes("vertical") ||
+            layout.value.includes("mmsVertical") ||
+            layout.value.includes("mix"))
             ? h(LayNavbar)
             : null,
           !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
@@ -170,12 +171,13 @@ const LayHeader = defineComponent({
       v-show="
         set.device === 'mobile' &&
         set.sidebar.opened &&
-        layout.includes('vertical')
+        (layout.includes('vertical') || layout.includes('mmsVertical'))
       "
+      :key="layout"
       class="app-mask"
       @click="useAppStoreHook().toggleSideBar()"
     />
-    <template v-if="layout.includes('vertical')">
+    <template v-if="layout.includes('mmsVertical')">
       <Header v-if="set.showHeader" />
       <div
         :class="[

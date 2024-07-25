@@ -39,6 +39,9 @@ const stretch = computed(() => {
 const layout = computed(() => {
   return $storage?.layout.layout === "vertical";
 });
+const mmsVertical = computed(() => {
+  return $storage?.layout.layout === "mmsVertical";
+});
 
 const getMainWidth = computed(() => {
   return isNumber(stretch.value)
@@ -109,7 +112,7 @@ const transitionMain = defineComponent({
   <section
     :class="[
       fixedHeader ? 'app-main' : 'app-main-nofixed-header',
-      showHeader ? '!h-full' : ''
+      showHeader && mmsVertical ? '!h-full' : ''
     ]"
     :style="getSectionStyle"
   >
@@ -199,7 +202,6 @@ const transitionMain = defineComponent({
 .app-main {
   position: relative;
   width: 100%;
-  /* height: 100%; */
   height: 100vh;
   overflow-x: hidden;
 }

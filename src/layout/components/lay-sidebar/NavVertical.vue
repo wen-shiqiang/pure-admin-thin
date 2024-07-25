@@ -94,7 +94,9 @@ onBeforeUnmount(() => {
     :class="[
       'sidebar-container',
       showLogo ? 'has-logo' : 'no-logo',
-      showHeader ? '!top-[54px] !h-[calc(100%-54px)]' : ''
+      showHeader && pureApp.layout === 'mmsVertical'
+        ? '!top-[54px] !h-[calc(100%-54px)]'
+        : ''
     ]"
     @mouseenter.prevent="isShow = true"
     @mouseleave.prevent="isShow = false"

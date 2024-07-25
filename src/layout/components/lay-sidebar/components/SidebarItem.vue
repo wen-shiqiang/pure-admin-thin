@@ -136,7 +136,7 @@ function resolvePath(routePath) {
         v-if="
           (!item?.meta.icon &&
             isCollapse &&
-            layout === 'vertical' &&
+            (layout === 'vertical' || layout === 'mmsVertical') &&
             item?.pathList?.length === 1) ||
           (!onlyOneChild.meta.icon &&
             isCollapse &&
@@ -185,7 +185,7 @@ function resolvePath(routePath) {
           layout === 'mix' && toRaw(item.meta.icon)
             ? !isCollapse || item?.pathList?.length !== 2
             : !(
-                layout === 'vertical' &&
+                (layout === 'vertical' || layout === 'mmsVertical') &&
                 isCollapse &&
                 toRaw(item.meta.icon) &&
                 item.parentId === null

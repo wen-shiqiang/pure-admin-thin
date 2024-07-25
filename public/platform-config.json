@@ -6,7 +6,7 @@
   "HiddenSideBar": false,
   "MultiTagsCache": false,
   "KeepAlive": true,
-  "Layout": "vertical",
+  "Layout": "mmsVertical",
   "Theme": "light",
   "DarkMode": false,
   "OverallStyle": "light",

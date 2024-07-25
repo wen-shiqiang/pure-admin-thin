@@ -10,8 +10,8 @@ export const injectResponsiveStorage = (app: App, config: PlatformConfigs) => {
   const configObj = Object.assign(
     {
       // layout模式以及主题
-      // layout: Storage.getData("layout", nameSpace) ?? {
-      layout: {
+      layout: Storage.getData("layout", nameSpace) ?? {
+        // layout: {
         layout: config.Layout ?? "vertical",
         theme: config.Theme ?? "light",
         darkMode: config.DarkMode ?? false,
@@ -21,8 +21,8 @@ export const injectResponsiveStorage = (app: App, config: PlatformConfigs) => {
         overallStyle: config.OverallStyle ?? "light" // 整体风格（浅色：light、深色：dark、自动：system）
       },
       // 系统配置-界面显示
-      // configure: Storage.getData("configure", nameSpace) ?? {
-      configure: {
+      configure: Storage.getData("configure", nameSpace) ?? {
+        // configure: {
         grey: config.Grey ?? false,
         weak: config.Weak ?? false,
         hideTabs: config.HideTabs ?? false,

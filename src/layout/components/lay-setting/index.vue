@@ -358,6 +358,20 @@ onUnmounted(() => removeMatchMedia);
       <p :class="['mt-5', pClass]">导航模式</p>
       <ul class="pure-theme">
         <li
+          ref="mmsVerticalRef"
+          v-tippy="{
+            content: '左侧菜单，亲切熟悉',
+            zIndex: 41000
+          }"
+          :class="layoutTheme.layout === 'mmsVertical' ? 'is-select' : ''"
+          @click="setLayoutModel('mmsVertical')"
+        >
+          <div />
+          <div />
+          <div />
+          <div />
+        </li>
+        <li
           ref="verticalRef"
           v-tippy="{
             content: '左侧菜单，亲切熟悉',
@@ -569,6 +583,42 @@ onUnmounted(() => removeMatchMedia);
     &:nth-child(1) {
       div {
         &:nth-child(1) {
+          width: 100%;
+          height: 15%;
+          background: #1b2a47;
+        }
+        &:nth-child(2) {
+          width: 30%;
+          height: 85%;
+          background: #1b2a47;
+          position: absolute;
+          top: 15%;
+          left: 0;
+        }
+
+        &:nth-child(3) {
+          position: absolute;
+          top: 15%;
+          right: 0;
+          width: 70%;
+          height: 15%;
+          background: #fff;
+          box-shadow: 0 0 1px #888;
+        }
+        &:nth-child(4) {
+          position: absolute;
+          top: 30%;
+          right: 0;
+          width: 70%;
+          height: 70%;
+          background: #fff;
+          box-shadow: 0 0 1px #888;
+        }
+      }
+    }
+    &:nth-child(2) {
+      div {
+        &:nth-child(1) {
           width: 30%;
           height: 100%;
           background: #1b2a47;
@@ -586,7 +636,7 @@ onUnmounted(() => removeMatchMedia);
       }
     }
 
-    &:nth-child(2) {
+    &:nth-child(3) {
       div {
         &:nth-child(1) {
           width: 100%;
@@ -597,7 +647,7 @@ onUnmounted(() => removeMatchMedia);
       }
     }
 
-    &:nth-child(3) {
+    &:nth-child(4) {
       div {
         &:nth-child(1) {
           width: 100%;

@@ -29,7 +29,7 @@ const {
     <div class="flex h-[54PX] items-center ml-[36px]">
       <img class="h-[40px]" src="@/assets/image/logoMms.png" />
     </div>
-    <div v-if="layout === 'vertical'" class="vertical-header-right">
+    <div class="vertical-header-right">
       <!-- 全屏 -->
       <!-- <LaySidebarFullScreen id="full-screen" /> -->
       <!-- 消息通知 -->

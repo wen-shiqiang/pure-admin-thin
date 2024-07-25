@@ -3,11 +3,14 @@ import { ref, computed } from "vue";
 import { noticesData } from "./data";
 import NoticeList from "./components/NoticeList.vue";
 import BellIcon from "@iconify-icons/ep/bell";
-
+import { useGlobal } from "@pureadmin/utils";
 const noticesNum = ref(0);
 const notices = ref(noticesData);
 const activeKey = ref(noticesData[0]?.key);
-
+const { $storage } = useGlobal<GlobalPropertiesApi>();
+const mmsVertical = computed(() => {
+  return $storage?.layout.layout === "mmsVertical";
+});
 notices.value.map(v => (noticesNum.value += v.list.length));
 
 const getLabel = computed(
@@ -21,9 +24,9 @@ const getLabel = computed(
     <span
       :class="[
         'dropdown-badge',
-        'text-white',
         'navbar-bg-hover',
         'select-none',
+        mmsVertical && 'text-white',
         Number(noticesNum) !== 0 && 'mr-[10px]'
       ]"
     >
