@@ -1,45 +1,35 @@
 import { getUUID, generateCode, getSchoolInfo, login } from "@/api/user";
-export const getUUIDRequest = () => {
-  return new Promise((resolve, reject) => {
-    getUUID()
-      .then(({ result }) => {
-        resolve(result);
-      })
-      .catch(error => {
-        reject(error);
-      });
+import { useRequest } from "vue-hooks-plus";
+export const useApiRequests = () => {
+  const { runAsync: getUUIDApi } = useRequest(() => getUUID(), {
+    debugKey: "getUUID",
+    manual: true
   });
-};
-export const generateCodeRequest = params => {
-  return new Promise((resolve, reject) => {
-    generateCode(params)
-      .then(res => {
-        resolve(res);
-      })
-      .catch(error => {
-        reject(error);
-      });
+
+  const { runAsync: getSchoolInfoApi } = useRequest(
+    (params: any) => getSchoolInfo(params),
+    {
+      debugKey: "getSchoolInfo",
+      manual: true
+    }
+  );
+
+  const { runAsync: generateCodeApi } = useRequest(
+    (params: any) => generateCode(params),
+    {
+      debugKey: "generateCode",
+      manual: true
+    }
+  );
+  const { runAsync: loginApi } = useRequest((params: any) => login(params), {
+    debugKey: "login",
+    manual: true
   });
-};
-export const getSchoolInfoRequest = params => {
-  return new Promise((resolve, reject) => {
-    getSchoolInfo(params)
-      .then(({ result }) => {
-        resolve(result);
-      })
-      .catch(({ message }) => {
-        reject(message);
-      });
-  });
-};
-export const loginRequest = params => {
-  return new Promise((resolve, reject) => {
-    login(params)
-      .then(({ result }) => {
-        resolve(result);
-      })
-      .catch(({ message }) => {
-        reject(message);
-      });
-  });
+
+  return {
+    getUUIDApi,
+    getSchoolInfoApi,
+    generateCodeApi,
+    loginApi
+  };
 };

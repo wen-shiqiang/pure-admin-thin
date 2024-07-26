@@ -173,7 +173,6 @@ const LayHeader = defineComponent({
         set.sidebar.opened &&
         (layout.includes('vertical') || layout.includes('mmsVertical'))
       "
-      :key="layout"
       class="app-mask"
       @click="useAppStoreHook().toggleSideBar()"
     />
