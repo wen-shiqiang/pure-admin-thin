@@ -1,6 +1,11 @@
 import axios from "axios";
 import type { App } from "vue";
-import { storageSession, storageLocal, isString } from "@pureadmin/utils";
+import {
+  storageSession,
+  storageLocal,
+  isString,
+  isArray
+} from "@pureadmin/utils";
 let config: object = {};
 const { VITE_PUBLIC_PATH } = import.meta.env;
 
@@ -50,13 +55,34 @@ export const getPlatformConfig = async (app: App): Promise<undefined> => {
 };
 /**
  * @description: 获取本地存储的值
- * @param {string} keys 键值
+ * @param {string} keys 键值 ['key1', 'key2'] 或者
+ *                           [['key1', 'key2'], 'key3']  或者
+ *                           [['key1', ['key2', ['key3']]], 'key4']
  * @param {*} type 0: sessionStorage 1: localStorage
  * @return {*}
  */
-type KeyType = string | [string, string] | Array<string | [string, string]>;
-const getItemFromStorage = (keys: KeyType, type: number = 0) => {
+const getItemFromStorage = (keys: any, type: number = 0): any => {
   const storage = type ? storageLocal() : storageSession();
+  /**
+   * @description: 获取嵌套对象的值
+   * @param {any} item 对象
+   * @param {string} keyArray 键值数组
+   * @return {*} 值
+   */
+  const getNestedItem = (item: any, keyArray: any): any => {
+    if (!item || keyArray.length === 0) {
+      return item;
+    }
+    const [firstKey, ...restKeys] = keyArray;
+    if (isArray(firstKey)) {
+      return getNestedItem(
+        item[firstKey[0]],
+        firstKey.slice(1).concat(restKeys)
+      );
+    }
+    return getNestedItem(item[firstKey], restKeys);
+  };
+
   try {
     if (isString(keys)) {
       return storage.getItem(keys);
@@ -65,10 +91,10 @@ const getItemFromStorage = (keys: KeyType, type: number = 0) => {
       let value = null;
       if (isString(key)) {
         value = storage.getItem(key);
-      } else if (Array.isArray(key) && key.length === 2 && isString(key[0])) {
+      } else if (isArray(key) && key.length) {
         const item = storage.getItem(key[0]);
         if (item) {
-          value = item[key[1]];
+          value = getNestedItem(item, key.slice(1));
         }
       }
       if (value) {
@@ -77,7 +103,7 @@ const getItemFromStorage = (keys: KeyType, type: number = 0) => {
     }
     return null;
   } catch (error) {
-    console.error("getItemFromStorage error", error);
+    console.log("error", error);
     return null;
   }
 };
