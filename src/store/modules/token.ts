@@ -5,7 +5,9 @@ export const useToken = defineStore({
   id: "mms-token",
   state: () => {
     return {
-      token: storageSession().getItem("token")
+      token:
+        storageSession().getItem("mms-token") ||
+        storageSession().getItem("token")
     };
   },
   getters: {

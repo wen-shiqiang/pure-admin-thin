@@ -6,6 +6,7 @@ import type { FormInstance } from "element-plus";
 import { md5 } from "js-md5";
 import { useRoute, useRouter } from "vue-router";
 import { useTokenStoreHook } from "@/store/modules/token";
+import { useUserInfoStoreHook } from "@/store/modules/userInfo";
 export const logoName = ref("");
 export const logoPath = ref("");
 export const captchaCodeImg = ref(null);
@@ -15,7 +16,6 @@ export const loginRun = () => {
     useApiRequests();
   const route = useRoute();
   const router = useRouter();
-  console.log("🚀  file: index.ts:19  token", useTokenStoreHook().getToken);
   const schoolNum = route?.params?.schlId || "";
   const getUUID = async () => {
     try {
@@ -92,12 +92,11 @@ export const loginRun = () => {
         arraystr = arraystr[3];
         storageLocal().setItem("arraystr", arraystr);
       }
-      // const token1 = useTokenStoreHook().getToken("token");
-
       useTokenStoreHook().setToken(token);
+      useUserInfoStoreHook().setUserInfo(userInfo);
       // storageSession().setItem("token", token);
       storageSession().setItem("headMenu", headMenu);
-      storageSession().setItem("mms-userInfo", userInfo);
+      // storageSession().setItem("mms-userInfo", userInfo);
       //   // store.commit("tokenChange");
       //   if (!data.data.result.menuList?.length) {
       //     router.push("/user/emptyState");
