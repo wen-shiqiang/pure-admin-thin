@@ -23,5 +23,6 @@
   "CachingAsyncRoutes": false,
   "TooltipEffect": "light",
   "ResponsiveStorageNameSpace": "responsive-",
+  "StorageNameSpace": "mms-",
   "MenuSearchHistory": 6
 }

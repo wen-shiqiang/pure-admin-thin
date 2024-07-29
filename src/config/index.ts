@@ -51,5 +51,6 @@ export const getPlatformConfig = async (app: App): Promise<undefined> => {
 
 /** 本地响应式存储的命名空间 */
 const responsiveStorageNameSpace = () => getConfig().ResponsiveStorageNameSpace;
+const storageNameSpace = () => getConfig().StorageNameSpace;
 
-export { getConfig, setConfig, responsiveStorageNameSpace };
+export { getConfig, setConfig, responsiveStorageNameSpace, storageNameSpace };

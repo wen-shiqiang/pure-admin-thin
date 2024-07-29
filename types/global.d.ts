@@ -108,6 +108,7 @@ declare global {
     CachingAsyncRoutes?: boolean;
     TooltipEffect?: Effect;
     ResponsiveStorageNameSpace?: string;
+    StorageNameSpace?: string;
     MenuSearchHistory?: number;
     ShowHeader?: boolean;
   }
