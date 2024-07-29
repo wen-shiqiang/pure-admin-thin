@@ -11,7 +11,7 @@ export const useUserInfo = defineStore({
   id: storageName,
   state: () => {
     return {
-      userInfo: getItemFromStorage([storageName, name])
+      userInfo: getItemFromStorage([[storageName, name], name])
     };
   },
   getters: {
