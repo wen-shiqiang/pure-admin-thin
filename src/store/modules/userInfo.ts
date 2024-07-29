@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
-import { store, storageSession } from "../utils";
-
+import { store, storageSession, storageNameSpace } from "../utils";
+const name = "userInfo";
+const storageName = `${storageNameSpace()}${name}`;
 export const useUserInfo = defineStore({
-  id: "mms-userInfo",
+  id: storageName,
   state: () => {
     return {
       userInfo:
-        storageSession().getItem("mms-userInfo") ||
-        storageSession().getItem("userInfo")
+        storageSession().getItem(storageName) || storageSession().getItem(name)
     };
   },
   getters: {
@@ -18,12 +18,12 @@ export const useUserInfo = defineStore({
   actions: {
     setUserInfo(userInfo: object) {
       this.userInfo = userInfo;
-      storageSession().setItem("userInfo", userInfo);
+      storageSession().setItem(name, userInfo);
     }
   },
   persist: [
     {
-      paths: ["userInfo"],
+      paths: [name],
       storage: sessionStorage
     }
   ]
