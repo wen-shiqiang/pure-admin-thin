@@ -1,13 +1,17 @@
 import { defineStore } from "pinia";
-import { store, storageSession, storageNameSpace } from "../utils";
+import {
+  store,
+  storageSession,
+  storageNameSpace,
+  getItemFromStorage
+} from "../utils";
 const name = "userInfo";
 const storageName = `${storageNameSpace()}${name}`;
 export const useUserInfo = defineStore({
   id: storageName,
   state: () => {
     return {
-      userInfo:
-        storageSession().getItem(storageName) || storageSession().getItem(name)
+      userInfo: getItemFromStorage([storageName, name])
     };
   },
   getters: {

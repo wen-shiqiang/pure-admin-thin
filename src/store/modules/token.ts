@@ -1,13 +1,17 @@
 import { defineStore } from "pinia";
-import { store, storageSession, storageNameSpace } from "../utils";
+import {
+  store,
+  storageSession,
+  storageNameSpace,
+  getItemFromStorage
+} from "../utils";
 const name = "token";
 const storageName = `${storageNameSpace()}${name}`;
 export const useToken = defineStore({
   id: storageName,
   state: () => {
     return {
-      token:
-        storageSession().getItem(storageName) || storageSession().getItem(name)
+      token: getItemFromStorage([[storageName, name], name])
     };
   },
   getters: {

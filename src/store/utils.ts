@@ -4,7 +4,8 @@ export { router, resetRouter, constantMenus } from "@/router";
 export {
   getConfig,
   responsiveStorageNameSpace,
-  storageNameSpace
+  storageNameSpace,
+  getItemFromStorage
 } from "@/config";
 export {
   ascending,
