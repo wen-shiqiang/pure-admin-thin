@@ -51,6 +51,7 @@
     "nprogress": "^0.2.0",
     "path": "^0.12.7",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "pinyin-pro": "^3.23.0",
     "qs": "^6.12.2",
     "responsive-storage": "^2.2.0",
