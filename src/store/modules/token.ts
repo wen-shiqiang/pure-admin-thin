@@ -11,7 +11,7 @@ export const useToken = defineStore({
   id: storageName,
   state: () => {
     return {
-      token: getItemFromStorage([[storageName, name], name])
+      token: getItemFromStorage([[storageName, [name]], name])
     };
   },
   getters: {

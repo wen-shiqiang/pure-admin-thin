@@ -19,8 +19,7 @@ export const loginRun = () => {
   const schoolNum = route?.params?.schlId || "";
   const getUUID = async () => {
     try {
-      const { result } = await getUUIDApi();
-      return result;
+      return (await getUUIDApi()).result;
     } catch (error) {
       console.error("getUUID error", error);
       return null;
