@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch, inject } from "vue";
 import { useApiRequests } from "./request";
 import { storageSession, storageLocal } from "@pureadmin/utils";
 import { logoPng } from "./static";
@@ -9,14 +9,24 @@ import { useTokenStoreHook } from "@modules/token";
 import { useUserInfoStoreHook } from "@modules/userInfo";
 export const logoName = ref("");
 export const logoPath = ref("");
+export const schoolNum = ref("");
 export const captchaCodeImg = ref(null);
 export const ruleFormRef = ref<FormInstance>();
+
 export const loginRun = () => {
   const { getUUIDApi, getSchoolInfoApi, generateCodeApi, loginApi } =
     useApiRequests();
+  const reload = inject("reload", () => {});
   const route = useRoute();
   const router = useRouter();
-  const schoolNum = route?.params?.schlId || "";
+  watch(
+    () => route.fullPath,
+    () => {
+      reload();
+    }
+  );
+  const schlId = route?.params?.schlId || "";
+  const isLogin = route.name === "login";
   const getUUID = async () => {
     try {
       return (await getUUIDApi()).result;
@@ -53,7 +63,7 @@ export const loginRun = () => {
       console.error("getSchoolInfo error", error);
     }
   };
-  getSchoolInfo({ schoolNum });
+  getSchoolInfo({ schoolNum: schlId });
   const login = async params => {
     try {
       const { result } = await loginApi(params);
@@ -67,8 +77,9 @@ export const loginRun = () => {
     if (!formEl) return;
     await formEl.validate(async (valid, fields) => {
       if (valid) {
-        const form: any = { ...ruleForm, schoolNum };
+        const form: any = { ...ruleForm };
         form.password = md5(ruleForm.password);
+        form.schoolNum = isLogin ? schoolNum.value : schlId;
         userLogin(await login(form));
       } else {
         console.log("error submit!", fields);
@@ -157,6 +168,7 @@ export const loginRun = () => {
     getSchoolInfo,
     generateCode,
     login,
-    submitClick
+    submitClick,
+    isLogin
   };
 };

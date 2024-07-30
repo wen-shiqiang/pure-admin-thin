@@ -4,16 +4,17 @@ defineOptions({
 });
 import Motion from "./utils/motion";
 import { ref, reactive, onMounted, onBeforeUnmount, toRaw } from "vue";
-import { captchaCode, user, password } from "./utils/static";
+import { captchaCode, school, user, password } from "./utils/static";
 import {
   loginRun,
   logoName,
   logoPath,
   captchaCodeImg,
-  ruleFormRef
+  ruleFormRef,
+  schoolNum
 } from "./utils/index";
 import UserFooter from "./userFooter.vue";
-const { getUUID, generateCode, submitClick } = loginRun();
+const { getUUID, generateCode, submitClick, isLogin } = loginRun();
 
 const rules = {
   number: [
@@ -26,7 +27,6 @@ const rules = {
     { required: true, message: "请输入验证码", trigger: ["change", "blur"] }
   ]
 };
-
 const ruleForm: any = reactive({
   number: "",
   password: "",
@@ -66,6 +66,24 @@ onBeforeUnmount(() => {});
           class="login_right"
           label-width="0px"
         >
+          <Motion v-if="isLogin" :delay="100">
+            <el-form-item prop="schoolNumber">
+              <el-input
+                v-model="schoolNum"
+                class="login-input"
+                clearable
+                placeholder="学校编码"
+              >
+                <template v-slot:prefix>
+                  <component
+                    :is="toRaw(school)"
+                    fill="#9AABB9"
+                    class="ioc pr-[9px]"
+                  />
+                </template>
+              </el-input>
+            </el-form-item>
+          </Motion>
           <Motion :delay="100">
             <el-form-item prop="number">
               <el-input

@@ -28,7 +28,7 @@ import {
 import {
   type DataInfo,
   userKey,
-  removeToken,
+  // removeToken,
   multipleTabsKey
 } from "@/utils/auth";
 
@@ -208,12 +208,12 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
-        if (to.params?.schlId) {
-          next();
-        } else {
-          removeToken();
-          next({ path: "/login" });
-        }
+        // if (to.params?.schlId) {
+        next();
+        // } else {
+        //   removeToken();
+        //   next({ path: "/login" });
+        // }
       }
     } else {
       next();
