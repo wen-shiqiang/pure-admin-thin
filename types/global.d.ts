@@ -22,20 +22,20 @@ declare global {
     lastBuildTime: string;
   };
   interface mmsType {
-    ENV: string;
-    requstUrl: string;
-    basePage: string;
-    emailUrl: string;
-    unifyWeb: string;
-    mmsQueWeb: string;
-    unifyApi: string;
-    unifyMmsWeb: string;
-    imgUrl: string;
-    unifyObeWeb: string;
-    csgmooc: string;
-    socketIoApi: string;
-    coverConfigWebUrl: string;
-    thirdPartyLibraryUrl: string;
+    ENV?: string;
+    requstUrl?: string;
+    basePage?: string;
+    emailUrl?: string;
+    unifyWeb?: string;
+    mmsQueWeb?: string;
+    unifyApi?: string;
+    unifyMmsWeb?: string;
+    imgUrl?: string;
+    unifyObeWeb?: string;
+    csgmooc?: string;
+    socketIoApi?: string;
+    coverConfigWebUrl?: string;
+    thirdPartyLibraryUrl?: string;
   }
   /**
    * Window 的类型提示
