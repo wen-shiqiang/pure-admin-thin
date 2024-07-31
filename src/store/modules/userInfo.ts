@@ -1,10 +1,5 @@
 import { defineStore } from "pinia";
-import {
-  store,
-  storageSession,
-  storageNameSpace,
-  getItemFromStorage
-} from "../utils";
+import { store, storageNameSpace, getItemFromStorage } from "../utils";
 const name = "userInfo";
 const storageName = `${storageNameSpace()}${name}`;
 export const useUserInfo = defineStore({
@@ -22,7 +17,6 @@ export const useUserInfo = defineStore({
   actions: {
     setUserInfo(userInfo: object) {
       this.userInfo = userInfo;
-      storageSession().setItem(name, userInfo);
     }
   },
   persist: [

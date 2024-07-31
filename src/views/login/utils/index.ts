@@ -7,6 +7,7 @@ import { md5 } from "js-md5";
 import { useRoute, useRouter } from "vue-router";
 import { useTokenStoreHook } from "@modules/token";
 import { useUserInfoStoreHook } from "@modules/userInfo";
+import { useCategoryByPageStoreHook } from "@modules/categoryByPage";
 export const logoName = ref("");
 export const logoPath = ref("");
 export const schoolNum = ref("");
@@ -67,9 +68,11 @@ export const loginRun = () => {
   const login = async params => {
     try {
       const { result } = await loginApi(params);
+      result.uuid = params.uuid;
       return result;
     } catch (error) {
       console.error("login error", error);
+      generateCode(params.uuid);
       return null;
     }
   };
@@ -91,7 +94,7 @@ export const loginRun = () => {
       if (!result) {
         throw new Error("Login result is null or undefined");
       }
-      const { token, headMenu, userInfo, menuList } = result;
+      const { token, headMenu, userInfo, menuList, buttonList } = result;
       if (!menuList?.length) {
         router.push("/user/emptyState");
         storageSession().setItem("isShowBtn", false);
@@ -104,61 +107,49 @@ export const loginRun = () => {
       }
       useTokenStoreHook().setToken(token);
       useUserInfoStoreHook().setUserInfo(userInfo);
-      // storageSession().setItem("token", token);
       storageSession().setItem("headMenu", headMenu);
-      // storageSession().setItem("mms-userInfo", userInfo);
-      //   // store.commit("tokenChange");
-      //   if (!data.data.result.menuList?.length) {
-      //     router.push("/user/emptyState");
-      //     mUtils.setseStore("isShowBtn", false);
-      //   }
-      //   if (data.data.result.menuList.length > 0) {
-      //     data.data.result.headMenu.forEach(item => {
-      //       if (item.menuName == "审批") {
-      //         mUtils.setseStore("menusp", item.childMenu);
-      //       }
-      //     });
-      //     if (data.data.result.menuList[0].menuUrl) {
-      //       router.push(data.data.result.menuList[0].menuUrl);
-      //     } else {
-      //       data.data.result.menuList.forEach(item => {
-      //         if (item.menuType == 2) {
-      //           mUtils.setseStore("majNav", item.childMenu);
-      //         }
-      //       });
-      //       router.push(data.data.result.menuList[0].childMenu[0].menuUrl);
-      //     }
-      //     mUtils.setseStore("isShowBtn", true);
-      //   }
-      //   getMenuByUserId();
-      //   const breadcrumbArr = {};
-      //   data.data.result.menuList.forEach(item => {
-      //     if (item.menuUrl) {
-      //       item.breadcrumb = item.menuName;
-      //       breadcrumbArr[item.menuUrl] = [item.breadcrumb];
-      //     } else {
-      //       item.childMenu.forEach(item1 => {
-      //         item1.breadcrumb = [item.menuName, item1.menuName];
-      //         breadcrumbArr[item1.menuUrl] = item1.breadcrumb;
-      //       });
-      //     }
-      //   });
-      //   mUtils.setseStore("menuList", data.data.result.menuList);
-      //   mUtils.setseStore("buttonList", data.data.result.buttonList || []);
-      //   if (data.data.result.headMenu.length > 0) {
-      //     data.data.result.headMenu.forEach(item => {
-      //       if (item.menuUrl) {
-      //         item.breadcrumb = item.menuName;
-      //         breadcrumbArr[item.menuUrl] = item.breadcrumb;
-      //       } else {
-      //         item.childMenu.forEach(item1 => {
-      //           item1.breadcrumb = `${item.menuName} / ${item1.menuName}`;
-      //           breadcrumbArr[item1.menuUrl] = item1.breadcrumb;
-      //         });
-      //       }
-      //     });
-      //   }
-      //   mUtils.setseStore("breadcrumbArr", breadcrumbArr);
+      if (menuList?.length) {
+        if (menuList[0].menuUrl) {
+          router.push(menuList[0].menuUrl);
+        } else {
+          menuList.forEach(item => {
+            if (item.menuType == 2) {
+              storageSession().setItem("majNav", item.childMenu);
+            }
+          });
+          router.push(menuList[0].childMenu[0].menuUrl);
+        }
+        storageSession().setItem("isShowBtn", true);
+      }
+      const breadcrumbArr = {};
+      menuList.forEach(item => {
+        if (item.menuUrl) {
+          item.breadcrumb = item.menuName;
+          breadcrumbArr[item.menuUrl] = [item.breadcrumb];
+        } else {
+          item.childMenu.forEach(item1 => {
+            item1.breadcrumb = [item.menuName, item1.menuName];
+            breadcrumbArr[item1.menuUrl] = item1.breadcrumb;
+          });
+        }
+      });
+      storageSession().setItem("menuList", menuList);
+      storageSession().setItem("buttonList", buttonList);
+      if (headMenu.length) {
+        headMenu.forEach(item => {
+          if (item.menuUrl) {
+            item.breadcrumb = item.menuName;
+            breadcrumbArr[item.menuUrl] = item.breadcrumb;
+          } else {
+            item.childMenu.forEach(item1 => {
+              item1.breadcrumb = `${item.menuName} / ${item1.menuName}`;
+              breadcrumbArr[item1.menuUrl] = item1.breadcrumb;
+            });
+          }
+        });
+      }
+      storageSession().setItem("breadcrumbArr", breadcrumbArr);
+      useCategoryByPageStoreHook().getDateCategoryByPage();
     } catch (error) {
       console.error("userLogin error", error);
     }

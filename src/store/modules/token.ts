@@ -6,7 +6,7 @@ import {
   getItemFromStorage
 } from "../utils";
 const name = "token";
-const storageName = `${storageNameSpace()}${name}`;
+const storageName = `${storageNameSpace() || "mms-"}${name}`;
 export const useToken = defineStore({
   id: storageName,
   state: () => {
