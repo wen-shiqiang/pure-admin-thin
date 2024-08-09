@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isEqual } from "@pureadmin/utils";
+import { isEqual, storageSession } from "@pureadmin/utils";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, toRaw } from "vue";
 import { getParentPaths, findRouteByPath } from "@/router/utils";
@@ -44,7 +44,6 @@ const getBreadcrumb = (): void => {
   parentRoutes.forEach(path => {
     if (path !== "/") matched.push(findRouteByPath(path, routes));
   });
-  console.log("🚀  file: SidebarBreadCrumb.vue:67  currentRoute", currentRoute);
   matched.push(currentRoute);
 
   matched.forEach((item, index) => {
@@ -57,12 +56,15 @@ const getBreadcrumb = (): void => {
       });
     }
   });
-  console.log("🚀  file: SidebarBreadCrumb.vue:51  matched", matched);
-
-  levelList.value = matched.filter(
-    item => item?.meta && item?.meta.title !== false
-  );
-  console.log("levelList.value", levelList.value);
+  const currentBreadcrumbArr =
+    storageSession().getItem("breadcrumbArr")[currentRoute.path] || [];
+  levelList.value = matched.filter((item, index) => {
+    if (item?.meta && item?.meta.title !== false) {
+      currentBreadcrumbArr[index] &&
+        (item.meta.title = currentBreadcrumbArr[index]);
+      return item;
+    }
+  });
 };
 
 const handleLink = item => {
@@ -109,14 +111,17 @@ watch(
   <el-breadcrumb class="!leading-[50px] select-none" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item
-        v-for="item in levelList"
+        v-for="(item, i) in levelList"
         :key="item.path"
         class="!inline !items-stretch"
       >
-        <a v-if="item.path !== '/admin'" @click.prevent="handleLink(item)">
+        <a
+          v-if="item.meta.breadcrumb && i !== levelList.length - 1"
+          @click.prevent="handleLink(item)"
+        >
           {{ item.meta.title }}
         </a>
-        <span v-else>{{ item.meta.title }}</span>
+        <template v-else>{{ item.meta.title }}</template>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

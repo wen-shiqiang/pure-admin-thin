@@ -9,7 +9,8 @@ export default {
   meta: {
     icon: "ep:home-filled",
     title: "修订管理",
-    rank: 0
+    rank: 0,
+    breadcrumb: false
   },
   children: [
     {
@@ -17,7 +18,8 @@ export default {
       name: "selectTemplate",
       component: () => import("@/views/index/index.vue"),
       meta: {
-        title: "修订模板"
+        title: "修订模板",
+        breadcrumb: true
         // showLink: VITE_HIDE_HOME === "true" ? false : true
         // keepAlive: false,
         // activePath: "/admin/selectTemplate",

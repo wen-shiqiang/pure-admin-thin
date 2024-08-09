@@ -27,7 +27,7 @@ export default {
       component: () => import("@/views/index/index.vue"),
       meta: {
         title: "主页",
-        showLink: VITE_HIDE_HOME === "true" ? false : true
+        breadcrumb: false
         // keepAlive: false,
         // activePath: "/admin/index",
         // activeMenu: "/admin/index"
