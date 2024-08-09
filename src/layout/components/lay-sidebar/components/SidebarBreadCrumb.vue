@@ -44,7 +44,7 @@ const getBreadcrumb = (): void => {
   parentRoutes.forEach(path => {
     if (path !== "/") matched.push(findRouteByPath(path, routes));
   });
-
+  console.log("🚀  file: SidebarBreadCrumb.vue:67  currentRoute", currentRoute);
   matched.push(currentRoute);
 
   matched.forEach((item, index) => {
@@ -57,10 +57,12 @@ const getBreadcrumb = (): void => {
       });
     }
   });
+  console.log("🚀  file: SidebarBreadCrumb.vue:51  matched", matched);
 
   levelList.value = matched.filter(
     item => item?.meta && item?.meta.title !== false
   );
+  console.log("levelList.value", levelList.value);
 };
 
 const handleLink = item => {
@@ -111,9 +113,10 @@ watch(
         :key="item.path"
         class="!inline !items-stretch"
       >
-        <a @click.prevent="handleLink(item)">
+        <a v-if="item.path !== '/admin'" @click.prevent="handleLink(item)">
           {{ item.meta.title }}
         </a>
+        <span v-else>{{ item.meta.title }}</span>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>

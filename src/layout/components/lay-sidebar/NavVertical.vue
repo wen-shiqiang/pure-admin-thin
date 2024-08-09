@@ -3,7 +3,12 @@ import { useRoute } from "vue-router";
 import { emitter } from "@/utils/mitt";
 import { useNav } from "@/layout/hooks/useNav";
 import { responsiveStorageNameSpace } from "@/config";
-import { storageLocal, isAllEmpty, useGlobal } from "@pureadmin/utils";
+import {
+  storageLocal,
+  isAllEmpty,
+  useGlobal,
+  storageSession
+} from "@pureadmin/utils";
 import { findRouteByPath, getParentPaths } from "@/router/utils";
 import { usePermissionStoreHook } from "@/store/modules/permission";
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
@@ -33,10 +38,11 @@ const {
 
 const subMenuData = ref([]);
 
-const menuData = computed(() => {
-  return pureApp.layout === "mix" && device.value !== "mobile"
-    ? subMenuData.value
-    : usePermissionStoreHook().wholeMenus;
+const menuData: any = computed(() => {
+  return storageSession().getItem("menuList");
+  // return pureApp.layout === "mix" && device.value !== "mobile"
+  // ? subMenuData.value
+  // : usePermissionStoreHook().wholeMenus;
 });
 
 const loading = computed(() =>

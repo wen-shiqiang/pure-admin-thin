@@ -19,8 +19,10 @@ import "./style/index.scss";
 import "./style/tailwind.css";
 import "element-plus/dist/index.css";
 // 导入字体图标
-import "./assets/iconfont/iconfont.js";
-import "./assets/iconfont/iconfont.css";
+import "./assets/fonts/font/iconfont.js";
+import "./assets/fonts/font/iconfont.css";
+import "./assets/fonts/fontOld/iconfont.js";
+import "./assets/fonts/fontOld/iconfont.css";
 
 const app = createApp(App);
 import { useRequestDevToolsPlugin } from "vue-hooks-plus";

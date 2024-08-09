@@ -6,7 +6,7 @@ window.mms = {
   // requstUrl: 'http://192.168.31.232:9091/', // 后台接口地址 吴
   // requstUrl: 'http://192.168.10.56:8089/', // 后台接口地址
   // requstUrl: 'https://www.csgmooc.com/dbMmsv2api/', // 后台接口地址
-  requstUrl: "http://192.168.10.18:9093/",
+  requstUrl: "http://192.168.10.18:9091/",
   // requstUrl: 'http://192.168.50.15:9093/', // 徐磊后台
   // requstUrl: 'http://192.168.40.30:19001/', // 刘彦辉后台
   basePage: "http://192.168.30.27:4000/", // 静态文件地址

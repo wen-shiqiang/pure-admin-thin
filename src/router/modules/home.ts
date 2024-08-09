@@ -20,6 +20,18 @@ export default {
         title: "首页",
         showLink: VITE_HIDE_HOME === "true" ? false : true
       }
+    },
+    {
+      path: "/admin/index",
+      name: "MyIndex",
+      component: () => import("@/views/index/index.vue"),
+      meta: {
+        title: "主页",
+        showLink: VITE_HIDE_HOME === "true" ? false : true
+        // keepAlive: false,
+        // activePath: "/admin/index",
+        // activeMenu: "/admin/index"
+      }
     }
   ]
 } satisfies RouteConfigsTable;

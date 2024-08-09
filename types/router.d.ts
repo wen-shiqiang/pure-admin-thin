@@ -56,6 +56,7 @@ declare global {
      * 而通过设置`activePath`指定激活菜单即可获得高亮，`activePath`为指定激活菜单的`path`）
      */
     activePath?: string;
+    activeMenu?: string;
   }
 
   /**

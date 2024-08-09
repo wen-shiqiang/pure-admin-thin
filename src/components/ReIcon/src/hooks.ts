@@ -9,7 +9,7 @@ import { IconifyIconOnline, IconifyIconOffline, FontIcon } from "../index";
  * @param attrs 可选 iconType 属性
  * @returns Component
  */
-export function useRenderIcon(icon: any, attrs?: iconType): Component {
+export function useRenderIcon(icon: any, attrs?: iconType | any): Component {
   // iconfont
   const ifReg = /^IF-/;
   // typeof icon === "function" 属于SVG
@@ -45,6 +45,17 @@ export function useRenderIcon(icon: any, attrs?: iconType): Component {
       }
     });
   } else {
+    if (attrs === 1) {
+      return defineComponent({
+        name: "FontIcon",
+        render() {
+          return h(FontIcon, {
+            icon: icon,
+            ...attrs
+          });
+        }
+      });
+    }
     // 通过是否存在 : 符号来判断是在线还是本地图标，存在即是在线图标，反之
     return defineComponent({
       name: "Icon",

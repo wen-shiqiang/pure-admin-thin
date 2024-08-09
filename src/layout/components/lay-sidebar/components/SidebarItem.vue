@@ -127,7 +127,8 @@ function resolvePath(routePath) {
           :is="
             useRenderIcon(
               toRaw(onlyOneChild.meta.icon) ||
-                (item.meta && toRaw(item.meta.icon))
+                (item.meta && toRaw(item.meta.icon)),
+              1
             )
           "
         />
@@ -136,7 +137,7 @@ function resolvePath(routePath) {
         v-if="
           (!item?.meta.icon &&
             isCollapse &&
-            (layout === 'vertical' || layout === 'mmsVertical') &&
+            layout === 'vertical' &&
             item?.pathList?.length === 1) ||
           (!onlyOneChild.meta.icon &&
             isCollapse &&
@@ -178,19 +179,20 @@ function resolvePath(routePath) {
         :style="getSubMenuIconStyle"
         class="sub-menu-icon"
       >
-        <component :is="useRenderIcon(item.meta && toRaw(item.meta.icon))" />
+        <component :is="useRenderIcon(item.meta && toRaw(item.meta.icon), 1)" />
       </div>
-      <ReText
-        v-if="
+      <!-- v-if="
           layout === 'mix' && toRaw(item.meta.icon)
             ? !isCollapse || item?.pathList?.length !== 2
             : !(
-                (layout === 'vertical' || layout === 'mmsVertical') &&
+                layout === 'vertical' &&
                 isCollapse &&
                 toRaw(item.meta.icon) &&
                 item.parentId === null
               )
-        "
+        " -->
+      <ReText
+        v-if="!isCollapse"
         :tippyProps="{
           offset: [0, -10],
           theme: tooltipEffect

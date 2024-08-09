@@ -8,6 +8,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useTokenStoreHook } from "@modules/token";
 import { useUserInfoStoreHook } from "@modules/userInfo";
 import { useCategoryByPageStoreHook } from "@modules/categoryByPage";
+import { setToken } from "@/utils/auth";
 export const logoName = ref("");
 export const logoPath = ref("");
 export const schoolNum = ref("");
@@ -108,31 +109,48 @@ export const loginRun = () => {
       useTokenStoreHook().setToken(token);
       useUserInfoStoreHook().setUserInfo(userInfo);
       storageSession().setItem("headMenu", headMenu);
-      if (menuList?.length) {
-        if (menuList[0].menuUrl) {
-          router.push(menuList[0].menuUrl);
-        } else {
-          menuList.forEach(item => {
-            if (item.menuType == 2) {
-              storageSession().setItem("majNav", item.childMenu);
-            }
-          });
-          router.push(menuList[0].childMenu[0].menuUrl);
-        }
-        storageSession().setItem("isShowBtn", true);
-      }
+      setToken({
+        username: userInfo.number,
+        roles: ["admin"],
+        accessToken: token
+      } as any);
       const breadcrumbArr = {};
-      menuList.forEach(item => {
+      menuList.forEach((item, mi) => {
+        item.meta = {
+          // icon: item.menuIcon?.split(" ")[1] || "",
+          icon: item.menuIcon || "",
+          menu: 1,
+          title: item.menuName
+        };
+        item.path = item.menuUrl ?? `/path${mi}`;
         if (item.menuUrl) {
           item.breadcrumb = item.menuName;
           breadcrumbArr[item.menuUrl] = [item.breadcrumb];
         } else {
           item.childMenu.forEach(item1 => {
+            item1.path = item1.menuUrl;
             item1.breadcrumb = [item.menuName, item1.menuName];
             breadcrumbArr[item1.menuUrl] = item1.breadcrumb;
+            item1.meta = {
+              icon: "",
+              menu: 1,
+              title: item1.menuName
+            };
           });
+          item.children = item.childMenu;
         }
       });
+      if (menuList[0].menuUrl) {
+        router.push(menuList[0].menuUrl);
+      } else {
+        menuList.forEach(item => {
+          if (item.menuType == 2) {
+            storageSession().setItem("majNav", item.childMenu);
+          }
+        });
+        router.push(menuList[0].childMenu[0].menuUrl);
+      }
+      storageSession().setItem("isShowBtn", true);
       storageSession().setItem("menuList", menuList);
       storageSession().setItem("buttonList", buttonList);
       if (headMenu.length) {
