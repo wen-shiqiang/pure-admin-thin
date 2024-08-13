@@ -1,10 +1,3 @@
-<!--
- * @Author: wsq
- * @Date: 2024-08-01
- * @FilePath: /pure-admin-thin1/src/views/index/template/SchoolData.vue
- * @Description: 全校培养方案概览
--->
-
 <script setup lang="ts">
 defineOptions({
   name: "SchoolData"

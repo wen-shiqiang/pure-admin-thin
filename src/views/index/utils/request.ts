@@ -2,7 +2,9 @@ import {
   getUserMsg,
   getMjrStandYear,
   getReviseNoticeByYear,
-  getAllSchoolData
+  getAllSchoolData,
+  getDeptInfoByCondition,
+  getMjrStandardByCond
 } from "@/api";
 import { useRequest } from "vue-hooks-plus";
 export const useApiRequests = () => {
@@ -27,7 +29,21 @@ export const useApiRequests = () => {
   const { runAsync: getAllSchoolDataApi } = useRequest(
     (params: any) => getAllSchoolData(params),
     {
-      debugKey: "getReviseNoticeByYear",
+      debugKey: "getAllSchoolData",
+      manual: true
+    }
+  );
+  const { runAsync: getDeptInfoByConditionApi } = useRequest(
+    (params: any) => getDeptInfoByCondition(params),
+    {
+      debugKey: "getDeptInfoByCondition",
+      manual: true
+    }
+  );
+  const { runAsync: getMjrStandardByCondApi } = useRequest(
+    (params: any) => getMjrStandardByCond(params),
+    {
+      debugKey: "getDeptInfoByCondition",
       manual: true
     }
   );
@@ -36,6 +52,8 @@ export const useApiRequests = () => {
     getUserMsgApi,
     getMjrStandYearApi,
     getReviseNoticeByYearApi,
-    getAllSchoolDataApi
+    getAllSchoolDataApi,
+    getDeptInfoByConditionApi,
+    getMjrStandardByCondApi
   };
 };

@@ -48,3 +48,21 @@ export const getAllSchoolData = (params?: object) => {
     }
   );
 };
+/** 获取院系数据分析 */
+export const getDeptInfoByCondition = (data?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getDeptInfoByCondition",
+    {
+      data
+    }
+  );
+};
+/** 获取我的专业 */
+export const getMjrStandardByCond = (data?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getMjrStandardByCond",
+    {
+      data
+    }
+  );
+};

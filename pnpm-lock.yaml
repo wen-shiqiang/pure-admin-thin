@@ -17,6 +17,9 @@ importers:
       '@pureadmin/utils':
         specifier: ^2.4.7
         version: 2.4.7(echarts@5.5.1)(vue@3.4.31(typescript@5.5.3))
+      '@vue-hooks-plus/use-immer':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@vueuse/core':
         specifier: ^10.11.0
         version: 10.11.0(vue@3.4.31(typescript@5.5.3))
@@ -1109,6 +1112,9 @@ packages:
   '@volar/typescript@2.4.0-alpha.12':
     resolution: {integrity: sha512-mLg+OQauMTv/+08a7WBWJo1sev/wc8t2is0zhBZIlFU+j5mG89FM4+4089c2p/zoUFZ400Q/VNg2BPfhpZ8wSA==}
 
+  '@vue-hooks-plus/use-immer@1.0.0':
+    resolution: {integrity: sha512-E8dmN3216kczQrAY7nmYq9BaTY1Tia+IG5EtsYKyL6VeuoV38jkeoA5g9g8qVMzk2bj5pwun3IRw7tdmIj9YZw==}
+
   '@vue/babel-helper-vue-transform-on@1.2.2':
     resolution: {integrity: sha512-nOttamHUR3YzdEqdM/XXDyCSdxMA9VizUKoroLX6yTyRtggzQMHXcmwh8a7ZErcJttIBIc9s68a1B8GZ+Dmvsw==}
 
@@ -2013,6 +2019,9 @@ packages:
 
   immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+
+  immer@9.0.21:
+    resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
 
   immutable@4.3.6:
     resolution: {integrity: sha512-Ju0+lEMyzMVZarkTn/gqRpdqd5dOPaz1mCZ0SH3JV6iFw81PldE/PEB1hWVEA288HPt4WXW8O7AWxB10M+03QQ==}
@@ -4438,6 +4447,10 @@ snapshots:
       path-browserify: 1.0.1
       vscode-uri: 3.0.8
 
+  '@vue-hooks-plus/use-immer@1.0.0':
+    dependencies:
+      immer: 9.0.21
+
   '@vue/babel-helper-vue-transform-on@1.2.2': {}
 
   '@vue/babel-plugin-jsx@1.2.2(@babel/core@7.24.7)':
@@ -5574,6 +5587,8 @@ snapshots:
   ignore@5.3.1: {}
 
   immediate@3.0.6: {}
+
+  immer@9.0.21: {}
 
   immutable@4.3.6: {}
 

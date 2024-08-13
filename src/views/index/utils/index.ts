@@ -1,6 +1,7 @@
-import { ref, reactive, nextTick, watch, h, onBeforeUnmount } from "vue";
+import { ref, watch, h, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
 import { useApiRequests } from "./request";
-import { storageSession, storageLocal, isAllEmpty } from "@pureadmin/utils";
+import { isAllEmpty } from "@pureadmin/utils";
 import { ElNotification, ElButton } from "element-plus";
 import { useSetState } from "vue-hooks-plus";
 import dayjs from "dayjs";
@@ -9,6 +10,7 @@ export const year = ref(dayjs().year());
 export const indexRun = () => {
   const { getUserMsgApi, getMjrStandYearApi, getReviseNoticeByYearApi } =
     useApiRequests();
+  const router = useRouter();
   const [noticeInfo, setNoticeInfo] = useSetState<any>({});
   const [years, setYears] = useSetState<any>([]);
   const statusMap = {
@@ -58,13 +60,54 @@ export const indexRun = () => {
   const showNotification = title => {
     ElNotification.closeAll();
     ElNotification({
-      // title: "修订通知",
+      title: "",
       customClass: "userMsgNotification",
       showClose: false,
       message: notificationMessage(title),
       duration: 0,
-      // offset: 180,
-      // zIndex: 1
+      offset: 39
+    });
+  };
+  const notificationMessage = title => {
+    return h(
+      "div",
+      {
+        class: "w-full flex justify-between items-center"
+      },
+      [
+        h(
+          "div",
+          {
+            class: "text-right"
+          },
+          [
+            h("i", {
+              class: "mms-iconfont iconwodexiaoxi text-[#fa8c16] mr-[10px]"
+            }),
+            title
+          ]
+        ),
+        h(
+          ElButton,
+          {
+            type: "text",
+            class: "ml-[20px]",
+            onClick: receiveNotice
+          },
+          "接收通知"
+        )
+      ]
+    );
+  };
+  const receiveNotice = () => {
+    console.log("Button clicked!");
+    console.log(noticeInfo.value);
+
+    router.push({
+      path: "/admin/notice/detail",
+      query: {
+        id: noticeInfo.value?.id
+      }
     });
   };
   watch(
@@ -79,44 +122,13 @@ export const indexRun = () => {
   });
   return {
     getUserMsg,
-    changeYear,
     getReviseNoticeByYear,
     noticeInfo,
     years,
     revise
   };
 };
-const notificationMessage = title => {
-  return h(
-    "div",
-    {
-      class: "w-full"
-    },
-    [
-      h("i", {
-        class: "mms-iconfont iconwodexiaoxi text-[#fa8c16] mr-[10px]"
-      }),
-      title,
-      h(
-        "div",
-        {
-          class: "text-right"
-        },
-        h(
-          ElButton,
-          {
-            type: "text",
-            onClick: handleButtonClick
-          },
-          "接收通知"
-        )
-      )
-    ]
-  );
-};
-const handleButtonClick = () => {
-  console.log("Button clicked!");
-};
+
 /**
  * @description: 年份改变
  * @param {*} yearValue 年份

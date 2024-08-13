@@ -2,8 +2,9 @@
 defineOptions({
   name: "MyIndex"
 });
+import { onMounted } from "vue";
 import schoolData from "./template/SchoolData.vue";
-// import DeptData from "./components/DeptData.vue";
+import deptData from "./template/DeptData.vue";
 // import MajorData from "./components/MajorData.vue";
 // import CourseData from "./components/CourseData.vue";
 // import SchoolProcess from "./components/SchoolProcess.vue";
@@ -39,7 +40,6 @@ const setQuery = () => {
 
 <template>
   <div class="my-index !m-0">
-    <!-- 修订期限 -->
     <div class="revise-time">
       <div class="flex items-center">
         <span class="mr-3">{{ revise.content }}</span>
@@ -73,7 +73,7 @@ const setQuery = () => {
     <schoolData :year="year" />
 
     <!-- 院系数据分析 -->
-    <!-- <dept-data :year="year" /> -->
+    <deptData :year="year" />
 
     <!-- 我的专业 -->
     <!-- <major-data :year="year" /> -->
@@ -93,7 +93,12 @@ const setQuery = () => {
   border: 1px solid #ffe28d;
   background: #fffaeb;
   box-shadow: 0 0 2px #ffe28d;
-  padding: 10px 0;
+  padding: 6px 0;
+  min-width: 330px;
+  width: auto;
+  &.right {
+    right: 0;
+  }
   .el-notification__group {
     width: 100%;
   }
