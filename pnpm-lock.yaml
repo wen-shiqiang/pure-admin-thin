@@ -81,8 +81,8 @@ importers:
         specifier: ^3.4.31
         version: 3.4.31(typescript@5.5.3)
       vue-hooks-plus:
-        specifier: ^2.2.0
-        version: 2.2.0(vue@3.4.31(typescript@5.5.3))
+        specifier: ^2.2.1
+        version: 2.2.1(vue@3.4.31(typescript@5.5.3))
       vue-router:
         specifier: ^4.4.0
         version: 4.4.0(vue@3.4.31(typescript@5.5.3))
@@ -3532,8 +3532,8 @@ packages:
     peerDependencies:
       eslint: '>=6.0.0'
 
-  vue-hooks-plus@2.2.0:
-    resolution: {integrity: sha512-Zad8X7hsddVGtNizYVeAFp35N8Y82IOrwWfy1GgkOZwg/hhYs/oEjPBtTU6FV4fOGEpJ7trP2MffRO5J1iohHw==}
+  vue-hooks-plus@2.2.1:
+    resolution: {integrity: sha512-YfZ+xwzeoTXpuXrCwu4zOe2kmc3hcOxD3eY9eoc5r+T8grCMQl25li0W9o8uY1/UA75sgLcE6B7KfKd2e3OURg==}
     peerDependencies:
       vue: ^3.2.25
 
@@ -7082,7 +7082,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-hooks-plus@2.2.0(vue@3.4.31(typescript@5.5.3)):
+  vue-hooks-plus@2.2.1(vue@3.4.31(typescript@5.5.3)):
     dependencies:
       '@types/js-cookie': 3.0.6
       '@vue/devtools-api': 6.6.3
