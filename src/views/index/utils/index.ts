@@ -4,6 +4,7 @@ import { useApiRequests } from "./request";
 import { isAllEmpty } from "@pureadmin/utils";
 import { ElNotification, ElButton } from "element-plus";
 import { useSetState } from "vue-hooks-plus";
+import type { Title, YearParams } from "./types";
 import dayjs from "dayjs";
 export const year = ref(dayjs().year());
 
@@ -12,7 +13,7 @@ export const indexRun = () => {
     useApiRequests();
   const router = useRouter();
   const [noticeInfo, setNoticeInfo] = useSetState<any>({});
-  const [years, setYears] = useSetState<any>([]);
+  const [years, setYears] = useSetState<Array<number>>([]);
   const statusMap = {
     0: { tag: "warning", text: "未开始" },
     1: { tag: "primary", text: "进行中" },
@@ -23,7 +24,7 @@ export const indexRun = () => {
     showTagTextFun: (status: number) =>
       statusMap[status]?.text || statusMap[0]?.text
   });
-  const getReviseNoticeByYear = async params => {
+  const getReviseNoticeByYear = async (params: YearParams) => {
     try {
       const { result } = (await getReviseNoticeByYearApi(params)) || {};
       setRevise({ ...revise.value, ...result });
@@ -41,12 +42,12 @@ export const indexRun = () => {
     }
   };
   getMjrStandYear();
-  const getUserMsg = async params => {
-    setNoticeInfo({});
-    ElNotification?.closeAll();
+  const getUserMsg = async (params: YearParams) => {
     try {
       const { result } = await getUserMsgApi(params);
       if (isAllEmpty(result)) {
+        ElNotification?.closeAll();
+        setNoticeInfo({});
         return;
       }
       const { id, title } = result;
@@ -57,8 +58,8 @@ export const indexRun = () => {
     }
   };
   getUserMsg({ year: year.value });
-  const showNotification = title => {
-    ElNotification.closeAll();
+  const showNotification = (title: Title): void => {
+    ElNotification?.closeAll();
     ElNotification({
       title: "",
       customClass: "userMsgNotification",
@@ -68,7 +69,7 @@ export const indexRun = () => {
       offset: 39
     });
   };
-  const notificationMessage = title => {
+  const notificationMessage = (title: Title) => {
     return h(
       "div",
       {
@@ -90,19 +91,19 @@ export const indexRun = () => {
         h(
           ElButton,
           {
-            type: "text",
+            link: true,
+            type: "primary",
             class: "ml-[20px]",
             onClick: receiveNotice
           },
-          "接收通知"
+          {
+            default: () => "接收通知"
+          }
         )
       ]
     );
   };
-  const receiveNotice = () => {
-    console.log("Button clicked!");
-    console.log(noticeInfo.value);
-
+  const receiveNotice = (): void => {
     router.push({
       path: "/admin/notice/detail",
       query: {
@@ -134,6 +135,6 @@ export const indexRun = () => {
  * @param {*} yearValue 年份
  * @return {*}
  */
-export const changeYear = (yearValue: number) => {
+export const changeYear = (yearValue: number): void => {
   year.value = yearValue;
 };

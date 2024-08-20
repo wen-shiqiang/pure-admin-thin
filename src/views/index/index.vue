@@ -2,7 +2,7 @@
 defineOptions({
   name: "MyIndex"
 });
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import schoolData from "./template/SchoolData.vue";
 import deptData from "./template/DeptData.vue";
 // import MajorData from "./components/MajorData.vue";
@@ -13,6 +13,7 @@ import deptData from "./template/DeptData.vue";
 import arrowDown from "@iconify-icons/ep/arrow-down";
 import { indexRun, year, changeYear } from "./utils/index";
 const { years, revise } = indexRun();
+const visible = ref(false);
 const getQuery = (path = null) => {
   //   const searchQuery = path || this.getSearchQuery(this.$route.path) || {};
   //   if (!XEUtils.isEmpty(searchQuery)) {
@@ -48,11 +49,23 @@ const setQuery = () => {
         </el-tag>
       </div>
       <div class="revise-time-select">
-        <el-dropdown trigger="hover" @command="changeYear">
+        <el-dropdown
+          trigger="hover"
+          @command="changeYear"
+          @visible-change="
+            () => {
+              visible = !visible;
+            }
+          "
+        >
           <div class="flex items-center">
             <i class="mms-iconfont iconriqi mr-[6px]" />
             {{ year }}
-            <IconifyIconOffline class="ml-[6px]" :icon="arrowDown" />
+            <IconifyIconOffline
+              class="ml-[6px] transition-all duration-300"
+              :class="{ 'rotate-[-180deg]': visible }"
+              :icon="arrowDown"
+            />
           </div>
           <template #dropdown>
             <el-dropdown-menu>

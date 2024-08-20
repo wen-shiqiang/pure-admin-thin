@@ -3,6 +3,7 @@
   src: url('iconfont.woff2?t=1715332901687') format('woff2'),
        url('iconfont.woff?t=1715332901687') format('woff'),
        url('iconfont.ttf?t=1715332901687') format('truetype');
+  font-display: swap; /* 使用 font-display 属性 */
 }
 
 .mms-iconfont {

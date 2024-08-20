@@ -38,3 +38,7 @@ function useSetState<S extends Record<string, any>>(
 }
 
 export default useSetState;
+export type Title = string | number;
+export interface YearParams {
+  year: string | number;
+}
