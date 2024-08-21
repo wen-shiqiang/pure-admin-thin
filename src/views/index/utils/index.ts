@@ -4,7 +4,7 @@ import { useApiRequests } from "./request";
 import { isAllEmpty } from "@pureadmin/utils";
 import { ElNotification, ElButton } from "element-plus";
 import { useSetState } from "vue-hooks-plus";
-import type { Title, YearParams } from "./types";
+import type { Title, YearParams } from "./types.d";
 import dayjs from "dayjs";
 export const year = ref(dayjs().year());
 
@@ -66,7 +66,7 @@ export const indexRun = () => {
       showClose: false,
       message: notificationMessage(title),
       duration: 0,
-      offset: 39
+      offset: 38
     });
   };
   const notificationMessage = (title: Title) => {

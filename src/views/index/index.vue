@@ -5,7 +5,7 @@ defineOptions({
 import { ref, onMounted } from "vue";
 import schoolData from "./template/SchoolData.vue";
 import deptData from "./template/DeptData.vue";
-// import MajorData from "./components/MajorData.vue";
+import MajorData from "./template/MajorData.vue";
 // import CourseData from "./components/CourseData.vue";
 // import SchoolProcess from "./components/SchoolProcess.vue";
 // import DeptProcess from "./components/DeptProcess.vue";
@@ -63,7 +63,7 @@ const setQuery = () => {
             {{ year }}
             <IconifyIconOffline
               class="ml-[6px] transition-all duration-300"
-              :class="{ 'rotate-[-180deg]': visible }"
+              :class="{ 'rotate-180': visible }"
               :icon="arrowDown"
             />
           </div>
@@ -89,7 +89,7 @@ const setQuery = () => {
     <deptData :year="year" />
 
     <!-- 我的专业 -->
-    <!-- <major-data :year="year" /> -->
+    <major-data :year="year" />
 
     <!-- 我的课标 -->
     <!-- <course-data :year="year" /> -->
@@ -106,7 +106,7 @@ const setQuery = () => {
   border: 1px solid #ffe28d;
   background: #fffaeb;
   box-shadow: 0 0 2px #ffe28d;
-  padding: 6px 0;
+  padding: 10px 0;
   min-width: 330px;
   width: auto;
   &.right {

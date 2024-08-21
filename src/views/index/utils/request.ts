@@ -43,7 +43,7 @@ export const useApiRequests = () => {
   const { runAsync: getMjrStandardByCondApi } = useRequest(
     (params: any) => getMjrStandardByCond(params),
     {
-      debugKey: "getDeptInfoByCondition",
+      debugKey: "getMjrStandardByCond",
       manual: true
     }
   );

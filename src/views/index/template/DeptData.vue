@@ -17,10 +17,8 @@ const props = defineProps({
 watch(
   () => props.year,
   newVal => {
-    showLoadIngMore.value = false;
     param.pageNum = 1;
     param.year = newVal;
-    updateDeptList([]);
     getDeptInfoByCondition(param);
   }
 );
@@ -32,11 +30,13 @@ const param = {
   pageSize: 8
 };
 const [deptList, updateDeptList] = useImmer<any>([]);
-const getDeptInfoByCondition = async params => {
+const getDeptInfoByCondition = async (params: any, num = 0) => {
   try {
     const { result }: any = (await getDeptInfoByConditionApi(params)) || {};
     showLoadIngMore.value = result.endRow < result.total;
-    updateDeptList(deptList => [...deptList, ...result.list]);
+    updateDeptList(deptList =>
+      num ? [...deptList, ...result.list] : result?.list || []
+    );
   } catch (error) {
     console.error("getDeptInfoByCondition error", error);
   }
@@ -46,7 +46,7 @@ getDeptInfoByCondition(param);
 // 加载更多
 const loadMoreList = () => {
   ++param.pageNum;
-  getDeptInfoByCondition(param);
+  getDeptInfoByCondition(param, 1);
 };
 </script>
 

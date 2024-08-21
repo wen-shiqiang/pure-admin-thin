@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
 import { useApiRequests } from "../utils/request";
-import { useSetState } from "vue-hooks-plus";
+import { useImmer } from "@vue-hooks-plus/use-immer";
 import { useRouter } from "vue-router";
 const router = useRouter();
 defineOptions({
@@ -14,41 +14,24 @@ const props = defineProps({
     default: ""
   }
 });
+watch(
+  () => props.year,
+  newVal => {
+    getMjrStandardByCond({ year: props.year });
+  }
+);
 const majorAmount = ref(0);
-const majorList = reactive([]);
-const getMjrStandardByCond = async params => {
+const [majorList, updateMajorList] = useImmer([]);
+const getMjrStandardByCond = async (params: any) => {
   try {
     const { result }: any = (await getMjrStandardByCondApi(params)) || {};
-    console.log("🚀  file: MajorData.vue:19  result", result);
+    majorAmount.value = result?.majorAmount ?? 0;
+    updateMajorList(result?.majorList || []);
   } catch (error) {
     console.error("getDeptInfoByCondition error", error);
   }
 };
 getMjrStandardByCond({ year: props.year });
-// agreeChecked: false,
-// loading: true,
-// majorAmount: 0,
-// majorList: [],
-// MajorsByTeacherList: [],
-// temYearList: [],
-// choseTemplate: [],
-// id: 0 // 培养方案id
-
-// 获取我的专业
-//   this.getMjrStandardByCond();
-
-//   // 获取我的专业
-//   getMjrStandardByCond() {
-//     this.postBodyRequest("homePage/v1/getMjrStandardByCond", {
-//       year: this.year
-//     }).then(res => {
-//       this.loading = false;
-//       if (res.data.status === 200) {
-//         this.majorAmount = res.data.result.majorAmount;
-//         this.majorList = res.data.result.majorList;
-//       }
-//     });
-//   },
 //   // 页面跳转
 const goPage = (path, query = {}) => {
   router.push({ path: path, query: query });
@@ -59,23 +42,25 @@ const goPage = (path, query = {}) => {
   <div class="major">
     <div class="revise-title">
       <div class="name">
-        我的专业<span class="num">{{ majorAmount }}</span>
+        <el-badge type="info" :value="majorAmount" :offset="[13, 14]">
+          我的专业
+        </el-badge>
       </div>
       <div class="name">
         <el-button
-          size="small"
-          type="text"
+          :link="true"
+          type="primary"
           @click="goPage('/admin/manageTrainingProgram')"
-          >我的培养方案</el-button
         >
+          我的培养方案
+        </el-button>
       </div>
     </div>
     <div class="major-list">
       <div v-for="(item, key) in majorList" :key="key" class="major-item">
         <div v-if="!item.roleType" class="name">
-          <span class="c-333">{{ item.name }}</span
+          <span class="text-[#333]">{{ item.name }}</span
           ><el-button
-            size="small"
             @click="
               goPage(
                 item.standardSimpList.length
@@ -84,13 +69,13 @@ const goPage = (path, query = {}) => {
                 { id: item.id, year: year }
               )
             "
-            >开始修订</el-button
           >
+            开始修订
+          </el-button>
         </div>
         <div v-if="item.roleType" class="name">
-          <span class="c-333">{{ item.name }}</span
+          <span class="text-[#333]">{{ item.name }}</span
           ><el-button
-            size="small"
             @click="
               goPage(
                 item.standardSimpList.length
@@ -99,23 +84,22 @@ const goPage = (path, query = {}) => {
                 { id: item.id, year: year }
               )
             "
-            >查看详情</el-button
           >
+            查看详情
+          </el-button>
         </div>
         <div v-if="item.standardSimpList.length > 0" class="item-list">
-          <!-- 审核通过 -->
           <div
             v-for="(v, k) in item.standardSimpList"
             :key="k"
-            class="item-list-item l-h-48"
+            class="item-list-item leading-[48px]"
           >
             <div class="item-name">
               <span>{{ v.standardName }}</span>
-              <el-tag v-if="v.isDefault" class="m-l-6" size="small"
-                >默认</el-tag
-              >
+              <el-tag v-if="v.isDefault" class="ml-1.5" size="small">
+                默认
+              </el-tag>
             </div>
-            <!-- 状态 -->
             <div class="item-status">
               <div v-if="v.status === 0" class="status-info">
                 <span class="status-tip warning" /> 未修订
@@ -131,7 +115,6 @@ const goPage = (path, query = {}) => {
                 <span class="status-tip danger" /> 已发布
               </div>
             </div>
-            <!-- 角色 -->
             <div v-if="v.roleType === 0" class="item-person">
               <i class="el-icon-user" /> 专业负责人
             </div>
@@ -161,6 +144,17 @@ const goPage = (path, query = {}) => {
 .major {
   margin-top: 10px;
   background: #fff;
+  .revise-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 28px;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 1px solid #f5f5f5;
+  }
   .major-list {
     min-height: 50px;
     .major-empty-tip {
@@ -178,14 +172,14 @@ const goPage = (path, query = {}) => {
         padding: 10px 15px;
         font-size: 14px;
         color: #999;
-        background: fade(#5c8ef2, 10%);
+        background: rgba(92, 142, 242, 0.1);
       }
       .item-list {
         padding: 10px 20px 0px 42px;
         .empty-tip {
           font-size: 14px;
           color: #333;
-          padding-bottom: 10px;
+          line-height: 48px;
         }
         .item-list-item {
           display: flex;
