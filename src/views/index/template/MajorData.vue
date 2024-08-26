@@ -5,7 +5,7 @@ import { useImmer } from "@vue-hooks-plus/use-immer";
 import { useRouter } from "vue-router";
 const router = useRouter();
 defineOptions({
-  name: "MajorData"
+  name: "majorData"
 });
 const { getMjrStandardByCondApi } = useApiRequests();
 const props = defineProps({

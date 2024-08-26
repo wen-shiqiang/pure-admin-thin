@@ -4,7 +4,11 @@ import {
   getReviseNoticeByYear,
   getAllSchoolData,
   getDeptInfoByCondition,
-  getMjrStandardByCond
+  getMjrStandardByCond,
+  getCourCoursesByCond,
+  getDeptCompleteRate,
+  getSchoolReviseRate,
+  getMjrStandardEfficiency
 } from "@/api";
 import { useRequest } from "vue-hooks-plus";
 export const useApiRequests = () => {
@@ -47,6 +51,34 @@ export const useApiRequests = () => {
       manual: true
     }
   );
+  const { runAsync: getCourCoursesByCondApi } = useRequest(
+    (params: any) => getCourCoursesByCond(params),
+    {
+      debugKey: "getCourCoursesByCond",
+      manual: true
+    }
+  );
+  const { runAsync: getDeptCompleteRateApi } = useRequest(
+    (params: any) => getDeptCompleteRate(params),
+    {
+      debugKey: "getDeptCompleteRate",
+      manual: true
+    }
+  );
+  const { runAsync: getSchoolReviseRateApi } = useRequest(
+    (params: any) => getSchoolReviseRate(params),
+    {
+      debugKey: "getSchoolReviseRate",
+      manual: true
+    }
+  );
+  const { runAsync: getMjrStandardEfficiencyApi } = useRequest(
+    (params: any) => getMjrStandardEfficiency(params),
+    {
+      debugKey: "getMjrStandardEfficiency",
+      manual: true
+    }
+  );
 
   return {
     getUserMsgApi,
@@ -54,6 +86,10 @@ export const useApiRequests = () => {
     getReviseNoticeByYearApi,
     getAllSchoolDataApi,
     getDeptInfoByConditionApi,
-    getMjrStandardByCondApi
+    getMjrStandardByCondApi,
+    getCourCoursesByCondApi,
+    getDeptCompleteRateApi,
+    getSchoolReviseRateApi,
+    getMjrStandardEfficiencyApi
   };
 };

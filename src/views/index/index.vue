@@ -5,11 +5,11 @@ defineOptions({
 import { ref, onMounted } from "vue";
 import schoolData from "./template/SchoolData.vue";
 import deptData from "./template/DeptData.vue";
-import MajorData from "./template/MajorData.vue";
-// import CourseData from "./components/CourseData.vue";
-// import SchoolProcess from "./components/SchoolProcess.vue";
-// import DeptProcess from "./components/DeptProcess.vue";
-// import TrainEff from "./components/TrainEff.vue";
+import majorData from "./template/MajorData.vue";
+import courseData from "./template/CourseData.vue";
+import deptProcess from "./template/DeptProcess.vue";
+import SchoolProcess from "./template/SchoolProcess.vue";
+import TrainEff from "./template/TrainEff.vue";
 import arrowDown from "@iconify-icons/ep/arrow-down";
 import { indexRun, year, changeYear } from "./utils/index";
 const { years, revise } = indexRun();
@@ -89,16 +89,16 @@ const setQuery = () => {
     <deptData :year="year" />
 
     <!-- 我的专业 -->
-    <major-data :year="year" />
+    <majorData :year="year" />
 
     <!-- 我的课标 -->
-    <!-- <course-data :year="year" /> -->
+    <courseData :year="year" />
     <!-- 学院发布情况 -->
-    <!-- <dept-process :year="year" /> -->
+    <deptProcess :year="year" />
     <!-- 全校修订进度 -->
-    <!-- <school-process :year="year" /> -->
+    <schoolProcess :year="year" />
     <!-- 培养方案修订效率 -->
-    <!-- <train-eff :year="year" /> -->
+    <trainEff :year="year" />
   </div>
 </template>
 <style lang="scss">

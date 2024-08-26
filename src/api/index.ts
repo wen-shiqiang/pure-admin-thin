@@ -66,3 +66,39 @@ export const getMjrStandardByCond = (data?: object) => {
     }
   );
 };
+/** 获取我的课标 */
+export const getCourCoursesByCond = (data?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getCourCoursesByCond",
+    {
+      data
+    }
+  );
+};
+/** 获取学院完成情况 */
+export const getDeptCompleteRate = (params?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getDeptCompleteRate",
+    {
+      params
+    }
+  );
+};
+/** 获取全校修订进度 */
+export const getSchoolReviseRate = (params?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getSchoolReviseRate",
+    {
+      params
+    }
+  );
+};
+/** 获取培养方案修订效率 */
+export const getMjrStandardEfficiency = (params?: object) => {
+  return http.post<UserResult, UserParams>(
+    requstUrl + "/homePage/v1/getMjrStandardEfficiency",
+    {
+      params
+    }
+  );
+};
