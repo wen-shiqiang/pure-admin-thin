@@ -66,7 +66,8 @@ export const indexRun = () => {
       showClose: false,
       message: notificationMessage(title),
       duration: 0,
-      offset: 38
+      offset: 38,
+      zIndex: 999
     });
   };
   const notificationMessage = (title: Title) => {
