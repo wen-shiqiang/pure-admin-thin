@@ -111,7 +111,6 @@ const whiteList = ["/login", "/", "/user/emptyState"];
 const { VITE_HIDE_HOME } = import.meta.env;
 
 router.beforeEach((to: ToRouteType, _from, next) => {
-  console.log("🚀  file: index.ts:115  router.beforeEach  to", to);
   if (to.path === "/user/emptyState") {
     next();
     return;
