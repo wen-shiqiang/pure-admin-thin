@@ -59,7 +59,7 @@ export default [
     children: [
       {
         path: "/user/emptyState",
-        name: "Redirect",
+        name: "EmptyState",
         component: () => import("@/views/emptyState/index.vue"),
         meta: {
           title: "人才培养方案研制平台-空权限",

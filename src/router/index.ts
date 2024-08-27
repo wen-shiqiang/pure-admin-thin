@@ -106,11 +106,16 @@ export function resetRouter() {
 }
 
 /** 路由白名单 */
-const whiteList = ["/login", "/"];
+const whiteList = ["/login", "/", "/user/emptyState"];
 
 const { VITE_HIDE_HOME } = import.meta.env;
 
 router.beforeEach((to: ToRouteType, _from, next) => {
+  console.log("🚀  file: index.ts:115  router.beforeEach  to", to);
+  if (to.path === "/user/emptyState") {
+    next();
+    return;
+  }
   if (to.meta?.keepAlive) {
     handleAliveRoute(to, "add");
     // 页面整体刷新和点击标签页刷新

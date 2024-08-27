@@ -56,15 +56,19 @@ const getBreadcrumb = (): void => {
       });
     }
   });
-  const currentBreadcrumbArr =
-    storageSession().getItem("breadcrumbArr")[currentRoute.path] || [];
-  levelList.value = matched.filter((item, index) => {
-    if (item?.meta && item?.meta.title !== false) {
-      currentBreadcrumbArr[index] &&
-        (item.meta.title = currentBreadcrumbArr[index]);
-      return item;
-    }
-  });
+  try {
+    const currentBreadcrumbArr =
+      storageSession().getItem("breadcrumbArr")[currentRoute?.path] || [];
+    levelList.value = matched.filter((item, index) => {
+      if (item?.meta && item?.meta.title !== false) {
+        currentBreadcrumbArr[index] &&
+          (item.meta.title = currentBreadcrumbArr[index]);
+        return item;
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const handleLink = item => {
