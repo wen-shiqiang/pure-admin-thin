@@ -56,6 +56,9 @@ declare global {
      * 而通过设置`activePath`指定激活菜单即可获得高亮，`activePath`为指定激活菜单的`path`）
      */
     activePath?: string;
+    activeMenu?: string;
+    /** 是否可以跳转面包屑 `可选` */
+    breadcrumb?: boolean;
   }
 
   /**
@@ -96,6 +99,8 @@ declare global {
       showLink?: boolean;
       /** 菜单升序排序，值越高排的越后（只针对顶级路由）`可选` */
       rank?: number;
+      /** 是否可以跳转面包屑 `可选` */
+      breadcrumb?: boolean;
     };
     /** 子路由配置项 */
     children?: Array<RouteChildrenConfigsTable>;

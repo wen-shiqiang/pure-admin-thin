@@ -25,6 +25,7 @@ import {
 
 import LayTag from "./components/lay-tag/index.vue";
 import LayNavbar from "./components/lay-navbar/index.vue";
+import Header from "./components/lay-header/index.vue";
 import LayContent from "./components/lay-content/index.vue";
 import LaySetting from "./components/lay-setting/index.vue";
 import NavVertical from "./components/lay-sidebar/NavVertical.vue";
@@ -62,6 +63,9 @@ const set: setType = reactive({
 
   hideTabs: computed(() => {
     return $storage?.configure.hideTabs;
+  }),
+  showHeader: computed(() => {
+    return $storage?.configure.showHeader;
   })
 });
 
@@ -130,7 +134,10 @@ const LayHeader = defineComponent({
     return h(
       "div",
       {
-        class: { "fixed-header": set.fixedHeader },
+        class: {
+          "fixed-header": set.fixedHeader,
+          "!top-[54px]": set.showHeader && layout.value.includes("mmsVertical")
+        },
         style: [
           set.hideTabs && layout.value.includes("horizontal")
             ? isDark.value
@@ -142,7 +149,9 @@ const LayHeader = defineComponent({
       {
         default: () => [
           !pureSetting.hiddenSideBar &&
-          (layout.value.includes("vertical") || layout.value.includes("mix"))
+          (layout.value.includes("vertical") ||
+            layout.value.includes("mmsVertical") ||
+            layout.value.includes("mix"))
             ? h(LayNavbar)
             : null,
           !pureSetting.hiddenSideBar && layout.value.includes("horizontal")
@@ -162,40 +171,77 @@ const LayHeader = defineComponent({
       v-show="
         set.device === 'mobile' &&
         set.sidebar.opened &&
-        layout.includes('vertical')
+        (layout.includes('vertical') || layout.includes('mmsVertical'))
       "
       class="app-mask"
       @click="useAppStoreHook().toggleSideBar()"
     />
-    <NavVertical
-      v-show="
-        !pureSetting.hiddenSideBar &&
-        (layout.includes('vertical') || layout.includes('mix'))
-      "
-    />
-    <div
-      :class="[
-        'main-container',
-        pureSetting.hiddenSideBar ? 'main-hidden' : ''
-      ]"
-    >
-      <div v-if="set.fixedHeader">
-        <LayHeader />
-        <!-- 主体内容 -->
-        <LayContent :fixed-header="set.fixedHeader" />
-      </div>
-      <el-scrollbar v-else>
-        <el-backtop
-          title="回到顶部"
-          target=".main-container .el-scrollbar__wrap"
+    <template v-if="layout.includes('mmsVertical')">
+      <Header v-if="set.showHeader" />
+      <div
+        :class="[
+          'flex w-full',
+          set.showHeader ? 'h-[calc(100vh-54px)]' : 'h-full'
+        ]"
+      >
+        <NavVertical v-show="!pureSetting.hiddenSideBar" />
+        <div
+          :class="[
+            'main-container flex-1 !h-full',
+            pureSetting.hiddenSideBar ? 'main-hidden' : ''
+          ]"
         >
-          <BackTopIcon />
-        </el-backtop>
-        <LayHeader />
-        <!-- 主体内容 -->
-        <LayContent :fixed-header="set.fixedHeader" />
-      </el-scrollbar>
-    </div>
+          <div v-if="set.fixedHeader" class="h-full">
+            <LayHeader />
+            <!-- 主体内容 -->
+            <LayContent :fixed-header="set.fixedHeader" />
+          </div>
+          <el-scrollbar v-else>
+            <el-backtop
+              title="回到顶部"
+              target=".main-container .el-scrollbar__wrap"
+            >
+              <BackTopIcon />
+            </el-backtop>
+            <LayHeader />
+            <!-- 主体内容 -->
+            <LayContent :fixed-header="set.fixedHeader" />
+          </el-scrollbar>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <NavVertical
+        v-show="
+          !pureSetting.hiddenSideBar &&
+          (layout.includes('vertical') || layout.includes('mix'))
+        "
+      />
+      <div
+        :class="[
+          'main-container',
+          pureSetting.hiddenSideBar ? 'main-hidden' : ''
+        ]"
+      >
+        <div v-if="set.fixedHeader">
+          <LayHeader />
+          <!-- 主体内容 -->
+          <LayContent :fixed-header="set.fixedHeader" />
+        </div>
+        <el-scrollbar v-else>
+          <el-backtop
+            title="回到顶部"
+            target=".main-container .el-scrollbar__wrap"
+          >
+            <BackTopIcon />
+          </el-backtop>
+          <LayHeader />
+          <!-- 主体内容 -->
+          <LayContent :fixed-header="set.fixedHeader" />
+        </el-scrollbar>
+      </div>
+    </template>
+
     <!-- 系统设置 -->
     <LaySetting />
   </div>

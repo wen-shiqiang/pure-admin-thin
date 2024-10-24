@@ -11,8 +11,14 @@ import type {
 } from "./types.d";
 import { stringify } from "qs";
 import NProgress from "../progress";
-import { getToken, formatToken } from "@/utils/auth";
-import { useUserStoreHook } from "@/store/modules/user";
+import {
+  // getToken,
+  formatToken
+} from "@/utils/auth";
+import { storageSession } from "@pureadmin/utils";
+// import { useUserStoreHook } from "@/store/modules/user";
+import { useTokenStoreHook } from "@modules/token";
+import { ElMessage } from "element-plus";
 
 // 相关配置请参考：www.axios-js.com/zh-cn/docs/#axios-request-config-1
 const defaultConfig: AxiosRequestConfig = {
@@ -77,36 +83,39 @@ class PureHttp {
         return whiteList.some(url => config.url.endsWith(url))
           ? config
           : new Promise(resolve => {
-              const data = getToken();
-              if (data) {
-                const now = new Date().getTime();
-                const expired = parseInt(data.expires) - now <= 0;
-                if (expired) {
-                  if (!PureHttp.isRefreshing) {
-                    PureHttp.isRefreshing = true;
-                    // token过期刷新
-                    useUserStoreHook()
-                      .handRefreshToken({ refreshToken: data.refreshToken })
-                      .then(res => {
-                        const token = res.data.accessToken;
-                        config.headers["Authorization"] = formatToken(token);
-                        PureHttp.requests.forEach(cb => cb(token));
-                        PureHttp.requests = [];
-                      })
-                      .finally(() => {
-                        PureHttp.isRefreshing = false;
-                      });
-                  }
-                  resolve(PureHttp.retryOriginalRequest(config));
-                } else {
-                  config.headers["Authorization"] = formatToken(
-                    data.accessToken
-                  );
-                  resolve(config);
-                }
-              } else {
-                resolve(config);
-              }
+              // const data = getToken();
+              // if (data) {
+              // const now = new Date().getTime();
+              // const expired = parseInt(data.expires) - now <= 0;
+              // if (expired) {
+              //   if (!PureHttp.isRefreshing) {
+              //     PureHttp.isRefreshing = true;
+              //     // token过期刷新
+              //     useUserStoreHook()
+              //       .handRefreshToken({ refreshToken: data.refreshToken })
+              //       .then(res => {
+              //         const token = res.data.accessToken;
+              //         config.headers["Authorization"] = formatToken(token);
+              //         PureHttp.requests.forEach(cb => cb(token));
+              //         PureHttp.requests = [];
+              //       })
+              //       .finally(() => {
+              //         PureHttp.isRefreshing = false;
+              //       });
+              //   }
+              //   resolve(PureHttp.retryOriginalRequest(config));
+              // } else {
+              // config.headers["Authorization"] = formatToken(data.accessToken);
+              const mmsToken =
+                useTokenStoreHook().getToken ||
+                storageSession().getItem("token");
+              config.headers["Authorization"] = mmsToken;
+              config.headers["authToken"] = mmsToken;
+              resolve(config);
+              // }
+              // } else {
+              // resolve(config);
+              // }
             });
       },
       error => {
@@ -150,7 +159,8 @@ class PureHttp {
     method: RequestMethods,
     url: string,
     param?: AxiosRequestConfig,
-    axiosConfig?: PureHttpRequestConfig
+    axiosConfig?: PureHttpRequestConfig,
+    responseConfig?: any
   ): Promise<T> {
     const config = {
       method,
@@ -163,7 +173,16 @@ class PureHttp {
     return new Promise((resolve, reject) => {
       PureHttp.axiosInstance
         .request(config)
-        .then((response: undefined) => {
+        .then((response: any) => {
+          const { showMessage, status } = responseConfig || {
+            showMessage: true,
+            status: true
+          };
+          if (response.status !== 200 && status) {
+            showMessage && ElMessage.error(response?.message || "请求失败");
+            reject(response);
+            return;
+          }
           resolve(response);
         })
         .catch(error => {

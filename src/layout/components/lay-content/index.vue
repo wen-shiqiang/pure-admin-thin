@@ -13,7 +13,7 @@ const props = defineProps({
 
 const { showModel } = useTags();
 const { $storage, $config } = useGlobal<GlobalPropertiesApi>();
-
+const { showHeader } = $storage?.configure;
 const isKeepAlive = computed(() => {
   return $config?.KeepAlive;
 });
@@ -38,6 +38,9 @@ const stretch = computed(() => {
 
 const layout = computed(() => {
   return $storage?.layout.layout === "vertical";
+});
+const mmsVertical = computed(() => {
+  return $storage?.layout.layout === "mmsVertical";
 });
 
 const getMainWidth = computed(() => {
@@ -66,8 +69,8 @@ const getSectionStyle = computed(() => {
       ? ""
       : `padding-top: 0;${
           hideTabs.value
-            ? "min-height: calc(100vh - 48px);"
-            : "min-height: calc(100vh - 86px);"
+            ? "min-height: calc(100vh - 102px);"
+            : "min-height: calc(100vh - 136px);"
         }`
   ];
 });
@@ -107,7 +110,10 @@ const transitionMain = defineComponent({
 
 <template>
   <section
-    :class="[fixedHeader ? 'app-main' : 'app-main-nofixed-header']"
+    :class="[
+      fixedHeader ? 'app-main' : 'app-main-nofixed-header',
+      showHeader && mmsVertical ? '!h-full' : ''
+    ]"
     :style="getSectionStyle"
   >
     <router-view>

@@ -22,12 +22,15 @@
       "DOM"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@build/*": [
-        "build/*"
-      ]
+      "@/*": ["src/*"],
+      "@build/*": ["build/*"],
+      "@public/*": ["public/*"],
+      "@api/*": ["src/api/*"],
+      "@assets/*": ["src/assets/*"],
+      "@views/*": ["src/views/*"],
+      "@utils/*": ["src/utils/*"],
+      "@store/*": ["src/store/*"],
+      "@modules/*": ["src/store/modules/*"],
     },
     "types": [
       "node",

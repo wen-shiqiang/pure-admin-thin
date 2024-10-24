@@ -38,7 +38,14 @@ const pathResolve = (dir = ".", metaUrl = import.meta.url) => {
 /** 设置别名 */
 const alias: Record<string, string> = {
   "@": pathResolve("../src"),
-  "@build": pathResolve()
+  "@build": pathResolve(),
+  "@public": pathResolve("../public"),
+  "@api": pathResolve("../src/api"),
+  "@assets": pathResolve("../src/assets"),
+  "@views": pathResolve("../src/views"),
+  "@utils": pathResolve("../src/utils"),
+  "@store": pathResolve("../src/store"),
+  "@modules": pathResolve("../src/store/modules")
 };
 
 /** 平台的名称、版本、运行所需的`node`和`pnpm`版本、依赖、最后构建时间的类型提示 */

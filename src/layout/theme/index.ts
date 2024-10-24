@@ -9,9 +9,11 @@ const themeColors = {
   /* 亮白色 */
   light: {
     subMenuActiveText: "#000000d9",
+    subMenuActiveIcon: "#fff",
     menuBg: "#fff",
     menuHover: "#f6f6f6",
     subMenuBg: "#fff",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     subMenuActiveBg: "#e0ebf6",
     menuText: "rgb(0 0 0 / 60%)",
     sidebarLogo: "#fff",
@@ -21,10 +23,12 @@ const themeColors = {
   /* 道奇蓝 */
   default: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#001529",
     menuHover: "rgb(64 145 247 / 15%)",
     subMenuBg: "#0f0303",
     subMenuActiveBg: "#4091f7",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "rgb(254 254 254 / 65%)",
     sidebarLogo: "#002140",
     menuTitleHover: "#fff",
@@ -33,10 +37,12 @@ const themeColors = {
   /* 深紫罗兰色 */
   saucePurple: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#130824",
     menuHover: "rgb(105 58 201 / 15%)",
     subMenuBg: "#000",
     subMenuActiveBg: "#693ac9",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "#7a80b4",
     sidebarLogo: "#1f0c38",
     menuTitleHover: "#fff",
@@ -45,10 +51,12 @@ const themeColors = {
   /* 深粉色 */
   pink: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#28081a",
     menuHover: "rgb(216 68 147 / 15%)",
     subMenuBg: "#000",
     subMenuActiveBg: "#d84493",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "#7a80b4",
     sidebarLogo: "#3f0d29",
     menuTitleHover: "#fff",
@@ -57,10 +65,12 @@ const themeColors = {
   /* 猩红色 */
   dusk: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#2a0608",
     menuHover: "rgb(225 60 57 / 15%)",
     subMenuBg: "#000",
     subMenuActiveBg: "#e13c39",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "rgb(254 254 254 / 65.1%)",
     sidebarLogo: "#42090c",
     menuTitleHover: "#fff",
@@ -69,10 +79,12 @@ const themeColors = {
   /* 橙红色 */
   volcano: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#2b0e05",
     menuHover: "rgb(232 95 51 / 15%)",
     subMenuBg: "#0f0603",
     subMenuActiveBg: "#e85f33",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "rgb(254 254 254 / 65%)",
     sidebarLogo: "#441708",
     menuTitleHover: "#fff",
@@ -81,10 +93,12 @@ const themeColors = {
   /* 绿宝石 */
   mingQing: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#032121",
     menuHover: "rgb(89 191 193 / 15%)",
     subMenuBg: "#000",
     subMenuActiveBg: "#59bfc1",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "#7a80b4",
     sidebarLogo: "#053434",
     menuTitleHover: "#fff",
@@ -93,10 +107,12 @@ const themeColors = {
   /* 酸橙绿 */
   auroraGreen: {
     subMenuActiveText: "#fff",
+    subMenuActiveIcon: "#fff",
     menuBg: "#0b1e15",
     menuHover: "rgb(96 172 128 / 15%)",
     subMenuBg: "#000",
     subMenuActiveBg: "#60ac80",
+    subMenuHoverBg: "rgba(92, 142, 242, 0.12)",
     menuText: "#7a80b4",
     sidebarLogo: "#112f21",
     menuTitleHover: "#fff",
@@ -114,10 +130,12 @@ export const genScssMultipleScopeVars = (): multipleScopeVarsOptions[] => {
       scopeName: `layout-theme-${key}`,
       varsContent: `
         $subMenuActiveText: ${themeColors[key].subMenuActiveText} !default;
+        $subMenuActiveIcon: ${themeColors[key].subMenuActiveIcon} !default;
         $menuBg: ${themeColors[key].menuBg} !default;
         $menuHover: ${themeColors[key].menuHover} !default;
         $subMenuBg: ${themeColors[key].subMenuBg} !default;
         $subMenuActiveBg: ${themeColors[key].subMenuActiveBg} !default;
+        $subMenuHoverBg: ${themeColors[key].subMenuHoverBg} !default;
         $menuText: ${themeColors[key].menuText} !default;
         $sidebarLogo: ${themeColors[key].sidebarLogo} !default;
         $menuTitleHover: ${themeColors[key].menuTitleHover} !default;

@@ -21,12 +21,28 @@ declare global {
     };
     lastBuildTime: string;
   };
-
+  interface mmsType {
+    ENV?: string;
+    requstUrl?: string;
+    basePage?: string;
+    emailUrl?: string;
+    unifyWeb?: string;
+    mmsQueWeb?: string;
+    unifyApi?: string;
+    unifyMmsWeb?: string;
+    imgUrl?: string;
+    unifyObeWeb?: string;
+    csgmooc?: string;
+    socketIoApi?: string;
+    coverConfigWebUrl?: string;
+    thirdPartyLibraryUrl?: string;
+  }
   /**
    * Window 的类型提示
    */
   interface Window {
     // Global vue app instance
+    mms: mmsType;
     __APP__: App<Element>;
     webkitCancelAnimationFrame: (handle: number) => void;
     mozCancelAnimationFrame: (handle: number) => void;
@@ -107,7 +123,9 @@ declare global {
     CachingAsyncRoutes?: boolean;
     TooltipEffect?: Effect;
     ResponsiveStorageNameSpace?: string;
+    StorageNameSpace?: string;
     MenuSearchHistory?: number;
+    ShowHeader?: boolean;
   }
 
   /**
@@ -164,6 +182,7 @@ declare global {
       showModel?: string;
       multiTagsCache?: boolean;
       stretch?: boolean | number;
+      showHeader?: boolean;
     };
     tags?: Array<any>;
   }

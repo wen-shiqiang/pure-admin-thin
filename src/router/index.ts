@@ -6,10 +6,15 @@ import { buildHierarchyTree } from "@/utils/tree";
 import remainingRouter from "./modules/remaining";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { usePermissionStoreHook } from "@/store/modules/permission";
-import { isUrl, openLink, storageLocal, isAllEmpty } from "@pureadmin/utils";
+import {
+  isUrl,
+  openLink,
+  // storageLocal,
+  storageSession
+} from "@pureadmin/utils";
 import {
   ascending,
-  getTopMenu,
+  // getTopMenu,
   // initRouter,
   isOneOfArray,
   getHistoryMode,
@@ -27,11 +32,10 @@ import {
 } from "vue-router";
 import {
   type DataInfo,
-  userKey,
+  // userKey,
   removeToken,
   multipleTabsKey
 } from "@/utils/auth";
-
 /** 自动导入全部静态路由，无需再手动引入！匹配 src/router/modules 目录（任何嵌套级别）中具有 .ts 扩展名的所有文件，除了 remaining.ts 文件
  * 如何匹配所有文件请看：https://github.com/mrmlnc/fast-glob#basic-syntax
  * 如何排除文件请看：https://cn.vitejs.dev/guide/features.html#negative-patterns
@@ -102,11 +106,15 @@ export function resetRouter() {
 }
 
 /** 路由白名单 */
-const whiteList = ["/login"];
+const whiteList = ["/login", "/", "/user/emptyState"];
 
 const { VITE_HIDE_HOME } = import.meta.env;
 
 router.beforeEach((to: ToRouteType, _from, next) => {
+  if (to.path === "/user/emptyState") {
+    next();
+    return;
+  }
   if (to.meta?.keepAlive) {
     handleAliveRoute(to, "add");
     // 页面整体刷新和点击标签页刷新
@@ -114,20 +122,25 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       handleAliveRoute(to);
     }
   }
-  const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
+  // const userInfo = storageLocal().getItem<DataInfo<number>>(userKey);
+  const userInfo = storageSession().getItem<DataInfo<number>>("mms-userInfo");
   NProgress.start();
   const externalLink = isUrl(to?.name as string);
   if (!externalLink) {
     to.matched.some(item => {
       if (!item.meta.title) return "";
       const Title = getConfig().Title;
-      if (Title) document.title = `${item.meta.title} | ${Title}`;
+      if (Title) document.title = `${item.meta.title} - ${Title}`;
       else document.title = item.meta.title as string;
     });
   }
   /** 如果已经登录并存在登录信息后不能跳转到路由白名单，而是继续保持在当前页面 */
   function toCorrectRoute() {
     whiteList.includes(to.fullPath) ? next(_from.fullPath) : next();
+  }
+  if (to.path === "/" || to.path === "/login") {
+    removeToken();
+    storageSession().removeItem("mms-userInfo");
   }
   if (Cookies.get(multipleTabsKey) && userInfo) {
     // 无权限跳转403页面
@@ -208,8 +221,12 @@ router.beforeEach((to: ToRouteType, _from, next) => {
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
-        removeToken();
-        next({ path: "/login" });
+        if (to.params?.schlId) {
+          next();
+        } else {
+          removeToken();
+          next({ path: "/login" });
+        }
       }
     } else {
       next();

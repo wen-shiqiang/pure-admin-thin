@@ -1,183 +1,270 @@
 <script setup lang="ts">
-import Motion from "./utils/motion";
-import { useRouter } from "vue-router";
-import { message } from "@/utils/message";
-import { loginRules } from "./utils/rule";
-import { useNav } from "@/layout/hooks/useNav";
-import type { FormInstance } from "element-plus";
-import { useLayout } from "@/layout/hooks/useLayout";
-// import { useUserStoreHook } from "@/store/modules/user";
-// import { initRouter, getTopMenu } from "@/router/utils";
-import { bg, avatar, illustration } from "./utils/static";
-import { useRenderIcon } from "@/components/ReIcon/src/hooks";
-import { ref, reactive, toRaw, onMounted, onBeforeUnmount } from "vue";
-import { useDataThemeChange } from "@/layout/hooks/useDataThemeChange";
-
-import dayIcon from "@/assets/svg/day.svg?component";
-import darkIcon from "@/assets/svg/dark.svg?component";
-import Lock from "@iconify-icons/ri/lock-fill";
-import User from "@iconify-icons/ri/user-3-fill";
-import { setToken } from "@/utils/auth";
-import { addPathMatch } from "@/router/utils";
-import { usePermissionStoreHook } from "@/store/modules/permission";
 defineOptions({
-  name: "Login"
+  name: "mmsLogin"
 });
-const router = useRouter();
-const loading = ref(false);
-const ruleFormRef = ref<FormInstance>();
+import Motion from "./utils/motion";
+import { ref, reactive, onMounted, onBeforeUnmount, toRaw } from "vue";
+import { captchaCode, school, user, password } from "./utils/static";
+import {
+  loginRun,
+  logoName,
+  logoPath,
+  captchaCodeImg,
+  ruleFormRef,
+  schoolNum
+} from "./utils/index";
+import UserFooter from "./userFooter.vue";
+const { getUUID, generateCode, submitClick, isLogin } = loginRun();
 
-const { initStorage } = useLayout();
-initStorage();
-
-const { dataTheme, overallStyle, dataThemeChange } = useDataThemeChange();
-dataThemeChange(overallStyle.value);
-const { title } = useNav();
-
-const ruleForm = reactive({
-  username: "admin",
-  password: "admin123"
-});
-
-const onLogin = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  await formEl.validate((valid, fields) => {
-    loading.value = true;
-    if (valid) {
-      setToken({
-        username: "admin",
-        roles: ["admin"],
-        accessToken: "eyJhbGciOiJIUzUxMiJ9.admin"
-      } as any);
-      // 全部采取静态路由模式
-      usePermissionStoreHook().handleWholeMenus([]);
-      addPathMatch();
-      router.push("/");
-      message("登录成功", { type: "success" });
-    }
-    // if (valid) {
-    // loading.value = true;
-    // useUserStoreHook()
-    //   .loginByUsername({ username: ruleForm.username, password: "admin123" })
-    //   .then(res => {
-    //     if (res.success) {
-    //       // 获取后端路由
-    //       return initRouter().then(() => {
-    //         router.push(getTopMenu(true).path).then(() => {
-    //           message("登录成功", { type: "success" });
-    //         });
-    //       });
-    //     } else {
-    //       message("登录失败", { type: "error" });
-    //     }
-    //   })
-    //   .finally(() => (loading.value = false));
-    // }
-  });
+const rules = {
+  number: [
+    { required: true, message: "请输入账号", trigger: ["change", "blur"] }
+  ],
+  password: [
+    { required: true, message: "请输入密码", trigger: ["change", "blur"] }
+  ],
+  captchaCode: [
+    { required: true, message: "请输入验证码", trigger: ["change", "blur"] }
+  ]
 };
-
-/** 使用公共函数，避免`removeEventListener`失效 */
-function onkeypress({ code }: KeyboardEvent) {
-  if (["Enter", "NumpadEnter"].includes(code)) {
-    onLogin(ruleFormRef.value);
+const ruleForm: any = reactive({
+  number: "",
+  password: "",
+  captchaCode: "",
+  uuid: "",
+  ptlId: 2
+});
+const fetchUUIDAndGenerateCode = async () => {
+  try {
+    ruleForm.uuid = await generateCode(await getUUID());
+  } catch (error) {
+    console.error("Failed to fetch UUID and generate code:", error);
   }
-}
-
-onMounted(() => {
-  window.document.addEventListener("keypress", onkeypress);
-});
-
-onBeforeUnmount(() => {
-  window.document.removeEventListener("keypress", onkeypress);
-});
+};
+fetchUUIDAndGenerateCode();
+onMounted(() => {});
+onBeforeUnmount(() => {});
 </script>
 
 <template>
-  <div class="select-none">
-    <img :src="bg" class="wave" />
-    <div class="flex-c absolute right-5 top-3">
-      <!-- 主题 -->
-      <el-switch
-        v-model="dataTheme"
-        inline-prompt
-        :active-icon="dayIcon"
-        :inactive-icon="darkIcon"
-        @change="dataThemeChange"
-      />
-    </div>
+  <div class="login_bg">
     <div class="login-container">
-      <div class="img">
-        <component :is="toRaw(illustration)" />
-      </div>
-      <div class="login-box">
-        <div class="login-form">
-          <avatar class="avatar" />
-          <Motion>
-            <h2 class="outline-none">{{ title }}</h2>
+      <div class="contain-div">
+        <Motion>
+          <img alt="" :src="logoPath" class="max-h-[60px]" />
+        </Motion>
+        <Motion>
+          <div
+            class="login_smallHr text-[#2c3e50] dark:text-[--el-text-color-primary]"
+            v-html="logoName"
+          />
+        </Motion>
+        <el-form
+          ref="ruleFormRef"
+          :model="ruleForm"
+          :rules="rules"
+          class="login_right"
+          label-width="0px"
+        >
+          <Motion v-if="isLogin" :delay="100">
+            <el-form-item prop="schoolNumber">
+              <el-input
+                v-model="schoolNum"
+                class="login-input"
+                clearable
+                placeholder="学校编码"
+              >
+                <template v-slot:prefix>
+                  <component
+                    :is="toRaw(school)"
+                    fill="#9AABB9"
+                    class="ioc pr-[9px]"
+                  />
+                </template>
+              </el-input>
+            </el-form-item>
           </Motion>
-
-          <el-form
-            ref="ruleFormRef"
-            :model="ruleForm"
-            :rules="loginRules"
-            size="large"
-          >
-            <Motion :delay="100">
-              <el-form-item
-                :rules="[
-                  {
-                    required: true,
-                    message: '请输入账号',
-                    trigger: 'blur'
-                  }
-                ]"
-                prop="username"
+          <Motion :delay="100">
+            <el-form-item prop="number">
+              <el-input
+                v-model="ruleForm.number"
+                class="login-input"
+                clearable
+                placeholder="用户名"
               >
-                <el-input
-                  v-model="ruleForm.username"
-                  clearable
-                  placeholder="账号"
-                  :prefix-icon="useRenderIcon(User)"
-                />
-              </el-form-item>
-            </Motion>
-
-            <Motion :delay="150">
-              <el-form-item prop="password">
-                <el-input
-                  v-model="ruleForm.password"
-                  clearable
-                  show-password
-                  placeholder="密码"
-                  :prefix-icon="useRenderIcon(Lock)"
-                />
-              </el-form-item>
-            </Motion>
-
-            <Motion :delay="250">
+                <template v-slot:prefix>
+                  <component
+                    :is="toRaw(user)"
+                    fill="#9AABB9"
+                    class="ioc pr-[9px]"
+                  />
+                </template>
+              </el-input>
+            </el-form-item>
+          </Motion>
+          <Motion :delay="150">
+            <el-form-item prop="password">
+              <el-input
+                v-model="ruleForm.password"
+                class="login-input"
+                clearable
+                placeholder="密码"
+                show-password
+              >
+                <template v-slot:prefix>
+                  <component
+                    :is="toRaw(password)"
+                    fill="#9AABB9"
+                    class="ioc pr-[9px]"
+                  />
+                </template>
+              </el-input>
+            </el-form-item>
+          </Motion>
+          <Motion :delay="250">
+            <el-form-item class="captchaCodeFormItem" prop="captchaCode">
+              <el-row class="flex items-end">
+                <el-col :span="13" class="!inline-flex">
+                  <el-input
+                    v-model="ruleForm.captchaCode"
+                    type="text"
+                    class="login-input"
+                    auto-complete="off"
+                    placeholder="验证码"
+                    maxlength="4"
+                  >
+                    <template v-slot:prefix>
+                      <component
+                        :is="toRaw(captchaCode)"
+                        fill="#9AABB9"
+                        class="ioc pr-[9px]"
+                      />
+                    </template>
+                  </el-input>
+                </el-col>
+                <el-col :span="11" class="!flex justify-end">
+                  <img
+                    title="看不清，换一张"
+                    class="h-[50px] c-p border border-[#DCDFE6]"
+                    :src="captchaCodeImg"
+                    alt="请点击刷新"
+                    @click="generateCode(ruleForm.uuid)"
+                  />
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </Motion>
+          <Motion :delay="350">
+            <el-form-item class="login-item">
               <el-button
-                class="w-full mt-4"
-                size="default"
                 type="primary"
-                :loading="loading"
-                @click="onLogin(ruleFormRef)"
+                class="login-btn"
+                size="large"
+                @click.prevent="submitClick(ruleFormRef, ruleForm)"
+                >登录</el-button
               >
-                登录
-              </el-button>
-            </Motion>
-          </el-form>
-        </div>
+            </el-form-item>
+          </Motion>
+        </el-form>
       </div>
     </div>
+    <UserFooter />
   </div>
 </template>
-
-<style scoped>
-@import url("@/style/login.css");
-</style>
-
 <style lang="scss" scoped>
-:deep(.el-input-group__append, .el-input-group__prepend) {
-  padding: 0;
+.login-input {
+  :deep(.el-input__wrapper) {
+    box-shadow: var(--el-border-color) 0 1px 0px 0px;
+    border-radius: 0;
+    &:hover {
+      box-shadow: var(--el-border-color-hover) 0 1px 0px 0px;
+    }
+    &.is-focus {
+      box-shadow: var(--el-input-focus-border-color) 0 1px 0px 0px;
+    }
+  }
+}
+:deep(.el-form-item) {
+  &.is-error {
+    .el-input__wrapper {
+      box-shadow: var(--el-color-danger) 0 1px 0px 0px !important;
+    }
+  }
+}
+.login_bg {
+  height: 100%;
+  width: 100%;
+  min-height: 640px;
+  padding-top: 1px;
+  box-sizing: border-box;
+  position: relative;
+  background: url("@/assets/login/login_bg.png") no-repeat;
+  background-size: cover;
+  min-width: 1024px;
+  .login-container {
+    border-radius: 8px;
+    background: var(--el-bg-color);
+    text-align: center;
+    width: 380px;
+    min-height: 440px;
+    position: absolute;
+    top: 50%;
+    left: 62%;
+    transform: translateY(-50%);
+    .contain-div {
+      position: relative;
+      margin-top: 37px;
+      .login_right {
+        width: 380px;
+        padding: 10px 30px 72px;
+        .ioc {
+          width: 26px;
+          height: 16px;
+          margin-right: 15px;
+          border-right: 1px solid #c5d0da;
+          vertical-align: middle;
+          display: inline-block;
+        }
+        .login-item {
+          width: 100%;
+          margin-top: 37px;
+          .login-btn {
+            width: 100%;
+            color: #fff;
+            margin-top: 20px;
+            border-color: transparent;
+            background: -webkit-linear-gradient(
+              left,
+              #7fa3fd,
+              #5c8ef2
+            ); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(
+              right,
+              #7fa3fd,
+              #5c8ef2
+            ); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(
+              right,
+              #7fa3fd,
+              #5c8ef2
+            ); /* Firefox 3.6 - 15 */
+            background: linear-gradient(
+              to right,
+              #7fa3fd,
+              #5c8ef2
+            ); /* 标准的语法 */
+          }
+        }
+      }
+    }
+  }
+}
+.login_smallHr {
+  font-size: 28px;
+  text-align: center;
+  font-family: "微软雅黑";
+  line-height: 42px;
+  letter-spacing: 1px;
+  margin: 20px 30px 15px 30px;
 }
 </style>
