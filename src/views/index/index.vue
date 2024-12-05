@@ -3,11 +3,11 @@ defineOptions({
   name: "MyIndex"
 });
 import { ref, onMounted } from "vue";
-import schoolData from "./template/SchoolData.vue";
-import deptData from "./template/DeptData.vue";
-import majorData from "./template/MajorData.vue";
-import courseData from "./template/CourseData.vue";
-import deptProcess from "./template/DeptProcess.vue";
+import SchoolData from "./template/SchoolData.vue";
+import DeptData from "./template/DeptData.vue";
+import MajorData from "./template/MajorData.vue";
+import CourseData from "./template/CourseData.vue";
+import DeptProcess from "./template/DeptProcess.vue";
 import SchoolProcess from "./template/SchoolProcess.vue";
 import TrainEff from "./template/TrainEff.vue";
 import arrowDown from "@iconify-icons/ep/arrow-down";
@@ -58,7 +58,9 @@ const setQuery = () => {
             }
           "
         >
-          <div class="flex items-center">
+          <div
+            class="flex items-center text-[--el-color-info] cursor-pointer text-[14px]"
+          >
             <i class="mms-iconfont iconriqi mr-[6px]" />
             {{ year }}
             <IconifyIconOffline
@@ -83,22 +85,22 @@ const setQuery = () => {
     </div>
 
     <!-- 全校培养方案概览 -->
-    <schoolData :year="year" />
+    <SchoolData :year="year" />
 
     <!-- 院系数据分析 -->
-    <deptData :year="year" />
+    <DeptData :year="year" />
 
     <!-- 我的专业 -->
-    <majorData :year="year" />
+    <MajorData :year="year" />
 
     <!-- 我的课标 -->
-    <courseData :year="year" />
+    <CourseData :year="year" />
     <!-- 学院发布情况 -->
-    <deptProcess :year="year" />
+    <DeptProcess :year="year" />
     <!-- 全校修订进度 -->
-    <schoolProcess :year="year" />
+    <SchoolProcess :year="year" />
     <!-- 培养方案修订效率 -->
-    <trainEff :year="year" />
+    <TrainEff :year="year" />
   </div>
 </template>
 <style lang="scss">
@@ -125,21 +127,8 @@ const setQuery = () => {
     align-items: center;
     padding: 16px 15px;
     font-size: 16px;
-    color: #333;
-    background: #fff;
-    .revise-time-select {
-      color: #999;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .revise-time-select i {
-      margin-left: 0px;
-      color: #999;
-      font-size: 14px;
-    }
-    .el-dropdown {
-      color: #999 !important;
-    }
+    color: var(--el-text-color-primary);
+    background: var(--el-bg-color);
   }
 }
 </style>

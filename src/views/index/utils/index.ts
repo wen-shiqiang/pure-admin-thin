@@ -1,4 +1,4 @@
-import { ref, watch, h, onBeforeUnmount } from "vue";
+import { ref, watch, h, onBeforeUnmount, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useApiRequests } from "./request";
 import { isAllEmpty } from "@pureadmin/utils";
@@ -7,7 +7,8 @@ import { useSetState } from "vue-hooks-plus";
 import type { Title, YearParams } from "./types.d";
 import dayjs from "dayjs";
 export const year = ref(dayjs().year());
-
+import { useAppStoreHook } from "@/store/modules/app";
+import { useDraggable } from "@pureadmin/utils";
 export const indexRun = () => {
   const { getUserMsgApi, getMjrStandYearApi, getReviseNoticeByYearApi } =
     useApiRequests();
@@ -53,11 +54,19 @@ export const indexRun = () => {
       const { id, title } = result;
       setNoticeInfo({ id, title });
       showNotification(title);
+      init();
     } catch (error) {
       console.error("getUserMsg error", error);
     }
   };
   getUserMsg({ year: year.value });
+  const layout = computed(() => {
+    return useAppStoreHook().layout;
+  });
+  const { init } = useDraggable(
+    ".userMsgNotification",
+    ".el-notification__group"
+  );
   const showNotification = (title: Title): void => {
     ElNotification?.closeAll();
     ElNotification({
@@ -66,7 +75,7 @@ export const indexRun = () => {
       showClose: false,
       message: notificationMessage(title),
       duration: 0,
-      offset: 38,
+      offset: layout.value === "mmsVertical" ? 38 : 25,
       zIndex: 999
     });
   };
